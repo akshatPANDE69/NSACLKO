@@ -1,103 +1,157 @@
+"use client";
+
+import Head from "next/head";
 import Image from "next/image";
+import Link from "next/link";
+import { Button } from "./components/components/ui/button";
+import EffectsInitializer from "./components/EffectsInitializer";
+import React, { useState } from "react";
+
+import "./styles/base.css";
+import "./styles/index.css";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  return (
+    <div>
+      <Head>
+        <title>My Next.js App</title>
+        <meta name="description" content="Welcome to my Next.js application!" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <EffectsInitializer />
+
+      <section className="hero-video-section fade-section" id="home">
+        <div className="hero-video-background">
+          <div className="hero-video-container">
+            <video autoPlay muted loop playsInline>
+              <source src="your-earth-video.mp4" type="video/mp4" />
+            </video>
+            <div
+              style={{
+                background: "linear-gradient(135deg, #000428 0%, #004e92 100%)",
+                width: "100%",
+                height: "100%",
+              }}
+            ></div>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        <div className="hero-video-overlay"></div>
+
+        {/* Particles will be triggered when this container comes into view */}
+        <div className="particles" id="particles"></div>
+
+        <div className="floating-elements">
+          <div className="floating-dot"></div>
+          <div className="floating-dot"></div>
+          <div className="floating-dot"></div>
+          <div className="floating-dot"></div>
+          <div className="floating-dot"></div>
+        </div>
+
+        <div className="hero-content-wrapper stagger-container">
+          <div className="hero-subtitle stagger-item">
+            Global Innovation Challenge
+          </div>
+          {/* This will only fade in, not type */}
+          <h1 className="hero-main-title fade-in">
+            Building Solutions
+            <br />
+            for Space
+          </h1>
+          {/* This will trigger typing effect when it comes into view */}
+          <p className="hero-description typing-content" data-typing-speed="80">
+            Join the NASA Space Apps Challenge 2025 in Lucknow - the world's
+            largest global hackathon. Use NASA's open data to develop innovative
+            solutions for challenges we face on Earth and in space.
+          </p>
+          <div className="hero-cta-buttons stagger-item">
+            <Button asChild className="hero-btn primary">
+              <Link href="/register">Register Now</Link>
+            </Button>
+
+            <Button asChild className="hero-btn primary">
+              <Link href="#about">Learn More</Link>
+            </Button>
+          </div>
+        </div>
+
+        <div className="scroll-indicator fade-in">
+          <div className="scroll-arrow"></div>
+          <div className="scroll-text">Scroll Down</div>
+        </div>
+      </section>
+
+      <section id="home" className="hero fade-section">
+        <div className="hero-content fade-in">
+          <h1 className="main-heading fade-in">Building Solutions for Space</h1>
+          {/* Typing effect triggered on scroll */}
+          <p className="typing-content" data-typing-speed="80">
+            Join the NASA Space Apps Challenge 2025 in Lucknow - the world's
+            largest global hackathon. Use NASA's open data to develop innovative
+            solutions for challenges we face on Earth and in space. Connect with
+            brilliant minds, create groundbreaking technologies, and contribute
+            to humanity's greatest endeavors.
+          </p>
+          <Button asChild className="hero-btn primary fade-in">
+            <Link href="#about">Learn More</Link>
+          </Button>
+        </div>
+        <div className="hero-image fade-in"></div>
+      </section>
+
+      <section id="about" className="section fade-section">
+        <div className="section-content stagger-container">
+          <h3 className="stagger-item">Global Innovation Challenge</h3>
+          <h2 className="main-heading stagger-item">Hack The Universe</h2>
+          {/* Typing effect triggered when section comes into view */}
+          <p className="typing-content" data-typing-speed="70">
+            NASA Space Apps Challenge is an international hackathon where teams
+            of technologists, scientists, designers, artists, educators,
+            entrepreneurs, and students across the globe collaborate and engage
+            with publicly available data to design innovative solutions for
+            challenges we face on Earth and in space.
+            <br />
+            Over the course of one weekend, participants around the world come
+            together to work on challenges designed by NASA. The event is free
+            to attend, and all backgrounds and skill levels are encouraged to
+            participate.
+          </p>
+          <Button asChild className="hero-btn primary stagger-item">
+            <Link href="#about">Learn More</Link>
+          </Button>
+        </div>
+        <div className="section-image satellite-section fade-in"></div>
+      </section>
+
+      <section
+        id="challenges"
+        className="section reverse challenges-section fade-section"
+      >
+        <div className="section-content stagger-container">
+          <h3 className="stagger-item">Innovation Categories</h3>
+          <h2 className="main-heading stagger-item">Challenge Areas</h2>
+          {/* Another typing effect triggered on scroll */}
+          <p className="typing-content" data-typing-speed="75">
+            This year's challenges span multiple disciplines and focus areas,
+            from Earth observation and climate science to space exploration and
+            astrophysics. Participants can choose from challenges that range
+            from beginner-friendly to expert-level, ensuring everyone can
+            contribute meaningfully.
+            <br />
+            Each challenge provides access to relevant NASA datasets, expert
+            mentorship, and the tools needed to create impactful solutions.
+            Whether you're interested in developing mobile apps, creating data
+            visualizations, or building hardware prototypes, there's a challenge
+            for you.
+          </p>
+          <Button asChild className="hero-btn primary stagger-item">
+            <Link href="/timeline">Event Schedule</Link>
+          </Button>
+        </div>
+        <div className="section-image rocket-section fade-in"></div>
+      </section>
     </div>
   );
 }

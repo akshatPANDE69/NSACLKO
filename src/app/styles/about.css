@@ -1,0 +1,426 @@
+/* About.css */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Make ALL container elements non-selectable */
+.about-container,
+.about-content,
+.content-grid,
+.content-section,
+.mission-grid,
+.mission-card,
+.stats-grid,
+.stat-item,
+.team-section,
+.step,
+.step-number,
+.step-content,
+.cta-section,
+.cta-buttons,
+.process-steps,
+.hero-section {
+  user-select: none;
+}
+
+/* Make ALL text content selectable */
+.hero-title *,
+.hero-subtitle *,
+.section-title *,
+.section-text *,
+.card-title *,
+.card-text *,
+.step-title *,
+.step-text *,
+.stat-number *,
+.stat-label *,
+.cta-title *,
+.cta-text *,
+h1 *,
+h2 *,
+h3 *,
+p *,
+span * {
+  user-select: text !important;
+  cursor: text;
+}
+
+/* Ensure text is selectable even when it's not wrapped in another element */
+.hero-title,
+.hero-subtitle,
+.section-title,
+.section-text,
+.card-title,
+.card-text,
+.step-title,
+.step-text,
+.stat-number,
+.stat-label,
+.cta-title,
+.cta-text,
+h1,
+h2,
+h3,
+p,
+span {
+  user-select: text !important;
+  cursor: text;
+}
+
+.about-container {
+  @apply min-h-screen bg-black text-white;
+  background-image: radial-gradient(
+      circle at 20% 80%,
+      rgba(120, 119, 198, 0.1) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(255, 255, 255, 0.03) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 40% 40%,
+      rgba(120, 119, 198, 0.05) 0%,
+      transparent 50%
+    );
+}
+
+.about-content {
+  @apply max-w-7xl mx-auto px-6 py-20;
+}
+
+/* Hero Section */
+.hero-section {
+  @apply text-center mb-24;
+}
+
+.hero-title {
+  @apply text-5xl md:text-7xl font-light tracking-wider mb-8;
+  letter-spacing: 0.3em;
+  background: linear-gradient(135deg, #ffffff 0%, #a0a0a0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-subtitle {
+  @apply text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed;
+  font-weight: 300;
+}
+
+/* Content Grid */
+.content-grid {
+  @apply space-y-24;
+}
+
+.content-section {
+  @apply max-w-6xl mx-auto;
+}
+
+.section-title {
+  @apply text-3xl md:text-4xl font-light mb-8 text-center;
+  letter-spacing: 0.1em;
+  background: linear-gradient(135deg, #ffffff 0%, #d0d0d0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.section-text {
+  @apply text-lg text-gray-300 leading-relaxed mb-6;
+  font-weight: 300;
+  line-height: 1.8;
+}
+
+/* Mission Cards */
+.mission-grid {
+  @apply grid md:grid-cols-3 gap-8 mt-12;
+}
+
+.mission-card {
+  @apply bg-gray-900 bg-opacity-30 p-8 rounded-lg border border-gray-800 backdrop-blur-sm;
+  transition: all 0.3s ease;
+}
+
+.mission-card:hover {
+  @apply bg-opacity-50 border-gray-700 transform -translate-y-1;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.card-title {
+  @apply text-2xl font-light mb-4;
+  letter-spacing: 0.05em;
+  background: linear-gradient(135deg, #ffffff 0%, #c0c0c0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.card-text {
+  @apply text-gray-300 leading-relaxed;
+  font-weight: 300;
+}
+
+/* Stats Grid */
+.stats-grid {
+  @apply grid grid-cols-2 md:grid-cols-4 gap-8 mt-12;
+}
+
+.stat-item {
+  @apply text-center;
+}
+
+.stat-number {
+  @apply text-4xl md:text-5xl font-light mb-2;
+  background: linear-gradient(135deg, #ffffff 0%, #a0a0a0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stat-label {
+  @apply text-gray-400 text-sm tracking-wider uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Process Steps */
+.process-steps {
+  @apply space-y-12 mt-12;
+}
+
+.step {
+  @apply flex items-start space-x-8;
+}
+
+.step-number {
+  @apply text-3xl font-light text-gray-500 min-w-[4rem];
+  font-family: "Courier New", monospace;
+}
+
+.step-content {
+  @apply flex-1;
+}
+
+.step-title {
+  @apply text-2xl font-light mb-3;
+  letter-spacing: 0.05em;
+  background: linear-gradient(135deg, #ffffff 0%, #c0c0c0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.step-text {
+  @apply text-gray-300 leading-relaxed;
+  font-weight: 300;
+}
+
+/* Call to Action */
+.cta-section {
+  @apply text-center bg-gray-900 bg-opacity-20 p-16 rounded-2xl border border-gray-800 backdrop-blur-sm;
+}
+
+.cta-title {
+  @apply text-4xl font-light mb-6;
+  letter-spacing: 0.1em;
+  background: linear-gradient(135deg, #ffffff 0%, #d0d0d0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cta-text {
+  @apply text-lg text-gray-300 max-w-4xl mx-auto leading-relaxed mb-10;
+  font-weight: 300;
+}
+
+.cta-buttons {
+  @apply flex flex-col sm:flex-row gap-4 justify-center items-center;
+}
+
+.cta-button {
+  @apply px-8 py-4 rounded-lg font-light tracking-wide transition-all duration-300 text-lg;
+  letter-spacing: 0.05em;
+  min-width: 200px;
+}
+
+.cta-button.primary {
+  @apply bg-white text-black border-2 border-white;
+}
+
+.cta-button.primary:hover {
+  @apply bg-transparent text-white transform -translate-y-1;
+  box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
+}
+
+.cta-button.secondary {
+  @apply bg-transparent text-white border-2 border-gray-600;
+}
+
+.cta-button.secondary:hover {
+  @apply border-white transform -translate-y-1;
+  box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
+}
+
+/* Team Section */
+.team-section {
+  @apply py-16;
+}
+
+.team-section .section-title {
+  @apply text-center mb-12;
+}
+
+/* Ensure carousel arrows are visible */
+.carousel-arrow {
+  @apply absolute top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full cursor-pointer transition-colors;
+}
+
+.carousel-arrow.left {
+  @apply left-4;
+}
+
+.carousel-arrow.right {
+  @apply right-4;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero-title {
+    @apply text-4xl;
+    letter-spacing: 0.2em;
+  }
+
+  .hero-subtitle {
+    @apply text-lg;
+  }
+
+  .section-title {
+    @apply text-2xl;
+  }
+
+  .step {
+    @apply flex-col space-x-0 space-y-4;
+  }
+
+  .step-number {
+    @apply text-2xl;
+  }
+
+  .cta-section {
+    @apply p-8;
+  }
+
+  .cta-title {
+    @apply text-3xl;
+  }
+}
+
+/* Animation for scroll effects */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.content-section {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* Subtle glow effects */
+.mission-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 8px;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.mission-card:hover::before {
+  opacity: 1;
+}
+
+.mission-card {
+  position: relative;
+}
+
+.tilted-card-figure {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  perspective: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.tilted-card-mobile-alert {
+  position: absolute;
+  top: 1rem;
+  text-align: center;
+  font-size: 0.875rem;
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .tilted-card-mobile-alert {
+    display: block;
+  }
+  .tilted-card-caption {
+    display: none;
+  }
+}
+
+.tilted-card-inner {
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.tilted-card-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  object-fit: cover;
+  border-radius: 15px;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.tilted-card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  will-change: transform;
+  transform: translateZ(30px);
+}
+
+.tilted-card-caption {
+  pointer-events: none;
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 4px;
+  background-color: #fff;
+  padding: 4px 10px;
+  font-size: 10px;
+  color: #2d2d2d;
+  opacity: 0;
+  z-index: 3;
+}

@@ -1,0 +1,297 @@
+/* Import Tailwind's layers */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global text selection rules */
+:root {
+  /* Make all container elements non-selectable by default */
+  div,
+  section,
+  header,
+  footer,
+  nav {
+    user-select: none;
+  }
+
+  /* Make text content selectable */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  span,
+  a,
+  li {
+    user-select: text;
+  }
+}
+
+/* Base styles and global configurations */
+@layer base {
+  * {
+    @apply m-0 p-0 box-border;
+  }
+
+  body {
+    @apply font-sans bg-black text-white overflow-x-hidden;
+    font-family: "Arial", sans-serif;
+    line-height: 1.4;
+  }
+
+  /* Custom scrollbar styles */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #000;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #333;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+  ::-webkit-scrollbar-thumb:active {
+    background: #777;
+  }
+}
+
+/* Navigation and common component styles */
+@layer components {
+  [data-radix-navigation-menu-viewport] {
+    display: none !important;
+  }
+
+  /* Navigation */
+  .nav {
+    @apply fixed top-0 w-full z-[1000] transition-all duration-500;
+    padding: 25px 60px 0px 60px; /* Keep top padding, remove bottom padding */
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(20px);
+  }
+
+  .nav.scrolled {
+    padding: 25px 60px 0px 60px; /* Keep top padding, remove bottom padding */
+    background: rgba(0, 0, 0, 0.95);
+  }
+
+  .nav-container {
+    @apply flex items-center justify-between mx-auto;
+    padding: 25px 60px 0px 60px; /* Keep top padding, remove bottom padding */
+    max-width: 1400px;
+  }
+
+  .logo {
+    @apply text-white no-underline font-light uppercase;
+    font-size: 28px;
+    letter-spacing: 8px;
+    font-weight: 300;
+    transition: none;
+  }
+
+  .logo:hover {
+    @apply text-white no-underline;
+  }
+
+  .nav-links {
+    @apply flex list-none;
+    gap: 50px;
+  }
+
+  .nav-links a {
+    @apply text-white no-underline font-light uppercase relative transition-all duration-300 hover:text-black;
+    font-size: 14px;
+    font-weight: 300;
+    letter-spacing: 1px;
+    padding: 10px 20px;
+    overflow: hidden;
+  }
+
+  .nav-links a::before {
+    content: "";
+    @apply absolute bottom-0 left-0 h-0.5 bg-white transition-all duration-300;
+    width: 0;
+  }
+
+  .nav-links a::after {
+    content: "";
+    @apply absolute top-0 left-0 h-full bg-white transition-all duration-300;
+    width: 0;
+    z-index: -1;
+  }
+
+  .nav-links a:hover::before,
+  .nav-links a:hover::after {
+    width: 100%;
+  }
+
+  /** Common buttons */
+  /*read-more-btn {
+    @apply inline-flex items-center text-white no-underline font-light uppercase border border-white transition-all duration-300 relative overflow-hidden hover:bg-white hover:text-black;
+    gap: 15px;
+    font-size: 14px;
+    font-weight: 300;
+    letter-spacing: 1px;
+    padding: 15px 30px;
+  }
+
+  .read-more-btn::after {
+    content: "••";
+    font-size: 12px;
+  }*/
+
+  /* Common animations and utilities */
+  .main-heading {
+    margin-bottom: 0%;
+    @apply opacity-0;
+    animation: fadeInScale 1.5s ease-out 0.5s forwards;
+  }
+
+  .fade-in {
+    animation: fadeInUp 1s ease-out forwards;
+  }
+
+  .fade-section {
+    @apply transition-opacity ease-out duration-[1500ms];
+  }
+
+  .fade-out {
+    @apply opacity-0;
+    transform: translateY(-30px);
+  }
+
+  .progress-bar {
+    @apply fixed top-0 left-0 h-0.5 bg-white transition-all duration-300;
+    width: 0;
+    z-index: 9999;
+  }
+
+  .typing-content {
+    @apply opacity-0 whitespace-normal break-words;
+    min-height: 1.2em;
+    line-height: 1.6;
+    overflow: visible;
+    word-wrap: break-word;
+  }
+
+  .typing-content p {
+    @apply mb-4 last:mb-0;
+    line-height: inherit;
+  }
+
+  /* Footer */
+  footer {
+    @apply py-20 text-center border-t;
+    padding: 80px 60px;
+    border-color: #222;
+  }
+
+  .footer-logo {
+    @apply font-light uppercase mb-10;
+    font-size: 32px;
+    font-weight: 300;
+    letter-spacing: 8px;
+  }
+
+  .social-links {
+    @apply flex justify-center mb-8;
+    gap: 50px;
+  }
+
+  .social-links a {
+    @apply no-underline font-light uppercase transition hover:text-white;
+    color: #666;
+    font-size: 14px;
+    font-weight: 300;
+    letter-spacing: 1px;
+  }
+
+  .copyright {
+    @apply font-light uppercase;
+    color: #666;
+    font-size: 12px;
+    font-weight: 300;
+    letter-spacing: 1px;
+  }
+
+  /* Base Animations */
+  @keyframes fadeInScale {
+    0% {
+      opacity: 0;
+      transform: scale(0.8) translateY(30px);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes blink {
+    0%,
+    50% {
+      opacity: 1;
+    }
+    51%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* Mobile Responsive - Base components */
+  @media (max-width: 768px) {
+    body {
+      cursor: auto;
+    }
+
+    .nav {
+      padding: 20px 30px;
+    }
+
+    .nav-links {
+      gap: 20px;
+    }
+
+    .nav-links a {
+      font-size: 12px;
+      padding: 5px 10px;
+    }
+  }
+}
+
+.shiny-text {
+  color: #b5b5b5a4; /* Adjust this color to change intensity/style */
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 40%,
+    rgba(255, 255, 255, 0.8) 50%,
+    rgba(255, 255, 255, 0) 60%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  display: inline-block;
+  animation: shine 5s linear infinite;
+}
+
+@keyframes shine {
+  0% {
+    background-position: 100%;
+  }
+  100% {
+    background-position: -100%;
+  }
+}

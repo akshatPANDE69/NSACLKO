@@ -1,0 +1,99 @@
+.challenges-container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16;
+}
+
+.challenges-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12;
+}
+
+.challenge-card {
+  @apply bg-black/40 backdrop-blur-md border border-white/10 rounded-lg p-6 
+    transition-all duration-300 hover:transform hover:scale-105 hover:shadow-lg 
+    hover:shadow-blue-500/20;
+}
+
+.challenge-title {
+  @apply text-2xl font-bold text-white mb-4 bg-gradient-to-r from-blue-500 to-purple-500 
+    bg-clip-text text-transparent;
+}
+
+.challenge-description {
+  @apply text-gray-300 mb-4 leading-relaxed;
+}
+
+.challenge-status {
+  @apply flex items-center justify-between mt-4;
+}
+
+.challenge-difficulty {
+  @apply px-3 py-1 rounded-full text-sm;
+}
+
+.difficulty-easy {
+  @apply bg-green-500/20 text-green-400;
+}
+
+.difficulty-medium {
+  @apply bg-yellow-500/20 text-yellow-400;
+}
+
+.difficulty-hard {
+  @apply bg-red-500/20 text-red-400;
+}
+
+.challenge-button {
+  @apply px-4 py-2 rounded-lg bg-blue-600 text-white font-medium 
+    transition-colors hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 
+    focus:ring-offset-2 focus:ring-offset-black;
+}
+
+.challenges-header {
+  @apply text-4xl md:text-5xl font-bold text-center mb-8 
+    bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 
+    bg-clip-text text-transparent;
+}
+
+.challenges-subheader {
+  @apply text-xl text-gray-400 text-center max-w-2xl mx-auto mb-12;
+}
+
+/* Animation for challenge cards */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.challenge-card:hover {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Progress indicators */
+.progress-bar {
+  @apply w-full h-2 bg-gray-700 rounded-full overflow-hidden;
+}
+
+.progress-fill {
+  @apply h-full bg-gradient-to-r from-blue-500 to-purple-500 
+    transition-all duration-300;
+}
+
+/* Filter section */
+.challenges-filter {
+  @apply flex flex-wrap gap-4 justify-center mb-8;
+}
+
+.filter-button {
+  @apply px-4 py-2 rounded-full border border-white/10 text-gray-300 
+    hover:bg-white/10 transition-colors duration-200;
+}
+
+.filter-button.active {
+  @apply bg-blue-600 text-white border-blue-600;
+}
