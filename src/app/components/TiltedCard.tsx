@@ -558,6 +558,17 @@ export const defaultCardsData = [
       </div>
     ),
   },
+  {
+    imageSrc: "saksham.jpeg",
+    captionText: "simba",
+    altText: "Volunteer",
+    overlayContent: (
+      <div className="p-4 bg-black/60 text-white rounded-lg backdrop-blur-sm">
+        <h3 className="font-bold">Saksham Sharma</h3>
+        <p className="text-sm mt-1">Salmon Bhoi </p>
+      </div>
+    ),
+  },
   
   // ➕ Add more cards here manually
 ];
