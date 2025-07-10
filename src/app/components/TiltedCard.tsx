@@ -512,7 +512,7 @@ export const defaultCardsData = [
   },
 
   {
-    imageSrc: "shresth.jpeg",
+    imageSrc: "shr.jpeg",
     captionText: "Shresth",
     altText: "Core Member",
     overlayContent: (
