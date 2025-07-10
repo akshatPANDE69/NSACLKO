@@ -569,6 +569,17 @@ export const defaultCardsData = [
       </div>
     ),
   },
+  {
+    imageSrc: "Kashni.jpeg",
+    captionText: "simba",
+    altText: "Volunteer",
+    overlayContent: (
+      <div className="p-4 bg-black/60 text-white rounded-lg backdrop-blur-sm">
+        <h3 className="font-bold">Kashni Channa</h3>
+        <p className="text-sm mt-1">NSAC Enthusiast</p>
+      </div>
+    ),
+  },
   
   // ➕ Add more cards here manually
 ];
