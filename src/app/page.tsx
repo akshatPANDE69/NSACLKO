@@ -23,18 +23,54 @@ export default function Home() {
 
       <section className="hero-video-section fade-section" id="home">
         <div className="hero-video-background">
-          <div className="hero-video-container">
-            <video autoPlay muted loop playsInline>
-              <source src="your-earth-video.mp4" type="video/mp4" />
-            </video>
-            <div
+          <div className="hero-video-container" style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden" }}>
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
               style={{
-                background: "linear-gradient(135deg, #000428 0%, #004e92 100%)",
+                position: "absolute",
+                top: 0,
+                left: 0,
                 width: "100%",
                 height: "100%",
+                objectFit: "cover",
+                zIndex: 0,
+              }}
+            >
+              <source src="your-earth-video.mp4" type="video/mp4" />
+            </video>
+
+            {/* Blue base gradient overlay */}
+            <div
+              style={{
+                background: "linear-gradient(to bottom, #000428 0%, #004e92 100%)",
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                zIndex: 1,
+                opacity: 0.4, // Adjust for desired darkness
+              }}
+            ></div>
+
+            {/* Black bottom fade gradient */}
+            <div
+              style={{
+                position: "absolute",
+                bottom: 0,
+                left: 0,
+                width: "100%",
+                height: "120px",
+                background: "linear-gradient(to bottom, rgba(0,0,0,0) 0%, #000 100%)",
+                zIndex: 2,
               }}
             ></div>
           </div>
+
+
         </div>
 
         <div className="hero-video-overlay"></div>
