@@ -1,0 +1,57 @@
+/* Critical timeline fixes */
+.timeline-grid {
+  position: relative;
+}
+
+.timeline-grid::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  z-index: 0;
+  background: #333;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.timeline-date {
+  position: relative;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+}
+
+.timeline-date::before {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: white;
+  border-radius: 50%;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.timeline-item:nth-child(odd) .timeline-date::before {
+  right: -42px;
+  transform: translateX(50%);
+}
+
+.timeline-item:nth-child(even) .timeline-date::before {
+  left: -42px;
+  transform: translateX(-50%);
+}
+
+@media (max-width: 768px) {
+  .timeline-grid::before {
+    left: 20px;
+  }
+  
+  .timeline-item:nth-child(odd) .timeline-date::before,
+  .timeline-item:nth-child(even) .timeline-date::before {
+    left: 20px;
+    transform: translateX(-50%);
+  }
+}

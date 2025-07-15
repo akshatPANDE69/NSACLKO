@@ -1,0 +1,148 @@
+/* Carousel specific styles */
+.tilted-card-figure {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 2rem 0;
+  position: relative;
+  height: clamp(300px, 50vw, 500px);
+  overflow: hidden;
+}
+
+.tilted-card-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tilted-card-img {
+  width: clamp(200px, 30vw, 280px);
+  height: clamp(250px, 40vw, 350px);
+  object-fit: cover;
+  border-radius: 15px;
+  position: absolute;
+  transition: all 0.5s ease;
+  opacity: 0;
+  transform: translateX(50%) scale(0.8);
+}
+
+.tilted-card-img.active {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+  z-index: 2;
+  filter: brightness(1);
+}
+
+.tilted-card-img.prev {
+  opacity: 0.5;
+  transform: translateX(-75%) scale(0.85);
+  z-index: 1;
+  filter: brightness(0.7);
+}
+
+.tilted-card-img.next {
+  opacity: 0.5;
+  transform: translateX(75%) scale(0.85);
+  z-index: 1;
+  filter: brightness(0.7);
+}
+
+/* Carousel Navigation */
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.carousel-arrow:hover {
+  background: rgba(0, 0, 0, 0.8);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-arrow.left {
+  left: 1rem;
+}
+
+.carousel-arrow.right {
+  right: 1rem;
+}
+
+/* Navigation Dots */
+.carousel-dots {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.5rem;
+  z-index: 20;
+}
+
+.carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.carousel-dot.active {
+  background: white;
+  transform: scale(1.2);
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .tilted-card-figure {
+    height: clamp(250px, 60vh, 400px);
+    padding: 1rem 0;
+  }
+
+  .tilted-card-img {
+    width: clamp(160px, 60vw, 240px);
+    height: clamp(200px, 70vw, 300px);
+  }
+
+  .carousel-arrow {
+    width: 32px;
+    height: 32px;
+  }
+
+  .carousel-arrow.left {
+    left: 0.25rem;
+  }
+
+  .carousel-arrow.right {
+    right: 0.25rem;
+  }
+
+  /* Move dots up to avoid overlap */
+  .carousel-dots {
+    bottom: 0.5rem;
+  }
+
+  .carousel-dot {
+    width: 6px;
+    height: 6px;
+  }
+}
+
+/* Hide mobile alert permanently */
+.tilted-card-mobile-alert {
+  display: none !important;
+}

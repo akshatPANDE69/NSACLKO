@@ -7,6 +7,7 @@ import "./styles/base.css";
 import "./styles/index.css";
 import "./styles/register.css";
 import "./styles/timeline.css";
+import "./styles/tilted-card.css";
 
 export default function RootLayout({
   children,

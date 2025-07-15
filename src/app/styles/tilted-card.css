@@ -1,0 +1,93 @@
+/* Tilted Card and Carousel Styles */
+.carousel-container {
+  position: relative !important;
+  width: 100% !important;
+  max-width: 90vw !important;
+  margin: 0 auto !important;
+  padding: 0 6rem !important;
+  perspective: 1500px !important;
+  transform-style: preserve-3d !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.carousel-container button:focus {
+  outline: none;
+}
+
+.carousel-track {
+  position: relative !important;
+  height: 100% !important;
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transform-style: preserve-3d !important;
+}
+
+.carousel-nav-button {
+  position: absolute !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  z-index: 50 !important;
+  background-color: rgba(31, 41, 55, 0.9) !important;
+  color: white !important;
+  width: 3rem !important;
+  height: 3rem !important;
+  border-radius: 9999px !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer !important;
+  border: none !important;
+  outline: none !important;
+}
+
+.carousel-nav-button:hover {
+  background-color: rgba(55, 65, 81, 0.9);
+}
+
+.carousel-nav-button.prev {
+  left: -150px;
+}
+
+.carousel-nav-button.next {
+  right: -150px;
+}
+
+.carousel-dots {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  z-index: 50;
+  padding: 1rem;
+  background: transparent;
+}
+
+.carousel-dot {
+  transition: all 0.3s;
+  border-radius: 9999px;
+}
+
+.carousel-dot.active {
+  width: 0.75rem;
+  height: 0.75rem;
+  background-color: rgb(31, 41, 55);
+}
+
+.carousel-dot:not(.active) {
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: rgb(209, 213, 219);
+}
+
+.carousel-dot:not(.active):hover {
+  background-color: rgb(156, 163, 175);
+}

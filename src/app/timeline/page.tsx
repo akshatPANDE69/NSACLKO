@@ -5,6 +5,7 @@ import EffectsInitializer from "../components/EffectsInitializer";
 
 import "../styles/base.css";
 import "../styles/timeline.css";
+import "../styles/timeline-override.css";
 
 export default function Timeline() {
   return (
@@ -39,6 +40,15 @@ export default function Timeline() {
                 <div className="timeline-desc typing-content">
                   Official NASA challenges are released globally. Review the
                   problems and start brainstorming solutions.
+                </div>
+              </div>
+            </div>
+            <div className="timeline-item fade-in">
+              <div className="timeline-date">September, 2025</div>
+              <div className="timeline-content">
+                <div className="timeline-title">Challenge Statements Announced</div>
+                <div className="timeline-desc typing-content">
+                  Challenge summaries are announced.
                 </div>
               </div>
             </div>

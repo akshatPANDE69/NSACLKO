@@ -65,19 +65,70 @@
     cursor: text;
   }
 
+  .hero-cta-buttons {
+    margin-top: clamp(1.5rem, 3vh, 2rem);
+    display: flex;
+    gap: clamp(1rem, 2vw, 1.5rem);
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 0 clamp(1rem, 3vw, 2rem);
+  }
+
+  .scroll-indicator {
+    position: absolute;
+    bottom: clamp(1rem, 4vh, 2rem);
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    text-align: center;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+    z-index: 20; /* Ensure it's above other content */
+  }
+
+  @media (max-height: 700px) {
+    .hero-content-wrapper {
+      padding-bottom: 80px;
+    }
+    
+    .scroll-indicator {
+      bottom: 0.5rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero-cta-buttons {
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 300px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-cta-buttons .hero-btn {
+      width: 100%;
+    }
+  }
+
   .hero-video-section {
     @apply relative overflow-hidden flex items-center justify-center;
-    min-height: 800px;
+    min-height: min(100vh, 800px);
+    height: 100vh;
     user-select: none;
   }
 
   .hero-video-background {
-    @apply absolute top-[-250px] left-0 w-full h-full z-[1];
+    @apply absolute inset-0 w-full h-full z-[1];
     user-select: none;
   }
 
+  .hero-video-container {
+    @apply w-full h-full relative overflow-hidden;
+  }
+
   .hero-video-background video {
-    @apply w-full h-full;
+    @apply w-full h-full object-cover;
     filter: brightness(0.7) contrast(1.1);
   }
 
@@ -93,11 +144,11 @@
   }
 
   .hero-content-wrapper {
-    @apply relative text-center;
+    @apply relative text-center px-4;
     z-index: 10;
-    max-width: 1200px;
-    padding: 0 0 0 60px;
-    margin-top: -40px;
+    max-width: min(1200px, 90vw);
+    margin: 0 auto;
+    padding-bottom: clamp(100px, 15vh, 150px); /* Space for scroll button */
     opacity: 1;
     position: relative; /* Ensure proper stacking context */
   }

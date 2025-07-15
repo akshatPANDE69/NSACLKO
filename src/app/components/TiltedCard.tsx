@@ -2,6 +2,7 @@
 
 import React, { useRef, useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import "@/app/styles/tilted-card.css";
 
 // Generate default cards data
 const generateCards = (count: number) => {
@@ -331,25 +332,31 @@ useEffect(() => {
   // Update the carousel container and navigation elements
   return (
     <div
-      className="relative w-full max-w-[90vw] mx-auto px-24"
+      className="carousel-container"
       style={{
-        height: `${cardHeight * 2.4}px`, // Increased height to accommodate dots
-        perspective: "1500px",
+        height: `${cardHeight * 2.4}px`,
       }}
     >
-      {/* Left Navigation Button - Moved further left */}
+      {/* Left Navigation Button */}
       <button
         onClick={goToPrevious}
-        className="absolute left-[-150px] top-1/2 -translate-y-1/2 z-50 bg-gray-800 hover:bg-gray-700 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-colors"
+        className="carousel-nav-button prev"
+        aria-label="Previous slide"
       >
         <ChevronLeft className="w-6 h-6" />
       </button>
 
       {/* Carousel Container */}
       <div
-        className="relative h-full flex items-center justify-center"
+        className="carousel-track"
         style={{
-          transformStyle: "preserve-3d",
+          position: 'relative',
+          height: '100%',
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          transformStyle: 'preserve-3d',
         }}
       >
         {cardsToDisplay.map((card, index) => {
@@ -383,34 +390,28 @@ useEffect(() => {
         })}
       </div>
 
-      {/* Right Navigation Button - Moved further right */}
+      {/* Right Navigation Button */}
       <button
         onClick={goToNext}
-        className="absolute right-[-150px] top-1/2 -translate-y-1/2 z-50 bg-gray-800 hover:bg-gray-700 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-colors"
+        className="carousel-nav-button next"
       >
         <ChevronRight className="w-6 h-6" />
       </button>
 
-      {/* Updated Pagination Dots with proper spacing */}
+      {/* Pagination Dots */}
       <div
-        className="absolute left-1/2 transform -translate-x-1/2 flex items-center flex-wrap justify-center z-50"
+        className="carousel-dots"
         style={{
-          bottom: `-${cardHeight * 0.2}px`, // Position dots below cards
-          gap: `${Math.max(8, Math.min(12, 160 / totalCards))}px`, // Adjusted gap
-          maxWidth: `${Math.min(cardWidth * 3, totalCards * 25)}px`, // Wider container
-          padding: "16px", // Added padding
-          background: "transparent", // Ensure transparent background
+          bottom: `-${cardHeight * 0.2}px`,
+          gap: `${Math.max(8, Math.min(12, 160 / totalCards))}px`,
+          maxWidth: `${Math.min(cardWidth * 3, totalCards * 25)}px`,
         }}
       >
         {Array.from({ length: maxIndex + 1 }, (_, i) => (
           <button
             key={i}
             onClick={() => setCurrentIndex(i)}
-            className={`transition-all duration-300 ${
-              i === currentIndex
-                ? "w-3 h-3 bg-gray-800"
-                : "w-2 h-2 bg-gray-300 hover:bg-gray-400"
-            } rounded-full`}
+            className={`carousel-dot ${i === currentIndex ? 'active' : ''}`}
           />
         ))}
       </div>

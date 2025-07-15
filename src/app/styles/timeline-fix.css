@@ -1,0 +1,55 @@
+/* Timeline fixes for dot positioning and hover effects */
+.timeline-date {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: clamp(2rem, 3vw, 2.5rem);
+  padding: clamp(0.25rem, 0.5vw, 0.5rem) 0;
+  margin: 0;
+  z-index: 2;
+}
+
+.timeline-date::before {
+  content: "";
+  position: absolute;
+  width: clamp(0.5rem, 1vw, 0.75rem);
+  height: clamp(0.5rem, 1vw, 0.75rem);
+  background: white;
+  border-radius: 50%;
+  z-index: 3;
+  pointer-events: none;
+  transition: transform 0.3s ease;
+}
+
+.timeline-item:nth-child(odd) .timeline-date::before {
+  right: -6px;
+  transform: translateX(50%);
+}
+
+.timeline-item:nth-child(even) .timeline-date::before {
+  left: -6px;
+  transform: translateX(-50%);
+}
+
+.timeline-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* Fix animation pushing content */
+.timeline-item {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.timeline-item .timeline-content,
+.timeline-item .timeline-date {
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* Ensure grid line doesn't interfere with content */
+.timeline-grid::before {
+  pointer-events: none;
+  z-index: 0;
+}

@@ -1,5 +1,12 @@
 
-/* Minimal CSS for Tally embed registration page */
+/* Registration page with responsive design */
+:root {
+  --form-max-width: min(600px, 90vw);
+  --form-padding: clamp(16px, 3vw, 24px);
+  --heading-size: clamp(24px, 5vw, 36px);
+  --text-size: clamp(16px, 3vw, 20px);
+}
+
 .tally-embed-container {
   min-height: 100vh;
   background: #f7f7fa;
@@ -7,27 +14,32 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 40px 0;
+  padding: clamp(20px, 5vh, 40px) var(--form-padding);
 }
+
 .tally-embed-content {
   width: 100%;
-  max-width: 600px;
+  max-width: var(--form-max-width);
   background: white;
-  border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-  padding: 24px;
-  margin: 0 16px;
+  border-radius: clamp(8px, 2vw, 16px);
+  box-shadow: 0 4px clamp(12px, 3vw, 24px) rgba(0,0,0,0.08);
+  padding: var(--form-padding);
+  margin: 0 auto;
 }
+
 .tally-embed-content h2 {
-  font-size: 36px;
+  font-size: var(--heading-size);
   font-weight: 700;
   color: #222;
   text-align: center;
-  margin-bottom: 16px;
+  margin-bottom: clamp(12px, 2vw, 16px);
+  line-height: 1.2;
 }
+
 .tally-embed-content p {
-  font-size: 20px;
+  font-size: var(--text-size);
   color: #444;
+  line-height: 1.5;
   text-align: center;
   margin-bottom: 32px;
 }

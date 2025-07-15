@@ -3,6 +3,7 @@
 import React from "react";
 import "../styles/base.css";
 import "../styles/about.css";
+import "../styles/carousel-override.css";
 import CountUp from "../components/CountUp";
 import { Button } from "../components/components/ui/button";
 import { Card, CardContent, CardTitle } from "../components/components/ui/card";
