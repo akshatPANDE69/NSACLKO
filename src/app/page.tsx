@@ -195,7 +195,7 @@ export default function Home() {
                 alignSelf: 'stretch', // Stretch to fill available width, but only as tall as content
               }}
             >
-              This year&apos;s challenges span multiple disciplines and focus areas,
+              This year's challenges span multiple disciplines and focus areas,
               from Earth observation and climate science to space exploration and
               astrophysics. Participants can choose from challenges that range
               from beginner-friendly to expert-level, ensuring everyone can
