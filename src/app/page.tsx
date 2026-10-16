@@ -1,218 +1,241 @@
-"use client";
+'use client';
 
-import Head from "next/head";
-import Link from "next/link";
-import { Button } from "./components/components/ui/button";
-import EffectsInitializer from "./components/EffectsInitializer";
-import Particles from "./components/Particles";
-import React from "react";
+import Link from 'next/link';
+import dynamic from 'next/dynamic';
 
-import { StarsBackground } from "@/components/animate-ui/backgrounds/stars";
+const IglooScene = dynamic(() => import('@/components/IglooScene'), { ssr: false });
+const DitherOverlay = dynamic(() => import('@/components/DitherOverlay'), { ssr: false });
 
-export default function Home() {
+const challenges = [
+  'Atmosphere & Climate',
+  'Land & Ecosystems',
+  'Ocean & Water',
+  'Celestial Navigation',
+  'Space Exploration',
+  'Human Habitation',
+];
+
+export default function Page() {
   return (
-    <div style={{ position: 'relative', width: '100%', minHeight: '100vh' }}>
-      <Head>
-        <title>My Next.js App</title>
-        <meta name="description" content="Welcome to my Next.js application!" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <EffectsInitializer />
+    <div style={{ background: '#0d0d10', minHeight: '100vh', fontFamily: "'IBM Plex Mono', monospace", color: '#e8e8f0' }}>
 
-      {/* Global Particles background, not in video section */}
-      <div style={{ width: '100%', height: '100%', position: 'fixed', top: 0, left: 0, zIndex: 0, pointerEvents: 'none' }}>
-        <Particles
-          particleColors={["#ffffff", "#ffffff"]}
-          particleCount={600}
-          particleSpread={10}
-          speed={0.1}
-          particleBaseSize={90}
-          moveParticlesOnHover={false}
-          alphaParticles={true}
-          disableRotation={false}
-        />
+      {/* Fixed 3D Canvas */}
+      <IglooScene />
+
+      {/* Bayer dither film grain */}
+      <DitherOverlay />
+
+      {/* ── Navigation ── */}
+      <nav className="igloo-nav">
+        <span style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', opacity: 0.9 }}>
+          NSAC <span style={{ opacity: 0.3 }}>//</span> LKO
+        </span>
+        <div style={{ display: 'flex', gap: '32px' }}>
+          <Link href="/about">About</Link>
+          <Link href="/challenges">Challenges</Link>
+          <Link href="/timeline">Timeline</Link>
+          <Link href="/contact">Contact</Link>
+        </div>
+      </nav>
+
+      {/* ── Hero overlay (sits above 3D canvas) ── */}
+      <div className="igloo-hero">
+        <p className="igloo-subtitle" style={{ marginBottom: '4px' }}>
+          NASA Space Apps Challenge 2026
+        </p>
+        <h1 className="igloo-title">
+          HACK THE<br />UNIVERSE
+        </h1>
+        <p style={{
+          fontSize: '11px',
+          color: '#555570',
+          letterSpacing: '0.22em',
+          textTransform: 'uppercase',
+          marginTop: '20px',
+          lineHeight: '1.9',
+        }}>
+          Lucknow&nbsp;&nbsp;·&nbsp;&nbsp;November 14–15&nbsp;&nbsp;·&nbsp;&nbsp;48h Sprint
+        </p>
+        <div style={{ display: 'flex', gap: '14px', marginTop: '32px', flexWrap: 'wrap', justifyContent: 'center' }}>
+          <a
+            href="https://www.spaceappschallenge.org/2026/local-events/lucknow/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="igloo-btn primary"
+          >
+            Register Free
+          </a>
+          <Link href="/challenges" className="igloo-btn">
+            Explore Challenges
+          </Link>
+        </div>
       </div>
 
-      <section className="hero-video-section fade-section" id="home" style={{ position: 'relative', zIndex: 1 }}>
-        <div className="hero-video-background">
-          <div className="hero-video-container">
-            <video autoPlay muted loop playsInline>
-              <source src="your-earth-video.mp4" type="video/mp4" />
-            </video>
-            <div
-              style={{
-                background: "linear-gradient(135deg, #000428 0%, #004e92 100%)",
-                width: "100%",
-                height: "100%",
-              }}
-            ></div>
+      {/* ── Bottom HUD ── */}
+      <div className="igloo-hud">
+        <span>185+ Countries</span>
+        <span className="igloo-hud-divider" />
+        <span>93K+ Participants</span>
+        <span className="igloo-hud-divider" />
+        <span>Nov 14–15 · Lucknow</span>
+        <span className="igloo-hud-divider" />
+        <span>48h Hackathon</span>
+        <span className="igloo-hud-divider" />
+        <span style={{ color: '#4488ff' }}>Free to Join</span>
+      </div>
+
+      {/* ── Scroll body (below fixed hero) ── */}
+      <div style={{ paddingTop: '100vh', position: 'relative', zIndex: 5 }}>
+
+        {/* About */}
+        <section className="igloo-section" style={{ background: '#0d0d10' }}>
+          <p className="igloo-subtitle">About</p>
+          <h2 className="igloo-section-title">
+            The world's largest annual global space hackathon
+          </h2>
+          <p className="igloo-section-body">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+            quis nostrud exercitation ullamco laboris.
+          </p>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3,1fr)',
+            gap: '1px',
+            background: 'rgba(255,255,255,0.06)',
+            maxWidth: '640px',
+            width: '100%',
+            marginTop: '20px',
+          }}>
+            {[['185+', 'Countries'], ['93K+', 'Innovators'], ['48h', 'Sprint']].map(([val, label]) => (
+              <div key={label} style={{
+                background: '#0d0d10',
+                padding: '32px 20px',
+                textAlign: 'center',
+              }}>
+                <div style={{ fontSize: 'clamp(24px,4vw,40px)', fontWeight: 700, color: '#4488ff', letterSpacing: '-0.02em' }}>{val}</div>
+                <div style={{ fontSize: '10px', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#555570', marginTop: '8px' }}>{label}</div>
+              </div>
+            ))}
           </div>
-        </div>
+        </section>
 
-        <div className="hero-video-overlay" style={{ pointerEvents: 'none', position: 'absolute', inset: 0, zIndex: 2 }}>
-          <StarsBackground pointerEvents={false} className="absolute inset-0 w-full h-full z-0" />
-        </div>
+        <hr className="igloo-divider" />
 
-        {/* No Particles in video section */}
-
-        <div className="floating-elements">
-          <div className="floating-dot"></div>
-          <div className="floating-dot"></div>
-          <div className="floating-dot"></div>
-          <div className="floating-dot"></div>
-          <div className="floating-dot"></div>
-        </div>
-
-        <div className="hero-content-wrapper stagger-container">
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
-            <div className="hero-subtitle stagger-item" style={{ textAlign: 'center', width: '100%' }}>
-              Global Innovation Challenge
-            </div>
-            {/* This will only fade in, not type */}
-            <h1 className="hero-main-title fade-in" style={{ textAlign: 'center', width: '100%' }}>
-              Building Solutions
-              <br />
-              for Space
-            </h1>
-            {/* This will trigger typing effect when it comes into view */}
-            <p className="hero-description typing-content" data-typing-speed="80" style={{ textAlign: 'center', width: '100%' }}>
-              Join the NASA Space Apps Challenge 2025 in Lucknow - the world&apos;s
-              largest global hackathon. Use NASA&apos;s open data to develop innovative
-              solutions for challenges we face on Earth and in space.
-            </p>
-            <div className="hero-cta-buttons stagger-item" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 24 }}>
-              <Button asChild className="hero-btn primary">
-                <Link href="/register">Register Now</Link>
-              </Button>
-              <Button asChild className="hero-btn primary">
-                <Link href="#about">Learn More</Link>
-              </Button>
-            </div>
+        {/* Challenges */}
+        <section className="igloo-section" style={{ background: '#111118' }}>
+          <p className="igloo-subtitle">Challenges</p>
+          <h2 className="igloo-section-title">
+            Solve problems that matter across Earth and space
+          </h2>
+          <p className="igloo-section-body">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim
+            veniam, quis nostrud exercitation. Duis aute irure dolor in reprehenderit.
+          </p>
+          <div className="igloo-grid">
+            {challenges.map((name, i) => (
+              <div key={i} className="igloo-grid-cell">
+                <div style={{ fontSize: '9px', color: '#4488ff', marginBottom: '10px', letterSpacing: '0.15em' }}>
+                  0{i + 1}
+                </div>
+                {name}
+              </div>
+            ))}
           </div>
-        </div>
+          <Link href="/challenges" className="igloo-btn" style={{ marginTop: '48px', textDecoration: 'none' }}>
+            View All Challenges →
+          </Link>
+        </section>
 
-        <div className="scroll-indicator fade-in" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', position: 'absolute', left: '50%', bottom: 40, transform: 'translateX(-50%)', pointerEvents: 'none' }}>
-          <div className="scroll-arrow"></div>
-          <div className="scroll-text">Scroll Down</div>
-        </div>
+        <hr className="igloo-divider" />
 
-        {/* Smooth bottom gradient overlay for video section */}
-        <div
-          style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            bottom: 0,
-            height: '120px',
-            zIndex: 3,
-            pointerEvents: 'none',
-            background: 'linear-gradient(180deg, rgba(0,0,0,0) 0%, #000 100%)',
-          }}
-        ></div>
-      </section>
+        {/* Timeline teaser */}
+        <section className="igloo-section" style={{ background: '#0d0d10' }}>
+          <p className="igloo-subtitle">Timeline</p>
+          <h2 className="igloo-section-title">
+            Key dates and milestones
+          </h2>
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1px',
+            background: 'rgba(255,255,255,0.06)',
+            maxWidth: '640px',
+            width: '100%',
+            marginTop: '24px',
+          }}>
+            {[
+              ['Registration Opens', 'Now Open'],
+              ['Challenges Released', 'Oct 2026'],
+              ['Event Kickoff', 'Nov 14, 2026'],
+              ['Submission Deadline', 'Nov 15, 2026'],
+            ].map(([event, date]) => (
+              <div key={event} style={{
+                background: '#0d0d10',
+                padding: '20px 28px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                fontSize: '11px',
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase',
+              }}>
+                <span style={{ color: '#555570' }}>{event}</span>
+                <span style={{ color: '#4488ff' }}>{date}</span>
+              </div>
+            ))}
+          </div>
+          <Link href="/timeline" className="igloo-btn" style={{ marginTop: '40px', textDecoration: 'none' }}>
+            Full Timeline →
+          </Link>
+        </section>
 
-      <section id="about" className="section fade-section" style={{ position: 'relative', zIndex: 1 }}>
-        <div className="section-content stagger-container">
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '10px',
-              alignItems: 'flex-start', // Ensures children align to the top/left
-              width: '100%',
-              maxWidth: '900px',
-            }}
+        <hr className="igloo-divider" />
+
+        {/* Register CTA */}
+        <section className="igloo-section" style={{ background: '#111118' }}>
+          <p className="igloo-subtitle">Register</p>
+          <h2 className="igloo-section-title">Join the mission</h2>
+          <p className="igloo-section-body">
+            Lorem ipsum dolor sit amet. Registration is free and open to everyone —
+            students, professionals, and curious minds.
+          </p>
+          <a
+            href="https://www.spaceappschallenge.org/2026/local-events/lucknow/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="igloo-btn primary"
+            style={{ marginTop: '16px', padding: '18px 56px', fontSize: '12px' }}
           >
-            <h3 className="stagger-item" style={{ marginBottom: 0, alignSelf: 'flex-start' }}>
-              Global Innovation Challenge
-            </h3>
-            <h2 className="main-heading stagger-item" style={{ marginBottom: 0, alignSelf: 'flex-start' }}>
-              Hack The Universe
-            </h2>
-            <p
-              className="typing-content"
-              data-typing-speed="70"
-              style={{
-                margin: 0,
-                marginBottom: 64,
-                maxWidth: '700px',
-                width: '100%',
-                textAlign: 'left',
-                boxSizing: 'content-box',
-                overflowWrap: 'break-word',
-                alignSelf: 'flex-start',
-              }}
-            >
-              NASA Space Apps Challenge is an international hackathon where teams
-              of technologists, scientists, designers, artists, educators,
-              entrepreneurs, and students across the globe collaborate and engage
-              with publicly available data to design innovative solutions for
-              challenges we face on Earth and in space. Over the course of one
-              weekend, participants around the world come together to work on
-              challenges designed by NASA.
-            </p>
-            <Button asChild className="hero-btn primary stagger-item" style={{ marginTop: '10px' }}>
-              <Link href="#about">Learn More</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+            Register Now — It's Free
+          </a>
+        </section>
 
-      <section
-        id="challenges"
-        className="section reverse challenges-section fade-section"
-        style={{ position: 'relative', zIndex: 1, background: 'transparent' }}
-      >
-        <div className="section-content stagger-container">
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '10px',
-              alignItems: 'flex-start',
-              justifyContent: 'flex-start', // Ensure children start at the top
-              width: '100%',
-              maxWidth: '900px',
-            }}
+        {/* Footer */}
+        <footer style={{
+          borderTop: '1px solid rgba(255,255,255,0.06)',
+          padding: '32px 40px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          fontSize: '10px',
+          letterSpacing: '0.15em',
+          textTransform: 'uppercase',
+          color: '#555570',
+          background: '#0d0d10',
+        }}>
+          <span>NSAC // LKO © 2026</span>
+          <span>Lucknow · India</span>
+          <a
+            href="https://www.spaceappschallenge.org/2026/local-events/lucknow/"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: '#4488ff', textDecoration: 'none', opacity: 0.7 }}
           >
-            <h3 className="stagger-item" style={{ marginBottom: 0 }}>
-              Innovation Categories
-            </h3>
-            <h2 className="main-heading stagger-item" style={{ marginBottom: 0 }}>
-              Challenge Areas
-            </h2>
-            <p
-              className="typing-content"
-              data-typing-speed="75"
-              style={{
-                margin: 0,
-                marginBottom: 64,
-                maxWidth: '700px',
-                width: '100%',
-                textAlign: 'left',
-                boxSizing: 'border-box',
-                overflowWrap: 'break-word',
-                alignSelf: 'stretch', // Stretch to fill available width, but only as tall as content
-              }}
-            >
-              This year's challenges span multiple disciplines and focus areas,
-              from Earth observation and climate science to space exploration and
-              astrophysics. Participants can choose from challenges that range
-              from beginner-friendly to expert-level, ensuring everyone can
-              contribute meaningfully.
-              <br />
-              Each challenge provides access to relevant NASA datasets, expert
-              mentorship, and the tools needed to create impactful solutions.
-              Whether you&apos;re interested in developing mobile apps, creating data
-              visualizations, or building hardware prototypes, there&apos;s a challenge
-              for you.
-            </p>
-            <Button asChild className="hero-btn primary stagger-item" style={{ marginTop: '10px', alignSelf: 'flex-start' }}>
-              <Link href="/timeline">Event Schedule</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+            NASA Space Apps ↗
+          </a>
+        </footer>
+      </div>
     </div>
   );
 }

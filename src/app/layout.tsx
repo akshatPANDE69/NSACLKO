@@ -1,12 +1,11 @@
-import ScrollProgressBar from "./components/ScrollProgressBar";
-import NavBar from "./components/navbar";
-import Footer from "./components/footer";
-import { Providers } from "./components/Providers";
+import type { Metadata } from "next";
+import "./globals.css";
 
-import "./styles/base.css";
-import "./styles/index.css";
-import "./styles/timeline.css";
-import "./styles/contact.css";
+export const metadata: Metadata = {
+  title: "NASA Space Apps Challenge 2026 | Lucknow",
+  description:
+    "Official portal for NASA Space Apps Challenge 2026 Lucknow Chapter. Join the world's largest annual space & science hackathon.",
+};
 
 export default function RootLayout({
   children,
@@ -15,11 +14,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
-        <ScrollProgressBar />
-        <NavBar />
-        <Providers>{children}</Providers>
-        <Footer />
+      <head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body style={{ margin: 0, background: "#0d0d10", overflowX: "hidden" }}>
+        {children}
       </body>
     </html>
   );

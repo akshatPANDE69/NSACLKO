@@ -1,163 +1,226 @@
-"use client";
+'use client';
 
-import { Button } from "@/app/components/components/ui/button";
-import { Card } from "@/app/components/components/ui/card";
-import { Input } from "@/app/components/components/ui/input";
-import { Label } from "@/app/components/components/ui/label";
-import { Textarea } from "@/app/components/components/ui/textarea";
-import { useState } from "react";
-import TeamSection from "@/components/team";
+import { useState } from 'react';
+import Link from 'next/link';
+import dynamic from 'next/dynamic';
+
+const DitherOverlay = dynamic(() => import('@/components/DitherOverlay'), { ssr: false });
 
 export default function ContactPage() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    role: '',
+    message: '',
+  });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent'>('idle');
+
+  const handleChange = (field: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setForm((prev) => ({ ...prev, [field]: e.target.value }));
+    if (errors[field]) {
+      setErrors((prev) => ({ ...prev, [field]: '' }));
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    // Here you can add your form submission logic
+    const newErrors: Record<string, string> = {};
+    if (!form.name.trim()) newErrors.name = 'CALLSIGN / NAME REQUIRED';
+    if (!form.email.trim() || !form.email.includes('@')) newErrors.email = 'VALID COMMS EMAIL REQUIRED';
+    if (!form.message.trim()) newErrors.message = 'TRANSMISSION PAYLOAD CANNOT BE EMPTY';
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    setStatus('sending');
     setTimeout(() => {
-      setIsSubmitting(false);
-      // Reset form or show success message
-    }, 1000);
+      setStatus('sent');
+      setTimeout(() => {
+        setForm({ name: '', email: '', role: '', message: '' });
+        setStatus('idle');
+      }, 4000);
+    }, 1200);
   };
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Hero Section */}
-      <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.1),transparent_50%)]" />
+    <>
+      <nav className="igloo-nav">
+        <span style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', opacity: 0.9 }}>
+          NSAC <span style={{ opacity: 0.3 }}>//</span> LKO
+        </span>
+        <div style={{ display: 'flex', gap: '32px' }}>
+          <Link href="/about">About</Link>
+          <Link href="/challenges">Challenges</Link>
+          <Link href="/timeline">Timeline</Link>
+          <Link href="/contact" style={{ opacity: 1, color: '#4488ff' }}>Contact</Link>
         </div>
-        
-        <div className="relative z-10 container mx-auto px-6">
-          <h1 className="text-5xl md:text-7xl font-light text-center mb-6 tracking-wider">
-            Contact Us
+      </nav>
+      <DitherOverlay />
+      <div className="relative min-h-screen bg-[#0d0d10] text-[#e8e8f0] pt-28 pb-24 px-4 overflow-hidden" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
+      {/* Background ambient light */}
+      <div className="fixed inset-0 pointer-events-none opacity-20">
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-gradient-to-b from-cyan-600/20 via-blue-900/10 to-transparent rounded-full blur-[140px]" />
+      </div>
+
+      <div className="relative z-10 max-w-5xl mx-auto">
+        {/* Header HUD */}
+        <div className="text-center mb-14">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-500/30 bg-cyan-950/20 text-[10px] font-mono uppercase tracking-[0.25em] text-cyan-400 mb-4">
+            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+            DIRECT MISSION UPLINK · LUCKNOW COMMS
+          </div>
+          <h1 className="text-4xl md:text-6xl font-black tracking-tight text-white mb-4">
+            COMMUNICATIONS <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-blue-500">& VENUE</span>
           </h1>
-          <p className="text-xl md:text-2xl text-gray-400 text-center max-w-3xl mx-auto font-light">
-            Get in touch with the NASA Space Apps Challenge Lucknow team
+          <p className="text-white/50 text-sm md:text-base max-w-xl mx-auto leading-relaxed">
+            Need guidance regarding the Lucknow hackathon format, challenge guidelines, team formations, or partnership opportunities? Establish an uplink below.
           </p>
         </div>
-      </section>
 
-      {/* Main Content */}
-      <section className="relative py-16">
-        <div className="container mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-12 items-start">
-            {/* Contact Form */}
-            <Card className="p-8 bg-gray-900/50 border-gray-800">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="space-y-2">
-                  <Label htmlFor="name">Name</Label>
-                  <Input
-                    id="name"
-                    placeholder="Your name"
-                    required
-                    className="bg-gray-800/50 border-gray-700"
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="your@email.com"
-                    required
-                    className="bg-gray-800/50 border-gray-700"
-                  />
-                </div>
+        <div className="grid md:grid-cols-2 gap-8 items-start">
+          {/* Telemetry & Coordinator Details Card */}
+          <div className="p-8 rounded-2xl border border-white/10 bg-black/60 backdrop-blur-md space-y-6">
+            <div className="border-b border-white/10 pb-4">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-cyan-400">
+                LOCAL CHAPTER COORDINATES
+              </span>
+              <h2 className="text-2xl font-bold text-white mt-1">
+                Lucknow Station, India
+              </h2>
+            </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="subject">Subject</Label>
-                  <Input
-                    id="subject"
-                    placeholder="What is this regarding?"
-                    required
-                    className="bg-gray-800/50 border-gray-700"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="message">Message</Label>
-                  <Textarea
-                    id="message"
-                    placeholder="Your message..."
-                    rows={5}
-                    required
-                    className="bg-gray-800/50 border-gray-700"
-                  />
-                </div>
-
-                <Button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full bg-white text-black hover:bg-gray-200 transition-colors"
-                >
-                  {isSubmitting ? "Sending..." : "Send Message"}
-                </Button>
-              </form>
-            </Card>
-
-            {/* Contact Information */}
-            <div className="space-y-8">
-              <div className="space-y-6">
-                <h2 className="text-3xl font-light tracking-wide">Get in Touch</h2>
-                <p className="text-gray-400 leading-relaxed">
-                  Have questions about NASA Space Apps Challenge Lucknow? We're here to help!
-                  Reach out to us through the form or use the contact information below.
-                </p>
+            <div className="space-y-4 text-xs font-mono">
+              <div className="p-3 rounded-lg border border-cyan-500/20 bg-cyan-950/20">
+                <span className="text-white/40 block text-[10px] uppercase">COORDINATES</span>
+                <span className="text-cyan-300 font-bold">26.8467° N · 80.9462° E</span>
               </div>
 
-              <div className="space-y-6">
-                <div className="space-y-2">
-                  <h3 className="text-xl font-light text-gray-300">Location</h3>
-                  <p className="text-gray-400">
-                    AKGEC Lucknow<br />
-                    Uttar Pradesh, India
-                  </p>
-                </div>
+              <div className="p-3 rounded-lg border border-white/10 bg-white/5">
+                <span className="text-white/40 block text-[10px] uppercase">LOCAL LEAD / ORGANIZER</span>
+                <span className="text-white font-semibold">Akshat Pande</span>
+              </div>
 
-                <div className="space-y-2">
-                  <h3 className="text-xl font-light text-gray-300">Email</h3>
-                  <a 
-                    href="mailto:spaceappschallenge.lko@gmail.com"
-                    className="text-gray-400 hover:text-white transition-colors"
-                  >
-                    spaceappschallenge.lko@gmail.com
-                  </a>
-                </div>
+              <div className="p-3 rounded-lg border border-white/10 bg-white/5">
+                <span className="text-white/40 block text-[10px] uppercase">OFFICIAL CONTACT COMMS</span>
+                <a
+                  href="mailto:akshat.pande2007@gmail.com"
+                  className="text-cyan-400 hover:text-cyan-300 underline underline-offset-2 break-all"
+                >
+                  akshat.pande2007@gmail.com
+                </a>
+              </div>
 
-                <div className="space-y-2">
-                  <h3 className="text-xl font-light text-gray-300">Social Media</h3>
-                  <div className="flex space-x-4">
-                    <a
-                      href="https://www.instagram.com/nasaspaceappschallenge_lucknow/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-gray-400 hover:text-white transition-colors"
-                    >
-                      <svg
-                        className="size-6"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          fill="currentColor"
-                          d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4zm9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8A1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5a5 5 0 0 1-5 5a5 5 0 0 1-5-5a5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3a3 3 0 0 0 3 3a3 3 0 0 0 3-3a3 3 0 0 0-3-3"
-                        />
-                      </svg>
-                    </a>
-                  </div>
-                </div>
+              <div className="p-3 rounded-lg border border-white/10 bg-white/5">
+                <span className="text-white/40 block text-[10px] uppercase">EVENT FORMAT</span>
+                <span className="text-white">Hybrid (In-Person Venue + Global Virtual Track)</span>
+              </div>
+
+              <div className="p-3 rounded-lg border border-white/10 bg-white/5">
+                <span className="text-white/40 block text-[10px] uppercase">SPRINT TIMELINE</span>
+                <span className="text-white">November 14–15, 2026 (48-Hour Continuous Hackathon)</span>
               </div>
             </div>
+
+            <div className="pt-2">
+              <a
+                href="https://www.spaceappschallenge.org/2026/local-events/lucknow/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full inline-flex justify-center items-center gap-2 px-6 py-3 text-xs font-bold uppercase tracking-widest text-black bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 rounded-lg shadow-[0_0_20px_rgba(0,240,255,0.3)] transition-all"
+              >
+                OFFICIAL NASA LUCKNOW PORTAL ↗
+              </a>
+            </div>
+          </div>
+
+          {/* Uplink Query Form */}
+          <div className="p-8 rounded-2xl border border-cyan-500/30 bg-black/60 backdrop-blur-md">
+            <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-6">
+              <div>
+                <span className="text-[10px] font-mono uppercase tracking-widest text-cyan-400">
+                  TRANSMISSION CHANNEL
+                </span>
+                <h2 className="text-2xl font-bold text-white mt-1">
+                  Send Uplink
+                </h2>
+              </div>
+              <div className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping" />
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-[11px] font-mono uppercase tracking-wider text-cyan-400/80 mb-1">
+                  CALLSIGN / FULL NAME *
+                </label>
+                <input
+                  type="text"
+                  value={form.name}
+                  onChange={handleChange('name')}
+                  placeholder="e.g. Elena Rostova"
+                  className={`w-full bg-[#000814] border ${errors.name ? 'border-red-500' : 'border-white/15'} focus:border-cyan-400 rounded-lg p-3 text-xs text-white focus:outline-none font-mono`}
+                />
+                {errors.name && <span className="text-[10px] font-mono text-red-400 mt-1 block">{errors.name}</span>}
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-mono uppercase tracking-wider text-cyan-400/80 mb-1">
+                  RETURN COMMS EMAIL *
+                </label>
+                <input
+                  type="email"
+                  value={form.email}
+                  onChange={handleChange('email')}
+                  placeholder="e.g. user@domain.com"
+                  className={`w-full bg-[#000814] border ${errors.email ? 'border-red-500' : 'border-white/15'} focus:border-cyan-400 rounded-lg p-3 text-xs text-white focus:outline-none font-mono`}
+                />
+                {errors.email && <span className="text-[10px] font-mono text-red-400 mt-1 block">{errors.email}</span>}
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-mono uppercase tracking-wider text-cyan-400/80 mb-1">
+                  ROLE / AFFILIATION
+                </label>
+                <input
+                  type="text"
+                  value={form.role}
+                  onChange={handleChange('role')}
+                  placeholder="Student, Developer, Researcher, Designer"
+                  className="w-full bg-[#000814] border border-white/15 focus:border-cyan-400 rounded-lg p-3 text-xs text-white focus:outline-none font-mono"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-mono uppercase tracking-wider text-cyan-400/80 mb-1">
+                  TRANSMISSION PAYLOAD / QUERY *
+                </label>
+                <textarea
+                  rows={4}
+                  value={form.message}
+                  onChange={handleChange('message')}
+                  placeholder="State your query, partnership request, or team question..."
+                  className={`w-full bg-[#000814] border ${errors.message ? 'border-red-500' : 'border-white/15'} focus:border-cyan-400 rounded-lg p-3 text-xs text-white focus:outline-none font-mono resize-none`}
+                />
+                {errors.message && <span className="text-[10px] font-mono text-red-400 mt-1 block">{errors.message}</span>}
+              </div>
+
+              <button
+                type="submit"
+                disabled={status !== 'idle'}
+                className="w-full py-3.5 px-6 rounded-lg text-xs font-mono uppercase tracking-widest font-bold transition-all duration-300 border border-cyan-400 bg-cyan-500/10 text-cyan-300 hover:bg-cyan-400 hover:text-black hover:shadow-[0_0_20px_rgba(0,240,255,0.4)] disabled:opacity-50"
+              >
+                {status === 'idle' && 'TRANSMIT UPLINK MESSAGE ↗'}
+                {status === 'sending' && 'TRANSMITTING VIA SECURE RELAY...'}
+                {status === 'sent' && '✓ TRANSMISSION LOGGED & DELIVERED'}
+              </button>
+            </form>
           </div>
         </div>
-      </section>
-
-      {/* Team Section */}
-      <TeamSection />
-    </div>
+      </div>
+      </div>
+    </>
   );
 }

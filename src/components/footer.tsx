@@ -1,25 +1,38 @@
-import { Logo } from '@/components/logo'
 import Link from 'next/link'
 
 const links = [
     {
-        title: 'Help',
-        href: '#',
+        title: 'Register 2026',
+        href: 'https://www.spaceappschallenge.org/2026/local-events/lucknow/',
+    },
+    {
+        title: 'Challenges',
+        href: '/challenges',
+    },
+    {
+        title: 'Timeline',
+        href: '/timeline',
     },
     {
         title: 'About',
-        href: '#',
+        href: '/about',
+    },
+    {
+        title: 'Contact',
+        href: '/contact',
     },
 ]
 
 export default function FooterSection() {
     return (
-        <footer className="py-16 md:py-32">
+        <footer className="py-16 md:py-24 border-t border-white/10 relative z-20 bg-black/40 backdrop-blur-md">
             <div className="mx-auto max-w-5xl px-6">
                 {/* Logo and event name centered at the top of the footer */}
                 <div className="flex flex-col items-center mb-8">
                     <div className="flex items-center gap-3">
-                        <span className="text-lg font-semibold tracking-wide">Nasa Space Apps Challenge</span>
+                        <span className="text-xl font-bold tracking-widest uppercase bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-sky-300 to-blue-500">
+                            NASA Space Apps Challenge 2026 · Lucknow
+                        </span>
                     </div>
                 </div>
                 <div className="my-8 flex flex-wrap justify-center gap-6 text-sm">
