@@ -56,6 +56,13 @@ try {
   }
   const hero = pages["/"].match(/<section[^>]*id="home"[^>]*>([\s\S]*?)<\/section>/)?.[1];
   assert.ok(hero?.includes(community), "WhatsApp community must be accessible from the hero");
+  assert.match(hero, /Earth seen from space/, "The globe must have a meaningful static image alternative in initial HTML");
+  for (const asset of ["/images/earth-fallback.jpg", "/images/earth-texture.jpg"]) {
+    const response = await fetch(origin + asset);
+    assert.equal(response.status, 200, `${asset} must be served locally for the globe and its fallback`);
+    assert.match(response.headers.get("content-type"), /image\/jpeg/);
+    await response.arrayBuffer();
+  }
   assert.match(pages["/contact"], /mailto:spaceappschallenge\.lko@gmail\.com/);
   assert.doesNotMatch(pages["/contact"], /<form\b/, "Do not accept messages without a delivery mechanism");
   assert.match(pages["/challenges"], /https:\/\/www\.spaceappschallenge\.org\/2026\/challenges\//);
