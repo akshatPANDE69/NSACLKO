@@ -115,6 +115,18 @@ export default function ContactPage() {
               </div>
 
               <div className="p-3 rounded-lg border border-white/10 bg-white/5">
+                <span className="text-white/40 block text-[10px] uppercase">INSTAGRAM</span>
+                <a
+                  href="https://www.instagram.com/nsac_lko/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-cyan-400 hover:text-cyan-300 underline underline-offset-2 break-all"
+                >
+                  https://www.instagram.com/nsac_lko/
+                </a>
+              </div>
+
+              <div className="p-3 rounded-lg border border-white/10 bg-white/5">
                 <span className="text-white/40 block text-[10px] uppercase">EVENT FORMAT</span>
                 <span className="text-white">Hybrid (In-Person Venue + Global Virtual Track)</span>
               </div>
