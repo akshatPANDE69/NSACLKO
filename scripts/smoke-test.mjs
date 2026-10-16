@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import "./check-preserved-timeline.mjs";
 import { spawn } from "node:child_process";
 import { createServer } from "node:net";
 import { once } from "node:events";
@@ -38,10 +39,11 @@ try {
     const document = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, "");
     pages[route] = document;
     assert.equal((document.match(/<h1\b/g) || []).length, 1, `${route} must have one primary heading`);
-    assert.match(document, /<main[^>]*id="main-content"/, `${route} must expose its main content`);
+    if (route !== "/timeline") assert.match(document, /<main[^>]*id="main-content"/, `${route} must expose its main content`);
     assert.match(document, /<title>[^<]*2026/, `${route} must have edition-specific metadata`);
     assert.ok(document.includes(registration), `${route} must offer working official registration`);
-    assert.ok(document.includes(community), `${route} must expose the community link`);
+    if (route !== "/timeline") assert.ok(document.includes(community), `${route} must expose the community link`);
+    if (route !== "/timeline") assert.ok(document.includes("https://www.instagram.com/nsac_lko/"), `${route} must retain main's updated Instagram destination`);
     assert.doesNotMatch(document, /2025|AKGEC|My Next\.js App|NASA Headquarters|\d+ Points|undefined/, `${route} must not contain stale or placeholder information`);
     for (const [, href] of document.matchAll(/<a\b[^>]*href="([^"]+)"/g)) {
       assert.notEqual(href, "#", `${route} contains a dead placeholder link`);
@@ -64,7 +66,14 @@ try {
   assert.match(pages["/contact"], /mailto:spaceappschallenge\.lko@gmail\.com/);
   assert.match(pages["/contact"], /Prepare Email/, "Contact form must explain its email-draft workflow");
   assert.match(pages["/challenges"], /https:\/\/www\.spaceappschallenge\.org\/2026\/challenges\//);
-  assert.match(pages["/timeline"], /11:59 PM local time/);
+  assert.match(pages["/timeline"], /11:59 PM local time/i);
+  assert.match(pages["/timeline"], /igloo-nav/);
+  assert.doesNotMatch(pages["/timeline"], /id="navbar"/, "The original site's navigation must not be injected into main's preserved Timeline");
+  assert.doesNotMatch(pages["/contact"], /Our Team|Team Lead|Technical Lead|Development Lead|Content Lead|Marketing Lead/);
+  for (const portrait of ["ansh.jpeg", "areeb.jpeg", "ayan.jpeg", "Jatinbhaiya.jpeg", "Kashni.jpeg", "saksham.jpeg", "Yash.jpeg", "pinkiebhaiya.jpeg", "shr.jpeg", "simba.jpeg", "pfpwa.jpg"]) {
+    assert.equal((await fetch(origin + "/" + portrait)).status, 404, `${portrait} must no longer be served`);
+  }
+  console.log("PASS former team section and portrait removal");
   const redirect = await fetch(origin + "/register", { redirect: "manual" });
   assert.ok([307, 308].includes(redirect.status), "Previously shared registration URL must redirect");
   assert.equal(redirect.headers.get("location"), registration);

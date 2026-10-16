@@ -42,3 +42,9 @@ Shared event details and official destinations live in `src/lib/event.ts`. This 
 Validate changes with `npm run build`, `npm run typecheck` and `npm test`. The HTTP regression checks start and stop a production server on a temporary port.
 
 The contact form prepares an email draft for the participant to send from their email app. No email delivery backend is configured. Challenge cards illustrate project areas; official competition briefs are linked on the NASA Space Apps website.
+
+## Preserved Timeline
+
+Main's Timeline from commit `39a28abe3d7bf40cbaeaa70eb7094d4d8f7b7a32` is kept in the `(timeline)` route group with its original layout, global theme, font and dither overlay. Other pages use the `(site)` layout and original space background. Public URLs stay the same. Separate root layouts prevent the styles and navigation from leaking between the two designs.
+
+`scripts/check-preserved-timeline.mjs` verifies the preserved files against their source hashes before the HTTP checks. Update this baseline only when a Timeline change has been explicitly requested. The former team roster and portrait assets have been removed.

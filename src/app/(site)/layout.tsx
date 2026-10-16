@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 import { event } from "@/lib/event";
-import ScrollProgressBar from "./components/ScrollProgressBar";
-import NavBar from "./components/navbar";
-import Footer from "./components/footer";
-import { Providers } from "./components/Providers";
+import ScrollProgressBar from "@/app/components/ScrollProgressBar";
+import NavBar from "@/app/components/navbar";
+import Footer from "@/app/components/footer";
+import { Providers } from "@/app/components/Providers";
 
-import "./styles/base.css";
-import "./styles/index.css";
-import "./styles/timeline.css";
-import "./styles/contact.css";
-import "./styles/fixes.css";
+import "@/app/styles/base.css";
+import "@/app/styles/index.css";
+import "@/app/styles/timeline.css";
+import "@/app/styles/contact.css";
+import "@/app/styles/fixes.css";
 
 export const metadata: Metadata = {
   title: "NASA Space Apps Challenge 2026 | Lucknow",

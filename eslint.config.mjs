@@ -11,6 +11,10 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  // Preserve main's literal // navigation separator without editing its Timeline.
+  { files: ["src/app/(timeline)/timeline/page.tsx"], rules: { "react/jsx-no-comment-textnodes": "off" } },
+  // This original font link intentionally belongs only to the preserved Timeline root.
+  { files: ["src/app/(timeline)/layout.tsx"], rules: { "@next/next/no-page-custom-font": "off" } },
 ];
 
 export default eslintConfig;

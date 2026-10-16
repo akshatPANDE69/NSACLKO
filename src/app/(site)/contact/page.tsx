@@ -7,7 +7,6 @@ import { Label } from "@/app/components/components/ui/label";
 import { Textarea } from "@/app/components/components/ui/textarea";
 import { useState } from "react";
 import { event } from "@/lib/event";
-import TeamSection from "@/components/team";
 
 export default function ContactPage() {
   const [draftUrl, setDraftUrl] = useState<string | null>(null);
@@ -162,8 +161,6 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* Team Section */}
-      <TeamSection />
     </div>
   );
 }

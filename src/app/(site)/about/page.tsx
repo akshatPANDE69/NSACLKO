@@ -2,11 +2,11 @@
 
 import React from "react";
 import { event } from "@/lib/event";
-import "../styles/base.css";
-import "../styles/about.css";
-import CountUp from "../components/CountUp";
-import { Button } from "../components/components/ui/button";
-import { Card, CardContent, CardTitle } from "../components/components/ui/card";
+import "@/app/styles/base.css";
+import "@/app/styles/about.css";
+import CountUp from "@/app/components/CountUp";
+import { Button } from "@/app/components/components/ui/button";
+import { Card, CardContent, CardTitle } from "@/app/components/components/ui/card";
 import Link from "next/link";
 
 export default function About() {

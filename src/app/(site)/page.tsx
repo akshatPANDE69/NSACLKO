@@ -2,11 +2,11 @@
 
 import { event } from "@/lib/event";
 import Link from "next/link";
-import { Button } from "./components/components/ui/button";
-import EffectsInitializer from "./components/EffectsInitializer";
-import Particles from "./components/Particles";
+import { Button } from "@/app/components/components/ui/button";
+import EffectsInitializer from "@/app/components/EffectsInitializer";
+import Particles from "@/app/components/Particles";
 import React from "react";
-import HeroPlaybackControl from "./components/HeroPlaybackControl";
+import HeroPlaybackControl from "@/app/components/HeroPlaybackControl";
 import { ArrowUpRight, ChartNoAxesCombined, Globe2, Orbit, Palette } from "lucide-react";
 
 import { StarsBackground } from "@/components/animate-ui/backgrounds/stars";
