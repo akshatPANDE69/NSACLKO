@@ -8,9 +8,16 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .typing-content, .stagger-item, .hero-main-title, .hero-cta-buttons, .timeline-item, .main-heading { opacity: 1 !important; transform: none; }
 .typing-content { display: block; }
 .hero-video-section { height: auto; min-height: 800px; }
+/* Clip the background without letting focused controls scroll the hero internally. */
+.home-page .hero-video-section { overflow: clip; }
 .hero-video-background { top: 0; }
 .hero-video-container { height: 100%; }
+.home-page .hero-video-container { background: #000 url('/earth-poster.jpg') center / cover no-repeat; }
 .hero-video-background video { object-fit: cover; }
+.hero-playback-control { position: absolute; bottom: 24px; right: 24px; z-index: 30; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 10px 14px; border: 1px solid #777; border-radius: 24px; background: rgb(0 0 0 / 45%); color: #ddd; font-size: 11px; cursor: pointer; }
+.hero-playback-control:hover { background: rgb(255 255 255 / 12%); border-color: #fff; }
+.skip-link { position: fixed; top: -100px; left: 20px; z-index: 10001; padding: 12px 18px; background: #fff; color: #000; }
+.skip-link:focus { top: 12px; }
 .scroll-indicator { bottom: 16px !important; }
 .home-page .hero-content-wrapper { padding: 0 24px; margin-top: 0; width: 100%; }
 .home-page .hero-cta-buttons { flex-wrap: wrap; margin-top: 28px; }
@@ -38,7 +45,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   .nav-menu > div { max-width: none; justify-content: flex-start; }
   .nav-links { width: 100%; gap: 2px; }
   .nav-links a { min-height: 44px; padding: 10px 0; font-size: 13px; }
-  .hero-video-section { height: auto; min-height: 100svh; padding: 140px 0 80px; }
+  .hero-video-section { height: auto; min-height: 100svh; padding: 120px 0 88px; align-items: flex-start; }
   .hero-video-background, .hero-video-background video { top: 0; height: 100%; min-height: 100%; }
   .hero-video-background video { object-fit: cover; }
   .home-page .hero-content-wrapper { padding: 0 20px; }
@@ -62,4 +69,5 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .hero-video-background video, [data-slot="stars-background"], .home-particles { display: none; }
+  .hero-playback-control { display: none; }
 }

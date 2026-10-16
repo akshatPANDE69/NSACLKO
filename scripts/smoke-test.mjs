@@ -56,6 +56,11 @@ try {
   }
   const hero = pages["/"].match(/<section[^>]*id="home"[^>]*>([\s\S]*?)<\/section>/)?.[1];
   assert.ok(hero?.includes(community), "WhatsApp community must be accessible from the hero");
+  assert.match(hero, /poster="\/earth-poster\.jpg"/, "The original Earth background must have a static fallback");
+  const poster = await fetch(origin + "/earth-poster.jpg");
+  assert.equal(poster.status, 200);
+  assert.match(poster.headers.get("content-type"), /image\/jpeg/);
+  await poster.arrayBuffer();
   assert.match(pages["/contact"], /mailto:spaceappschallenge\.lko@gmail\.com/);
   assert.match(pages["/contact"], /Prepare Email/, "Contact form must explain its email-draft workflow");
   assert.match(pages["/challenges"], /https:\/\/www\.spaceappschallenge\.org\/2026\/challenges\//);

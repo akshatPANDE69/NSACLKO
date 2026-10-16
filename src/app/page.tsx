@@ -6,10 +6,12 @@ import { Button } from "./components/components/ui/button";
 import EffectsInitializer from "./components/EffectsInitializer";
 import Particles from "./components/Particles";
 import React from "react";
+import HeroPlaybackControl from "./components/HeroPlaybackControl";
 
 import { StarsBackground } from "@/components/animate-ui/backgrounds/stars";
 
 export default function Home() {
+  const videoRef = React.useRef<HTMLVideoElement>(null);
   return (
     <div className="home-page" style={{ position: 'relative', width: '100%', minHeight: '100vh' }}>
       <EffectsInitializer />
@@ -31,7 +33,7 @@ export default function Home() {
       <section className="hero-video-section fade-section" id="home" style={{ position: 'relative', zIndex: 1 }}>
         <div className="hero-video-background">
           <div className="hero-video-container">
-            <video autoPlay muted loop playsInline>
+            <video ref={videoRef} muted loop playsInline preload="metadata" poster="/earth-poster.jpg" aria-hidden="true">
               <source src="/your-earth-video.mp4" type="video/mp4" />
             </video>
             <div
@@ -90,6 +92,8 @@ export default function Home() {
             </div>
           </div>
         </div>
+
+        <HeroPlaybackControl videoRef={videoRef} />
 
         <div className="scroll-indicator fade-in" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', position: 'absolute', left: '50%', bottom: 40, transform: 'translateX(-50%)', pointerEvents: 'none' }}>
           <div className="scroll-arrow"></div>
