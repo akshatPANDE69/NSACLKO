@@ -6,7 +6,6 @@ import { Button } from "@/app/components/components/ui/button";
 import EffectsInitializer from "@/app/components/EffectsInitializer";
 import Particles from "@/app/components/Particles";
 import React from "react";
-import HeroPlaybackControl from "@/app/components/HeroPlaybackControl";
 import { ArrowUpRight, ChartNoAxesCombined, Globe2, Orbit, Palette } from "lucide-react";
 
 import { StarsBackground } from "@/components/animate-ui/backgrounds/stars";
@@ -107,10 +106,10 @@ export default function Home() {
           </div>
         </div>
 
-        <HeroPlaybackControl videoRef={videoRef} />
-
         <div className="scroll-indicator fade-in" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', position: 'absolute', left: '50%', bottom: 40, transform: 'translateX(-50%)', pointerEvents: 'none' }}>
+
           <div className="scroll-arrow"></div>
+
           <div className="scroll-text">Scroll Down</div>
         </div>
 
