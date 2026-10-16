@@ -1,8 +1,6 @@
 // next.config.ts
 import { type NextConfig } from 'next';
 
-const nextConfig: NextConfig = {
-  transpilePackages: ["three"],
-};
+const nextConfig: NextConfig = {};
 
 export default nextConfig;

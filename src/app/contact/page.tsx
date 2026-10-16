@@ -1,163 +1,51 @@
-"use client";
+import type { Metadata } from "next";
+import { ArrowUpRight, Mail, MapPin, MessageCircle, Instagram } from "lucide-react";
+import { event } from "@/lib/event";
 
-import { Button } from "@/app/components/components/ui/button";
-import { Card } from "@/app/components/components/ui/card";
-import { Input } from "@/app/components/components/ui/input";
-import { Label } from "@/app/components/components/ui/label";
-import { Textarea } from "@/app/components/components/ui/textarea";
-import { useState } from "react";
-import TeamSection from "@/components/team";
+export const metadata: Metadata = { title: "Contact" };
 
 export default function ContactPage() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    // Here you can add your form submission logic
-    setTimeout(() => {
-      setIsSubmitting(false);
-      // Reset form or show success message
-    }, 1000);
-  };
-
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Hero Section */}
-      <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.1),transparent_50%)]" />
-        </div>
-        
-        <div className="relative z-10 container mx-auto px-6">
-          <h1 className="text-5xl md:text-7xl font-light text-center mb-6 tracking-wider">
-            Contact Us
-          </h1>
-          <p className="text-xl md:text-2xl text-gray-400 text-center max-w-3xl mx-auto font-light">
-            Get in touch with the NASA Space Apps Challenge Lucknow team
-          </p>
-        </div>
+    <div className="page-shell">
+      <header className="page-header">
+        <p className="eyebrow">Lucknow organising committee</p>
+        <h1>Let&apos;s connect</h1>
+        <p>Questions about registration, school participation or finding a team? Get in touch with the local organising team.</p>
+      </header>
+      <div className="contact-grid">
+        <section className="panel">
+          <MessageCircle className="panel-icon" size={30} aria-hidden="true" />
+          <h2>Join our WhatsApp community</h2>
+          <p>Follow event updates, connect with fellow participants and ask questions about the Lucknow event.</p>
+          <a href={event.whatsappUrl} target="_blank" rel="noopener noreferrer" className="text-link">Join the community <ArrowUpRight size={18} aria-hidden="true" /></a>
+        </section>
+        <section className="panel">
+          <Mail className="panel-icon" size={30} aria-hidden="true" />
+          <h2>Email the organising team</h2>
+          <p>For school coordination, participation queries or other enquiries, email us directly.</p>
+          <a href={`mailto:${event.email}`} className="text-link email-link">{event.email}</a>
+        </section>
+        <section className="panel">
+          <MapPin className="panel-icon" size={30} aria-hidden="true" />
+          <h2>Find us at SRGI</h2>
+          <p>{event.venue}<br />{event.address}<br />Uttar Pradesh, India</p>
+          <p className="contact-address">{event.dates}</p>
+          <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.venue + " " + event.address)}`} target="_blank" rel="noopener noreferrer" className="text-link">View venue on map <ArrowUpRight size={18} aria-hidden="true" /></a>
+        </section>
+        <section className="panel">
+          <Instagram className="panel-icon" size={30} aria-hidden="true" />
+          <h2>Follow the Lucknow event</h2>
+          <p>Find announcements and community updates on our Instagram page.</p>
+          <a href={event.instagramUrl} target="_blank" rel="noopener noreferrer" className="text-link">Visit Instagram <ArrowUpRight size={18} aria-hidden="true" /></a>
+        </section>
+      </div>
+      <section className="faq" aria-labelledby="faq-title">
+        <h2 id="faq-title">A few quick answers</h2>
+        <details><summary>Can commerce, humanities or biology students participate?</summary><p>Yes. Students from every academic stream are welcome, as are people from other backgrounds. Research, business thinking, art, design and storytelling can all contribute to a project.</p></details>
+        <details><summary>Do I need to know how to code?</summary><p>No. You do not need coding knowledge or previous hackathon experience. Choose a challenge and a role that fit your interests.</p></details>
+        <details><summary>Can I register without a team?</summary><p>Yes. You can register first, explore the challenges and find teammates. Teams can have up to {event.teamLimit} members.</p></details>
+        <details><summary>How can our school take part?</summary><p>Share the official registration page with interested students. A teacher coordinator can contact the organising team by email or through the WhatsApp community to discuss participation arrangements.</p></details>
       </section>
-
-      {/* Main Content */}
-      <section className="relative py-16">
-        <div className="container mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-12 items-start">
-            {/* Contact Form */}
-            <Card className="p-8 bg-gray-900/50 border-gray-800">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="space-y-2">
-                  <Label htmlFor="name">Name</Label>
-                  <Input
-                    id="name"
-                    placeholder="Your name"
-                    required
-                    className="bg-gray-800/50 border-gray-700"
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="your@email.com"
-                    required
-                    className="bg-gray-800/50 border-gray-700"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="subject">Subject</Label>
-                  <Input
-                    id="subject"
-                    placeholder="What is this regarding?"
-                    required
-                    className="bg-gray-800/50 border-gray-700"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="message">Message</Label>
-                  <Textarea
-                    id="message"
-                    placeholder="Your message..."
-                    rows={5}
-                    required
-                    className="bg-gray-800/50 border-gray-700"
-                  />
-                </div>
-
-                <Button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full bg-white text-black hover:bg-gray-200 transition-colors"
-                >
-                  {isSubmitting ? "Sending..." : "Send Message"}
-                </Button>
-              </form>
-            </Card>
-
-            {/* Contact Information */}
-            <div className="space-y-8">
-              <div className="space-y-6">
-                <h2 className="text-3xl font-light tracking-wide">Get in Touch</h2>
-                <p className="text-gray-400 leading-relaxed">
-                  Have questions about NASA Space Apps Challenge Lucknow? We're here to help!
-                  Reach out to us through the form or use the contact information below.
-                </p>
-              </div>
-
-              <div className="space-y-6">
-                <div className="space-y-2">
-                  <h3 className="text-xl font-light text-gray-300">Location</h3>
-                  <p className="text-gray-400">
-                    AKGEC Lucknow<br />
-                    Uttar Pradesh, India
-                  </p>
-                </div>
-
-                <div className="space-y-2">
-                  <h3 className="text-xl font-light text-gray-300">Email</h3>
-                  <a 
-                    href="mailto:spaceappschallenge.lko@gmail.com"
-                    className="text-gray-400 hover:text-white transition-colors"
-                  >
-                    spaceappschallenge.lko@gmail.com
-                  </a>
-                </div>
-
-                <div className="space-y-2">
-                  <h3 className="text-xl font-light text-gray-300">Social Media</h3>
-                  <div className="flex space-x-4">
-                    <a
-                      href="https://www.instagram.com/nasaspaceappschallenge_lucknow/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-gray-400 hover:text-white transition-colors"
-                    >
-                      <svg
-                        className="size-6"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          fill="currentColor"
-                          d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4zm9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8A1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5a5 5 0 0 1-5 5a5 5 0 0 1-5-5a5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3a3 3 0 0 0 3 3a3 3 0 0 0 3-3a3 3 0 0 0-3-3"
-                        />
-                      </svg>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Team Section */}
-      <TeamSection />
     </div>
   );
 }

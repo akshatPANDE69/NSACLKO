@@ -1,24 +1,33 @@
+import type { Metadata } from "next";
 import ScrollProgressBar from "./components/ScrollProgressBar";
 import NavBar from "./components/navbar";
 import Footer from "./components/footer";
-import { Providers } from "./components/Providers";
+import { event } from "@/lib/event";
 
 import "./styles/base.css";
 import "./styles/index.css";
-import "./styles/timeline.css";
-import "./styles/contact.css";
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export const metadata: Metadata = {
+  metadataBase: new URL("https://nsaclko.vercel.app"),
+  title: { default: "NASA Space Apps Challenge 2026 | Lucknow", template: "%s | NASA Space Apps Lucknow 2026" },
+  description: `Join NASA Space Apps Challenge in Lucknow on ${event.dates} at SRGI. All backgrounds welcome. Register and join our WhatsApp community.`,
+  openGraph: {
+    title: "NASA Space Apps Challenge 2026 | Lucknow",
+    description: `${event.dates}. SR Group of Institutions, Lucknow. Bring your curiosity and build with a team.`,
+    type: "website",
+    locale: "en_IN",
+  },
+  twitter: { card: "summary" },
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
+        <a href="#main-content" className="skip-link">Skip to content</a>
         <ScrollProgressBar />
         <NavBar />
-        <Providers>{children}</Providers>
+        <main id="main-content" tabIndex={-1}>{children}</main>
         <Footer />
       </body>
     </html>

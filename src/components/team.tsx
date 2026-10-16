@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 const leadership = [
     {
         name: 'Ansh',
@@ -43,13 +45,13 @@ export default function TeamSection() {
             {members.map((member, index) => (
                 <div key={index}>
                     <div className="bg-background size-20 rounded-full border p-0.5 shadow shadow-zinc-950/5">
-                        <img 
-                            className="aspect-square rounded-full object-cover" 
-                            src={member.avatar} 
-                            alt={member.name} 
-                            height="460" 
-                            width="460" 
-                            loading="lazy" 
+                        <Image
+                            className="aspect-square rounded-full object-cover"
+                            src={member.avatar}
+                            alt={member.name}
+                            height={80}
+                            width={80}
+                            loading="lazy"
                         />
                     </div>
                     <span className="mt-2 block text-sm font-medium">{member.name}</span>
