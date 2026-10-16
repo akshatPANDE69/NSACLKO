@@ -14,6 +14,14 @@ const links = [
         title: 'Team',
         href: '/team',
     },
+    {
+        title: 'News',
+        href: '/news',
+    },
+    {
+        title: 'Game',
+        href: '/game',
+    },
     { title: 'Register', href: event.registrationUrl },
     { title: 'WhatsApp community', href: event.whatsappUrl },
 ]

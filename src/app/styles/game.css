@@ -1,0 +1,34 @@
+.flappy-game { min-height: 100svh; max-width: 1100px; margin: 0 auto; padding: 128px 32px 88px; color: #eee; }
+.flappy-game .flappy-game-header { max-width: 760px; margin: 0 auto 34px; text-align: center; }
+.flappy-game .flappy-eyebrow { color: #b9bdc5; font-size: 11px; letter-spacing: 2.5px; line-height: 1.6; text-transform: uppercase; }
+.flappy-game .flappy-game-header h1 { margin: 16px 0; color: #f0f0f0; font-size: clamp(2.3rem, 5vw, 4rem); font-weight: 300; letter-spacing: .12em; line-height: 1.2; text-transform: uppercase; }
+.flappy-game .flappy-game-header > p:last-child { color: #c6c6c6; font-size: 17px; font-weight: 300; line-height: 1.7; }
+.flappy-game .flappy-scoreboard { display: flex; justify-content: center; gap: 16px; margin-bottom: 16px; }
+.flappy-game .flappy-scoreboard > div { display: flex; align-items: center; justify-content: space-between; gap: 28px; min-width: 170px; padding: 12px 16px; border: 1px solid #383838; border-radius: 8px; background: rgb(8 8 8 / 78%); }
+.flappy-game .flappy-scoreboard span { color: #bdbdbd; font-size: 12px; letter-spacing: .5px; }
+.flappy-game .flappy-scoreboard strong { color: #f0f0f0; font-size: 20px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.flappy-game .flappy-play-area { position: relative; overflow: hidden; max-width: 800px; margin: 0 auto; border: 1px solid #52616b; border-radius: 10px; background: #07162e; cursor: pointer; touch-action: none; }
+.flappy-game .flappy-play-area:focus-visible { outline: 2px solid #a7d7fc; outline-offset: 5px; }
+.flappy-game .flappy-play-area canvas { display: block; width: 100%; height: auto; }
+.flappy-game .flappy-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 20px; background: rgb(4 12 25 / 38%); text-align: center; pointer-events: none; }
+.flappy-game .flappy-overlay p { margin: 0; color: #fff; font-size: clamp(22px, 4vw, 32px); font-weight: 400; letter-spacing: 1px; }
+.flappy-game .flappy-overlay span { color: #e1e6ec; font-size: 14px; line-height: 1.6; }
+.flappy-game .flappy-controls { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 18px; margin: 22px auto 0; text-align: center; }
+.flappy-game .flappy-controls p { margin: 0; color: #bdbdbd; font-size: 13px; line-height: 1.7; }
+.flappy-game kbd { display: inline-block; padding: 2px 7px; border: 1px solid #5c6065; border-radius: 4px; background: #17191c; color: #e8e8e8; font: inherit; }
+.flappy-game .flappy-start-button { min-height: 44px; padding: 10px 22px; border: 1px solid #eee; border-radius: 24px; background: #f0f0f0; color: #111; font-size: 12px; font-weight: 600; letter-spacing: .4px; cursor: pointer; transition: background .2s, transform .2s; }
+.flappy-game .flappy-start-button:hover { background: #fff; transform: translateY(-1px); }
+.flappy-game .flappy-highscore-note { margin: 16px 0 0; color: #898989; font-size: 11px; line-height: 1.6; text-align: center; }
+@media (max-width: 600px) {
+  .flappy-game { padding: 112px 18px 64px; }
+  .flappy-game .flappy-game-header { margin-bottom: 26px; }
+  .flappy-game .flappy-game-header > p:last-child { font-size: 15px; }
+  .flappy-game .flappy-scoreboard { gap: 8px; }
+  .flappy-game .flappy-scoreboard > div { min-width: 0; gap: 18px; padding: 10px 12px; }
+  .flappy-game .flappy-scoreboard span { font-size: 11px; }
+  .flappy-game .flappy-scoreboard strong { font-size: 18px; }
+  .flappy-game .flappy-controls { flex-direction: column; gap: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .flappy-game .flappy-start-button { transition: none; }
+}

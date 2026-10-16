@@ -20,7 +20,7 @@ child.stdout.on("data", (chunk) => { output += chunk; });
 child.stderr.on("data", (chunk) => { output += chunk; });
 const registration = "https://www.spaceappschallenge.org/2026/local-events/lucknow/";
 const community = "https://chat.whatsapp.com/BEEGqEyXkg82LwfPSSjdpk";
-const routes = ["/", "/about", "/team", "/challenges", "/timeline", "/contact"];
+const routes = ["/", "/about", "/team", "/challenges", "/timeline", "/news", "/game", "/contact"];
 
 try {
   let ready = false;
@@ -66,6 +66,8 @@ try {
   assert.match(pages["/contact"], /mailto:spaceappschallenge\.lko@gmail\.com/);
   assert.match(pages["/contact"], /Prepare Email/, "Contact form must explain its email-draft workflow");
   assert.match(pages["/challenges"], /https:\/\/www\.spaceappschallenge\.org\/2026\/challenges\//);
+  assert.match(pages["/game"], /Flappy Bird/);
+  assert.match(pages["/game"], /personal best/i);
   assert.match(pages["/timeline"], /11:59 PM local time/i);
   assert.match(pages["/timeline"], /id="navbar"/, "Timeline must retain the navigation from the last successful production deployment");
   assert.match(pages["/timeline"], />Event Timeline<\/h1>/);

@@ -65,6 +65,22 @@ export default function Navbar() {
 
             <NavigationMenuItem>
               <NavigationMenuLink asChild>
+                <Link href="/news" className="nav-link" onClick={() => setOpen(false)}>
+                  News
+                </Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+
+            <NavigationMenuItem>
+              <NavigationMenuLink asChild>
+                <Link href="/game" className="nav-link" onClick={() => setOpen(false)}>
+                  Game
+                </Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+
+            <NavigationMenuItem>
+              <NavigationMenuLink asChild>
                 <Link href="/contact" className="nav-link" onClick={() => setOpen(false)}>
                   Contact
                 </Link>
