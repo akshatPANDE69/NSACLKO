@@ -7,8 +7,22 @@ import EffectsInitializer from "./components/EffectsInitializer";
 import Particles from "./components/Particles";
 import React from "react";
 import HeroPlaybackControl from "./components/HeroPlaybackControl";
+import { ArrowUpRight, ChartNoAxesCombined, Globe2, Orbit, Palette } from "lucide-react";
 
 import { StarsBackground } from "@/components/animate-ui/backgrounds/stars";
+
+const experience = [
+  { title: "Explore the data", text: "Investigate a real question using NASA’s open data and resources." },
+  { title: "Build together", text: "Combine your strengths with people who bring different skills and perspectives." },
+  { title: "Share your solution", text: "Turn your research, prototype or creative idea into a project you can present." },
+];
+
+const areas = [
+  { title: "Earth & environment", text: "Climate, biology and the systems that sustain our planet.", Icon: Globe2 },
+  { title: "Space & exploration", text: "Astronomy, space missions and questions beyond Earth.", Icon: Orbit },
+  { title: "Data & technology", text: "Research, visualisation and tools that make open data useful.", Icon: ChartNoAxesCombined },
+  { title: "Art & storytelling", text: "Design, communication and creative ways to share science.", Icon: Palette },
+];
 
 export default function Home() {
   const videoRef = React.useRef<HTMLVideoElement>(null);
@@ -115,106 +129,52 @@ export default function Home() {
         ></div>
       </section>
 
-      <section id="about" className="section fade-section" style={{ position: 'relative', zIndex: 1 }}>
-        <div className="section-content stagger-container">
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '10px',
-              alignItems: 'flex-start', // Ensures children align to the top/left
-              width: '100%',
-              maxWidth: '900px',
-            }}
-          >
-            <h3 className="stagger-item" style={{ marginBottom: 0, alignSelf: 'flex-start' }}>
-              Global Innovation Challenge
-            </h3>
-            <h2 className="main-heading stagger-item" style={{ marginBottom: 0, alignSelf: 'flex-start' }}>
-              Hack The Universe
-            </h2>
-            <p
-              className="typing-content"
-              data-typing-speed="70"
-              style={{
-                margin: 0,
-                marginBottom: 64,
-                maxWidth: '700px',
-                width: '100%',
-                textAlign: 'left',
-                boxSizing: 'content-box',
-                overflowWrap: 'break-word',
-                alignSelf: 'flex-start',
-              }}
-            >
-              NASA Space Apps Challenge is an international hackathon where teams
-              of technologists, scientists, designers, artists, educators,
-              entrepreneurs, and students across the globe collaborate and engage
-              with publicly available data to design innovative solutions for
-              challenges we face on Earth and in space. Over the course of one
-              weekend, participants around the world come together to work on
-              challenges designed by NASA.
-            </p>
-            <Button asChild className="hero-btn primary stagger-item" style={{ marginTop: '10px' }}>
-              <Link href="/about">Learn More</Link>
-            </Button>
+      <section id="about" className="section home-info-section fade-section" aria-labelledby="home-about-title" style={{ position: 'relative', zIndex: 1 }}>
+        <div className="home-info-grid">
+          <div className="home-info-copy stagger-container">
+            <p className="home-section-label stagger-item">Global Innovation Challenge</p>
+            <h2 id="home-about-title" className="main-heading stagger-item">Hack The Universe</h2>
+            <p className="typing-content">NASA Space Apps Challenge brings curious minds together to work on questions facing Earth and space, using publicly available NASA data. Over one weekend, you choose a challenge, build a team and turn an idea into a project.</p>
+            <p className="typing-content">Science, commerce, humanities or biology: your perspective belongs here. School and college students are welcome, with no previous hackathon or coding experience required.</p>
+            <div className="home-section-actions">
+              <Button asChild className="hero-btn primary"><Link href="/about">Learn More</Link></Button>
+            </div>
           </div>
+          <aside className="home-section-aside" aria-labelledby="experience-title">
+            <p id="experience-title" className="home-aside-label">What you will do</p>
+            <ol className="home-experience-list">
+              {experience.map(({ title, text }, index) => (
+                <li key={title}>
+                  <span className="home-step-number" aria-hidden="true">0{index + 1}</span>
+                  <div><h3>{title}</h3><p>{text}</p></div>
+                </li>
+              ))}
+            </ol>
+          </aside>
         </div>
       </section>
 
-      <section
-        id="challenges"
-        className="section reverse challenges-section fade-section"
-        style={{ position: 'relative', zIndex: 1, background: 'transparent' }}
-      >
-        <div className="section-content stagger-container">
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '10px',
-              alignItems: 'flex-start',
-              justifyContent: 'flex-start', // Ensure children start at the top
-              width: '100%',
-              maxWidth: '900px',
-            }}
-          >
-            <h3 className="stagger-item" style={{ marginBottom: 0 }}>
-              Innovation Categories
-            </h3>
-            <h2 className="main-heading stagger-item" style={{ marginBottom: 0 }}>
-              Challenge Areas
-            </h2>
-            <p
-              className="typing-content"
-              data-typing-speed="75"
-              style={{
-                margin: 0,
-                marginBottom: 64,
-                maxWidth: '700px',
-                width: '100%',
-                textAlign: 'left',
-                boxSizing: 'border-box',
-                overflowWrap: 'break-word',
-                alignSelf: 'stretch', // Stretch to fill available width, but only as tall as content
-              }}
-            >
-              The 2026 challenges span multiple disciplines and focus areas,
-              from Earth observation and climate science to space exploration and
-              astrophysics. Participants can choose from challenges that range
-              from beginner-friendly to expert-level, ensuring everyone can
-              contribute meaningfully.
-              <br />
-              Explore the official 2026 challenge briefs and their linked NASA
-              datasets to find a project that interests your team.
-              Whether you&apos;re interested in developing mobile apps, creating data
-              visualizations, or building hardware prototypes, there&apos;s a challenge
-              for you.
-            </p>
-            <Button asChild className="hero-btn primary stagger-item" style={{ marginTop: '10px', alignSelf: 'flex-start' }}>
-              <Link href="/timeline">Event Schedule</Link>
-            </Button>
+      <section id="challenges" className="section home-info-section home-challenge-section fade-section" aria-labelledby="home-challenges-title" style={{ position: 'relative', zIndex: 1 }}>
+        <div className="home-info-grid">
+          <div className="home-info-copy stagger-container">
+            <p className="home-section-label stagger-item">Innovation Categories</p>
+            <h2 id="home-challenges-title" className="main-heading stagger-item">Challenge Areas</h2>
+            <p className="typing-content">Explore our planet, investigate the universe or find a new way to make NASA&apos;s data useful. Different challenges call for different skills.</p>
+            <p className="typing-content">Your solution could be an app, a scientific model, a data visualisation or a creative story. Start with an area that interests you, then choose a challenge from the official {event.year} briefs.</p>
+            <div className="home-section-actions">
+              <Button asChild className="hero-btn primary"><Link href={event.challengesUrl}>Explore Challenges</Link></Button>
+              <Link href="/timeline" className="home-schedule-link">Event Schedule <ArrowUpRight size={17} aria-hidden="true" /></Link>
+            </div>
           </div>
+          <aside className="home-section-aside" aria-labelledby="areas-title">
+            <p id="areas-title" className="home-aside-label">Find your starting point</p>
+            <ul className="home-area-list">
+              {areas.map(({ title, text, Icon }) => (
+                <li key={title}><Icon size={24} strokeWidth={1.25} aria-hidden="true" /><div><h3>{title}</h3><p>{text}</p></div></li>
+              ))}
+            </ul>
+            <p className="home-areas-note">Areas of interest, with official challenges linked above.</p>
+          </aside>
         </div>
       </section>
     </div>

@@ -36,6 +36,31 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .mission-card::before, .challenge-card::before, .hero-btn::before { pointer-events: none; }
 .challenge-card a { display: block; text-align: center; }
 .challenge-card h3 { overflow-wrap: anywhere; }
+/* Give the original homepage sections a complete layout over the existing 3D scene. */
+.home-page .home-info-section { min-height: 0; padding: 96px 48px; }
+.home-page .home-info-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(48px, 6vw, 104px); align-items: center; width: 100%; max-width: 1320px; margin: 0 auto; }
+.home-page .home-info-copy { min-width: 0; }
+.home-page .home-info-copy .home-section-label { margin: 0 0 14px; color: #c4c7cc; font-size: 13px; line-height: 1.5; letter-spacing: 2px; text-transform: uppercase; }
+.home-page .home-info-copy h2 { margin: 0 0 26px; font-size: clamp(2.4rem, 4vw, 3.5rem); }
+.home-page .home-info-copy > .typing-content { width: 100%; max-width: 640px; margin: 0 0 18px; color: #c5c5c5; font-size: 17px; line-height: 1.75; }
+.home-page .home-section-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 20px 28px; margin-top: 32px; }
+.home-page .home-schedule-link { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; color: #ddd; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; }
+.home-page .home-schedule-link:hover { text-decoration: underline; text-underline-offset: 6px; }
+.home-page .home-section-aside { min-width: 0; }
+.home-page .home-section-aside .home-aside-label { color: #a9aeb8; font-size: 11px; line-height: 1.5; letter-spacing: 2px; text-transform: uppercase; margin: 0 0 20px; }
+.home-page .home-experience-list, .home-page .home-area-list { list-style: none; margin: 0; padding: 0; }
+.home-page .home-experience-list li, .home-page .home-area-list li { display: grid; grid-template-columns: 32px minmax(0, 1fr); align-items: start; gap: 24px; border-top: 1px solid rgb(255 255 255 / 22%); padding: 23px 0; }
+.home-page .home-step-number { color: #a9aeb8; font-size: 14px; font-weight: 300; letter-spacing: 2px; padding-top: 3px; }
+.home-page .home-section-aside h3 { margin: 0 0 8px; color: #ececec; font-size: 20px; font-weight: 300; line-height: 1.25; letter-spacing: 1px; }
+.home-page .home-section-aside li p { max-width: none; margin: 0; color: #b3b3b3; font-size: 14px; line-height: 1.65; }
+.home-page .home-area-list svg { margin-top: 1px; color: #dedede; }
+.home-page .home-section-aside .home-areas-note { max-width: none; color: #a6a6a6; font-size: 12px; line-height: 1.6; margin: 0; padding-top: 3px; }
+.home-page .home-challenge-section { padding-top: 32px; padding-bottom: 112px; }
+@media (max-width: 960px) {
+  .home-page .home-info-section { padding: 64px 32px; }
+  .home-page .home-info-grid { grid-template-columns: minmax(0, 1fr); gap: 42px; max-width: 700px; }
+  .home-page .home-challenge-section { padding-top: 24px; padding-bottom: 72px; }
+}
 @media (max-width: 768px) {
   .nav-container { flex-direction: row; align-items: center; flex-wrap: wrap; padding: 16px 20px; }
   .logo { margin-bottom: 0; }
@@ -59,6 +84,12 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   .section-content { width: 100%; padding: 0 24px; }
   .section h2 { font-size: 2.3rem; }
   .section .typing-content { width: 100%; margin-left: 0; margin-right: 0; }
+  .home-page .home-info-section { padding-inline: 24px; }
+  .home-page .home-info-copy h2 { font-size: clamp(2rem, 7vw, 3rem); }
+  .home-page .home-info-copy > .typing-content { font-size: 16px; }
+  .home-page .home-info-copy .home-section-label { font-size: 11px; letter-spacing: 1.5px; }
+  .home-page .home-section-aside h3 { font-size: 18px; }
+  .home-page .home-experience-list li, .home-page .home-area-list li { grid-template-columns: 26px minmax(0, 1fr); gap: 16px; padding: 20px 0; }
   .timeline-header h1 { font-size: 36px; letter-spacing: 2px; }
   .timeline-item .timeline-date, .timeline-item .timeline-content { grid-column: 1; order: initial !important; }
   .about-container .hero-title, .challenges-container .hero-title { font-size: clamp(2rem, 7.5vw, 3rem); letter-spacing: 2px; }
