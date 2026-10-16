@@ -1,4 +1,4 @@
-import Head from "next/head";
+import { event } from "@/lib/event";
 
 import EffectsInitializer from "../components/EffectsInitializer";
 
@@ -8,21 +8,16 @@ import "../styles/timeline.css";
 export default function Timeline() {
   return (
     <div>
-      <Head>
-        <title>My Next.js App</title>
-        <meta name="description" content="Welcome to my Next.js application!" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
       <EffectsInitializer />
       
       <section id="timeline" className="timeline-section">
         <div className="timeline-container">
           <div className="timeline-header fade-in">
-            <h2 className="main-heading timeline-heading-center">Event Timeline</h2>
+            <h1 className="main-heading timeline-heading-center">Event Timeline</h1>
           </div>
           <div className="timeline-grid">
             <div className="timeline-item fade-in">
-              <div className="timeline-date">July 15, 2025</div>
+              <div className="timeline-date">26 August 2026</div>
               <div className="timeline-content">
                 <div className="timeline-title">Registration Opens</div>
                 <div className="timeline-desc typing-content">
@@ -32,32 +27,32 @@ export default function Timeline() {
               </div>
             </div>
             <div className="timeline-item fade-in">
-              <div className="timeline-date">September 1, 2025</div>
+              <div className="timeline-date">17 September 2026</div>
               <div className="timeline-content">
                 <div className="timeline-title">Challenges Announced</div>
                 <div className="timeline-desc typing-content">
-                  Official NASA challenges are released globally. Review the
-                  problems and start brainstorming solutions.
+                  Challenge summaries and team formation open. Full challenge
+                  briefs and resources are scheduled for 28 October 2026.
                 </div>
               </div>
             </div>
             <div className="timeline-item fade-in">
-              <div className="timeline-date">October 4-6, 2025</div>
+              <div className="timeline-date">14 and 15 November 2026</div>
               <div className="timeline-content">
                 <div className="timeline-title">Hackathon Weekend</div>
                 <div className="timeline-desc typing-content">
-                  48 hours of intensive collaboration, coding, and innovation at
-                  the Lucknow venue with mentors and experts.
+                  Collaborate, explore and create at {event.venue}, {event.address}.
+                  Submit your project on the official team page by 11:59 PM local time on 15 November.
                 </div>
               </div>
             </div>
             <div className="timeline-item fade-in">
-              <div className="timeline-date">November 2025</div>
+              <div className="timeline-date">After the hackathon</div>
               <div className="timeline-content">
                 <div className="timeline-title">Global Judging</div>
                 <div className="timeline-desc typing-content">
-                  Best solutions from Lucknow compete globally for the chance to
-                  present at NASA Headquarters in Washington, DC.
+                  Eligible projects selected locally may advance to global judging
+                  for consideration for NASA Space Apps Global Awards.
                 </div>
               </div>
             </div>

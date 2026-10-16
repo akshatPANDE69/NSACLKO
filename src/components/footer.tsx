@@ -1,15 +1,17 @@
-import { Logo } from '@/components/logo'
+import { event } from '@/lib/event'
 import Link from 'next/link'
 
 const links = [
     {
         title: 'Help',
-        href: '#',
+        href: '/contact',
     },
     {
         title: 'About',
-        href: '#',
+        href: '/about',
     },
+    { title: 'Register', href: event.registrationUrl },
+    { title: 'WhatsApp community', href: event.whatsappUrl },
 ]
 
 export default function FooterSection() {
@@ -19,7 +21,7 @@ export default function FooterSection() {
                 {/* Logo and event name centered at the top of the footer */}
                 <div className="flex flex-col items-center mb-8">
                     <div className="flex items-center gap-3">
-                        <span className="text-lg font-semibold tracking-wide">Nasa Space Apps Challenge</span>
+                        <span className="text-lg font-semibold tracking-wide">NASA Space Apps Challenge</span>
                     </div>
                 </div>
                 <div className="my-8 flex flex-wrap justify-center gap-6 text-sm">
@@ -34,7 +36,7 @@ export default function FooterSection() {
                 </div>
                 <div className="my-8 flex flex-wrap justify-center gap-6 text-sm">
                     <Link
-                        href="https://www.instagram.com/nasaspaceappschallenge_lucknow/ "
+                        href="https://www.instagram.com/nasaspaceappschallenge_lucknow/"
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="Instagram"
@@ -51,7 +53,7 @@ export default function FooterSection() {
                         </svg>
                     </Link>
                 </div>
-                <span className="text-muted-foreground block text-center text-sm"> © {new Date().getFullYear()} NSAC, All rights reserved</span>
+                <span className="text-muted-foreground block text-center text-sm"> © {event.year} NSAC, All rights reserved</span>
             </div>
         </footer>
     )

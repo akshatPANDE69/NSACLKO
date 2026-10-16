@@ -107,5 +107,5 @@ export default function CountUp({
     return () => unsubscribe();
   }, [springValue, separator]);
 
-  return <span className={`${className}`} ref={ref} />;
+  return <span className={`${className}`} ref={ref}>{separator ? to.toLocaleString("en-US").replace(/,/g, separator) : to}</span>;
 }

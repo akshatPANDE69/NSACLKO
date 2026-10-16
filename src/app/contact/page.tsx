@@ -6,23 +6,21 @@ import { Input } from "@/app/components/components/ui/input";
 import { Label } from "@/app/components/components/ui/label";
 import { Textarea } from "@/app/components/components/ui/textarea";
 import { useState } from "react";
+import { event } from "@/lib/event";
 import TeamSection from "@/components/team";
 
 export default function ContactPage() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [draftUrl, setDraftUrl] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    // Here you can add your form submission logic
-    setTimeout(() => {
-      setIsSubmitting(false);
-      // Reset form or show success message
-    }, 1000);
+    const data = new FormData(e.currentTarget);
+    const body = `Name: ${data.get("name")}\nEmail: ${data.get("email")}\n\n${data.get("message")}`;
+    setDraftUrl(`mailto:${event.email}?subject=${encodeURIComponent(String(data.get("subject")))}&body=${encodeURIComponent(body)}`);
   };
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="contact-page min-h-screen bg-black text-white">
       {/* Hero Section */}
       <section className="relative py-20 overflow-hidden">
         <div className="absolute inset-0 z-0">
@@ -51,6 +49,7 @@ export default function ContactPage() {
                   <Label htmlFor="name">Name</Label>
                   <Input
                     id="name"
+                    name="name"
                     placeholder="Your name"
                     required
                     className="bg-gray-800/50 border-gray-700"
@@ -61,6 +60,7 @@ export default function ContactPage() {
                   <Label htmlFor="email">Email</Label>
                   <Input
                     id="email"
+                    name="email"
                     type="email"
                     placeholder="your@email.com"
                     required
@@ -72,6 +72,7 @@ export default function ContactPage() {
                   <Label htmlFor="subject">Subject</Label>
                   <Input
                     id="subject"
+                    name="subject"
                     placeholder="What is this regarding?"
                     required
                     className="bg-gray-800/50 border-gray-700"
@@ -82,6 +83,7 @@ export default function ContactPage() {
                   <Label htmlFor="message">Message</Label>
                   <Textarea
                     id="message"
+                    name="message"
                     placeholder="Your message..."
                     rows={5}
                     required
@@ -91,11 +93,12 @@ export default function ContactPage() {
 
                 <Button
                   type="submit"
-                  disabled={isSubmitting}
                   className="w-full bg-white text-black hover:bg-gray-200 transition-colors"
                 >
-                  {isSubmitting ? "Sending..." : "Send Message"}
+                  Prepare Email
                 </Button>
+                <p className="text-sm text-gray-400">This form prepares an email draft. Send it from your email app.</p>
+                {draftUrl && <p role="status" className="text-sm text-gray-300">Your draft is ready. <a className="underline" href={draftUrl}>Open email draft</a> to send your message.</p>}
               </form>
             </Card>
 
@@ -104,7 +107,7 @@ export default function ContactPage() {
               <div className="space-y-6">
                 <h2 className="text-3xl font-light tracking-wide">Get in Touch</h2>
                 <p className="text-gray-400 leading-relaxed">
-                  Have questions about NASA Space Apps Challenge Lucknow? We're here to help!
+                  Have questions about NASA Space Apps Challenge Lucknow? We&apos;re here to help!
                   Reach out to us through the form or use the contact information below.
                 </p>
               </div>
@@ -113,8 +116,9 @@ export default function ContactPage() {
                 <div className="space-y-2">
                   <h3 className="text-xl font-light text-gray-300">Location</h3>
                   <p className="text-gray-400">
-                    AKGEC Lucknow<br />
-                    Uttar Pradesh, India
+                    {event.venue}<br />
+                    {event.address}<br />
+                    {event.dates}
                   </p>
                 </div>
 
@@ -130,9 +134,11 @@ export default function ContactPage() {
 
                 <div className="space-y-2">
                   <h3 className="text-xl font-light text-gray-300">Social Media</h3>
+                  <a href={event.whatsappUrl} target="_blank" rel="noopener noreferrer" className="block text-green-300 hover:text-green-200">Join our WhatsApp community</a>
                   <div className="flex space-x-4">
                     <a
-                      href="https://www.instagram.com/nasaspaceappschallenge_lucknow/"
+                      aria-label="Instagram"
+                      href={event.instagramUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-gray-400 hover:text-white transition-colors"

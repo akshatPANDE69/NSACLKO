@@ -1,6 +1,6 @@
 "use client";
 
-import Head from "next/head";
+import { event } from "@/lib/event";
 import Link from "next/link";
 import { Button } from "./components/components/ui/button";
 import EffectsInitializer from "./components/EffectsInitializer";
@@ -11,16 +11,11 @@ import { StarsBackground } from "@/components/animate-ui/backgrounds/stars";
 
 export default function Home() {
   return (
-    <div style={{ position: 'relative', width: '100%', minHeight: '100vh' }}>
-      <Head>
-        <title>My Next.js App</title>
-        <meta name="description" content="Welcome to my Next.js application!" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <div className="home-page" style={{ position: 'relative', width: '100%', minHeight: '100vh' }}>
       <EffectsInitializer />
 
       {/* Global Particles background, not in video section */}
-      <div style={{ width: '100%', height: '100%', position: 'fixed', top: 0, left: 0, zIndex: 0, pointerEvents: 'none' }}>
+      <div className="home-particles" style={{ width: '100%', height: '100%', position: 'fixed', top: 0, left: 0, zIndex: 0, pointerEvents: 'none' }}>
         <Particles
           particleColors={["#ffffff", "#ffffff"]}
           particleCount={600}
@@ -37,7 +32,7 @@ export default function Home() {
         <div className="hero-video-background">
           <div className="hero-video-container">
             <video autoPlay muted loop playsInline>
-              <source src="your-earth-video.mp4" type="video/mp4" />
+              <source src="/your-earth-video.mp4" type="video/mp4" />
             </video>
             <div
               style={{
@@ -76,17 +71,22 @@ export default function Home() {
             </h1>
             {/* This will trigger typing effect when it comes into view */}
             <p className="hero-description typing-content" data-typing-speed="80" style={{ textAlign: 'center', width: '100%' }}>
-              Join the NASA Space Apps Challenge 2025 in Lucknow - the world&apos;s
+              Join the NASA Space Apps Challenge {event.year} in Lucknow, the world&apos;s
               largest global hackathon. Use NASA&apos;s open data to develop innovative
               solutions for challenges we face on Earth and in space.
             </p>
+            <p className="event-summary">{event.dates} · {event.venue}, Lucknow</p>
             <div className="hero-cta-buttons stagger-item" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 24 }}>
               <Button asChild className="hero-btn primary">
-                <Link href="/register">Register Now</Link>
+                <Link href={event.registrationUrl}>Register Now</Link>
               </Button>
               <Button asChild className="hero-btn primary">
                 <Link href="#about">Learn More</Link>
               </Button>
+            </div>
+            <div className="hero-community">
+              <a href={event.whatsappUrl} target="_blank" rel="noopener noreferrer">Join our WhatsApp community ↗</a>
+              <p>Event updates, questions and finding your team.</p>
             </div>
           </div>
         </div>
@@ -152,7 +152,7 @@ export default function Home() {
               challenges designed by NASA.
             </p>
             <Button asChild className="hero-btn primary stagger-item" style={{ marginTop: '10px' }}>
-              <Link href="#about">Learn More</Link>
+              <Link href="/about">Learn More</Link>
             </Button>
           </div>
         </div>
@@ -195,14 +195,14 @@ export default function Home() {
                 alignSelf: 'stretch', // Stretch to fill available width, but only as tall as content
               }}
             >
-              This year's challenges span multiple disciplines and focus areas,
+              The 2026 challenges span multiple disciplines and focus areas,
               from Earth observation and climate science to space exploration and
               astrophysics. Participants can choose from challenges that range
               from beginner-friendly to expert-level, ensuring everyone can
               contribute meaningfully.
               <br />
-              Each challenge provides access to relevant NASA datasets, expert
-              mentorship, and the tools needed to create impactful solutions.
+              Explore the official 2026 challenge briefs and their linked NASA
+              datasets to find a project that interests your team.
               Whether you&apos;re interested in developing mobile apps, creating data
               visualizations, or building hardware prototypes, there&apos;s a challenge
               for you.

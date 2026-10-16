@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { event } from "@/lib/event";
 import "../styles/base.css";
 import "../styles/about.css";
 import CountUp from "../components/CountUp";
@@ -47,7 +48,7 @@ export default function About() {
               {[
                 {
                   title: "Inspire",
-                  text: "Engage and inspire people around the world to use NASA&apos;s open data for local and global solutions",
+                  text: "Engage and inspire people around the world to use NASA's open data for local and global solutions",
                 },
                 {
                   title: "Innovate",
@@ -72,6 +73,7 @@ export default function About() {
 
           <section className="content-section">
             <h2 className="section-title">Why Participate?</h2>
+            <p className="section-text">Join us on {event.dates} at {event.venue}, {event.address}. Students from science, commerce, humanities and biology are all welcome. No coding knowledge or previous hackathon experience is required. Teams can have up to {event.teamLimit} members.</p>
             <p className="section-text">
               Participating in NASA Space Apps Challenge is an opportunity to
               collaborate with like-minded individuals, learn new skills, and
@@ -88,12 +90,13 @@ export default function About() {
 
           <section className="content-section">
             <h2 className="section-title">Global Impact</h2>
+            <p className="section-text">Cumulative figures from the <a href="https://www.spaceappschallenge.org/" className="underline">official Space Apps website</a>.</p>
             <div className="stats-grid">
               {[
-                { number: 400, label: "Cities Worldwide" },
-                { number: 50000, label: "Global Participants" },
-                { number: 15000, label: "Projects Created" },
-                { number: 80, label: "Countries Participating" },
+                { number: 487000, label: "Registrations Across All Editions", suffix: "+" },
+                { number: 3400, label: "Local Events Across All Editions", suffix: "+" },
+                { number: 190, label: "Countries and Territories", suffix: "+" },
+                { number: 17, label: "Space Agency Partners", suffix: "" },
               ].map((stat, index) => (
                 <div key={index} className="stat-item">
                   <div className="stat-number">
@@ -106,7 +109,7 @@ export default function About() {
                       className="count-up-text"
                       startWhen={true}
                     />
-                    +
+                    {stat.suffix}
                   </div>
                   <div className="stat-label">{stat.label}</div>
                 </div>
@@ -131,7 +134,7 @@ export default function About() {
                 {
                   number: "03",
                   title: "Build & Create",
-                  text: "Develop innovative solutions using NASA&apos;s open data, APIs, and cutting-edge technologies",
+                  text: "Develop innovative solutions using NASA's open data, APIs, and cutting-edge technologies",
                 },
                 {
                   number: "04",
@@ -160,8 +163,8 @@ export default function About() {
             </p>
             <div className="cta-buttons">
               {[
-                { href: "#about", text: "Register Now" },
-                { href: "#about", text: "View Challenges" },
+                { href: event.registrationUrl, text: "Register Now" },
+                { href: "/challenges", text: "View Challenges" },
               ].map((button, index) => (
                 <Button key={index} asChild className="hero-btn primary">
                   <Link href={button.href}>{button.text}</Link>

@@ -1,8 +1,5 @@
 /* About.css */
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 /* Make ALL container elements non-selectable */
 .about-container,
@@ -20,13 +17,13 @@
 .cta-section,
 .cta-buttons,
 .process-steps,
-.hero-section {
+.about-container .hero-section {
   user-select: none;
 }
 
 /* Make ALL text content selectable */
-.hero-title *,
-.hero-subtitle *,
+.about-container .hero-title *,
+.about-container .hero-subtitle *,
 .section-title *,
 .section-text *,
 .card-title *,
@@ -47,8 +44,8 @@ span * {
 }
 
 /* Ensure text is selectable even when it's not wrapped in another element */
-.hero-title,
-.hero-subtitle,
+.about-container .hero-title,
+.about-container .hero-subtitle,
 .section-title,
 .section-text,
 .card-title,
@@ -92,11 +89,11 @@ span {
 }
 
 /* Hero Section */
-.hero-section {
+.about-container .hero-section {
   @apply text-center mb-24;
 }
 
-.hero-title {
+.about-container .hero-title {
   @apply text-5xl md:text-7xl font-light tracking-wider mb-8;
   letter-spacing: 0.3em;
   background: linear-gradient(135deg, #ffffff 0%, #a0a0a0 100%);
@@ -105,7 +102,7 @@ span {
   background-clip: text;
 }
 
-.hero-subtitle {
+.about-container .hero-subtitle {
   @apply text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed;
   font-weight: 300;
 }
@@ -278,12 +275,12 @@ span {
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .hero-title {
+  .about-container .hero-title {
     @apply text-4xl;
     letter-spacing: 0.2em;
   }
 
-  .hero-subtitle {
+  .about-container .hero-subtitle {
     @apply text-lg;
   }
 
@@ -348,5 +345,3 @@ span {
 .mission-card {
   position: relative;
 }
-
-
