@@ -39,11 +39,11 @@ try {
     const document = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, "");
     pages[route] = document;
     assert.equal((document.match(/<h1\b/g) || []).length, 1, `${route} must have one primary heading`);
-    if (route !== "/timeline") assert.match(document, /<main[^>]*id="main-content"/, `${route} must expose its main content`);
+    assert.match(document, /<main[^>]*id="main-content"/, `${route} must expose its main content`);
     assert.match(document, /<title>[^<]*2026/, `${route} must have edition-specific metadata`);
     assert.ok(document.includes(registration), `${route} must offer working official registration`);
-    if (route !== "/timeline") assert.ok(document.includes(community), `${route} must expose the community link`);
-    if (route !== "/timeline") assert.ok(document.includes("https://www.instagram.com/nsac_lko/"), `${route} must retain main's updated Instagram destination`);
+    assert.ok(document.includes(community), `${route} must expose the community link`);
+    assert.ok(document.includes("https://www.instagram.com/nsac_lko/"), `${route} must retain main's updated Instagram destination`);
     assert.doesNotMatch(document, /2025|AKGEC|My Next\.js App|NASA Headquarters|\d+ Points|undefined/, `${route} must not contain stale or placeholder information`);
     for (const [, href] of document.matchAll(/<a\b[^>]*href="([^"]+)"/g)) {
       assert.notEqual(href, "#", `${route} contains a dead placeholder link`);
@@ -67,8 +67,10 @@ try {
   assert.match(pages["/contact"], /Prepare Email/, "Contact form must explain its email-draft workflow");
   assert.match(pages["/challenges"], /https:\/\/www\.spaceappschallenge\.org\/2026\/challenges\//);
   assert.match(pages["/timeline"], /11:59 PM local time/i);
-  assert.match(pages["/timeline"], /igloo-nav/);
-  assert.doesNotMatch(pages["/timeline"], /id="navbar"/, "The original site's navigation must not be injected into main's preserved Timeline");
+  assert.match(pages["/timeline"], /id="navbar"/, "Timeline must retain the navigation from the last successful production deployment");
+  assert.match(pages["/timeline"], />Event Timeline<\/h1>/);
+  assert.equal((pages["/timeline"].match(/class="timeline-item fade-in"/g) || []).length, 4, "Timeline must retain its four original milestones");
+  assert.doesNotMatch(pages["/timeline"], /igloo-nav|MISSION ROADMAP|IBM Plex Mono/, "The failed deployment's alternate Timeline must not replace the live design");
   assert.doesNotMatch(pages["/contact"], /Our Team|Team Lead|Technical Lead|Development Lead|Content Lead|Marketing Lead/);
   for (const portrait of ["ansh.jpeg", "areeb.jpeg", "ayan.jpeg", "Jatinbhaiya.jpeg", "Kashni.jpeg", "saksham.jpeg", "Yash.jpeg", "pinkiebhaiya.jpeg", "shr.jpeg", "simba.jpeg", "pfpwa.jpg"]) {
     assert.equal((await fetch(origin + "/" + portrait)).status, 404, `${portrait} must no longer be served`);

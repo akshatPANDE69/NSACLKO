@@ -45,6 +45,6 @@ The contact form prepares an email draft for the participant to send from their 
 
 ## Preserved Timeline
 
-Main's Timeline from commit `39a28abe3d7bf40cbaeaa70eb7094d4d8f7b7a32` is kept in the `(timeline)` route group with its original layout, global theme, font and dither overlay. Other pages use the `(site)` layout and original space background. Public URLs stay the same. Separate root layouts prevent the styles and navigation from leaking between the two designs.
+Timeline matches commit `dd3917ef989ff61cfc147a6a144591710ec99d11`, the last successful production deployment before the page updates. Later main commits `39a28ab` and `93c6515` failed deployment, so their alternate Timeline was never the live version. Timeline uses the `(site)` layout again with its original black background, Arial typography, alternating milestones, navigation and footer. Its URL remains `/timeline`.
 
 `scripts/check-preserved-timeline.mjs` verifies the preserved files against their source hashes before the HTTP checks. Update this baseline only when a Timeline change has been explicitly requested. The former team roster and portrait assets have been removed.

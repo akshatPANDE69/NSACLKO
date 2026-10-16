@@ -1,25 +1,23 @@
 {
-  "main_baseline": "39a28abe3d7bf40cbaeaa70eb7094d4d8f7b7a32",
+  "main_baseline": "dd3917ef989ff61cfc147a6a144591710ec99d11",
+  "production_deployment": 7121011378,
+  "reason": "Last successful production deployment before 74c54f9. Later main commits 39a28ab and 93c6515 failed deployment.",
   "protected": {
-    "src/app/(timeline)/timeline/page.tsx": {
+    "src/app/(site)/timeline/page.tsx": {
       "source": "src/app/timeline/page.tsx",
-      "sha256": "bacf188f9ddc6a8931faf5b97df74ea87795e5d4c60e260db2a17a6982181ca7"
-    },
-    "src/app/globals.css": {
-      "source": "src/app/globals.css",
-      "sha256": "02ec9a1c57e444e43d31dc809868830a1da342e1c86d888dcc6358a72797a1db"
+      "sha256": "ba8e1237c03b28cc49dca50acf9f530166f18d749dc4eb42c148b79ea9cfb4e1"
     },
     "src/app/styles/timeline.css": {
       "source": "src/app/styles/timeline.css",
       "sha256": "2d78f0a34b1bfc875725256c2107847a923d987589f412a39637476fd7fa37b0"
     },
-    "src/components/DitherOverlay.tsx": {
-      "source": "src/components/DitherOverlay.tsx",
-      "sha256": "89678ca26377ffd4959eb1335d2af7156a9804ac5fa8ced0c836650acd6285b1"
+    "src/app/styles/base.css": {
+      "source": "src/app/styles/base.css",
+      "sha256": "ee2221e88e8d9ca409212b7ceae0d27efe8d862aedd107f1921cc66db3aaa491"
     },
-    "src/app/(timeline)/layout.tsx": {
-      "source": "src/app/layout.tsx",
-      "sha256": "76a973f14f05f21ab282bacaa4273ca149c27e35a54d2fa8002e2d8e241480e8"
+    "src/app/components/EffectsInitializer.tsx": {
+      "source": "src/app/components/EffectsInitializer.tsx",
+      "sha256": "3bc5edc5c0fd34e06e8bb93e6000b73609aadfdb9162cf606c83470ab2d4d9b6"
     }
   }
 }
