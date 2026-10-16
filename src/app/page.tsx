@@ -1,70 +1,217 @@
-import Link from "next/link";
-import { ArrowDown, ArrowUpRight, CalendarDays, MapPin, MessageCircle, Users, Lightbulb, Telescope, Globe2, Sparkles } from "lucide-react";
-import { event } from "@/lib/event";
-import Earth from "./components/Earth";
+"use client";
 
-const benefits = [
-  { number: "01", title: "Follow your curiosity", text: "Explore NASA’s open data and take on a real challenge facing Earth or space.", Icon: Telescope },
-  { number: "02", title: "Find your people", text: "Bring different perspectives together. Research, business, biology, design and code all have a place.", Icon: Users },
-  { number: "03", title: "Make something matter", text: "Turn an idea into a project, share your work and take home skills that go beyond the classroom.", Icon: Lightbulb },
-];
+import { event } from "@/lib/event";
+import Link from "next/link";
+import { Button } from "./components/components/ui/button";
+import EffectsInitializer from "./components/EffectsInitializer";
+import Particles from "./components/Particles";
+import React from "react";
+
+import { StarsBackground } from "@/components/animate-ui/backgrounds/stars";
 
 export default function Home() {
   return (
-    <div className="home-page">
-      <section className="home-hero" id="home" aria-labelledby="hero-title">
-        <div className="hero-stars" aria-hidden="true" />
-        <div className="hero-topline"><p>LUCKNOW, INDIA <span>/</span> {event.year} EDITION</p><span className="registration-status"><span /> Registrations open</span></div>
-        <div className="hero-main">
-          <div className="home-hero-content">
-            <p className="eyebrow">NASA Space Apps Challenge {event.year}</p>
-            <h1 id="hero-title">Think beyond.<br /><span>Build for Earth.</span></h1>
-            <p className="home-hero-description">Big questions need different minds. Explore NASA&apos;s open data and turn your curiosity into a solution, right here in Lucknow.</p>
-            <div className="hero-event-date"><CalendarDays size={17} aria-hidden="true" /><span>{event.dates}</span><span className="hero-date-divider" /><span>SRGI, Lucknow</span></div>
-            <div className="button-group hero-actions">
-              <a href={event.registrationUrl} className="action-link primary">Register for Lucknow <ArrowUpRight size={19} aria-hidden="true" /></a>
-              <a href={event.whatsappUrl} className="hero-explore" target="_blank" rel="noopener noreferrer"><MessageCircle size={17} aria-hidden="true" /> Join WhatsApp</a>
-            </div>
-            <p className="hero-welcome"><Sparkles size={15} aria-hidden="true" /> All streams welcome. No coding experience needed.</p>
+    <div className="home-page" style={{ position: 'relative', width: '100%', minHeight: '100vh' }}>
+      <EffectsInitializer />
+
+      {/* Global Particles background, not in video section */}
+      <div className="home-particles" style={{ width: '100%', height: '100%', position: 'fixed', top: 0, left: 0, zIndex: 0, pointerEvents: 'none' }}>
+        <Particles
+          particleColors={["#ffffff", "#ffffff"]}
+          particleCount={600}
+          particleSpread={10}
+          speed={0.1}
+          particleBaseSize={90}
+          moveParticlesOnHover={false}
+          alphaParticles={true}
+          disableRotation={false}
+        />
+      </div>
+
+      <section className="hero-video-section fade-section" id="home" style={{ position: 'relative', zIndex: 1 }}>
+        <div className="hero-video-background">
+          <div className="hero-video-container">
+            <video autoPlay muted loop playsInline>
+              <source src="/your-earth-video.mp4" type="video/mp4" />
+            </video>
+            <div
+              style={{
+                background: "linear-gradient(135deg, #000428 0%, #004e92 100%)",
+                width: "100%",
+                height: "100%",
+              }}
+            ></div>
           </div>
-          <Earth />
         </div>
-        <div className="hero-bottomline"><span>{event.theme}</span><span>One global challenge. Your local community.</span><a href="#about" aria-label="Scroll to about the event"><ArrowDown size={18} aria-hidden="true" /></a></div>
-        <a href={event.whatsappUrl} className="hero-community" target="_blank" rel="noopener noreferrer">
-          <span className="community-icon"><MessageCircle size={23} aria-hidden="true" /></span>
-          <span className="community-copy"><span>Great ideas start with a conversation.</span><span>Join our WhatsApp community for updates, questions and finding your team.</span></span>
-          <span className="community-cta">Join WhatsApp <ArrowUpRight size={20} aria-hidden="true" /></span>
-        </a>
-      </section>
 
-      <section className="event-facts" aria-label="Event at a glance">
-        <div><CalendarDays aria-hidden="true" /><p><span>The weekend</span>14 &amp; 15 November 2026</p></div>
-        <div><MapPin aria-hidden="true" /><p><span>The place</span>{event.venue}, Lucknow</p></div>
-        <div><Users aria-hidden="true" /><p><span>The people</span>Teams of up to {event.teamLimit}. Every background.</p></div>
-      </section>
-
-      <section id="about" className="home-about" aria-labelledby="about-title">
-        <div className="home-section-heading">
-          <p className="eyebrow">Your perspective belongs here</p>
-          <h2 id="about-title">Curiosity is the<br />only prerequisite.</h2>
-          <div className="section-copy"><p>A two day international hackathon. Real challenges. NASA&apos;s open data. A room full of people who see things differently.</p><p>Whether you study science, commerce, humanities or biology, this is your space to explore, collaborate and create.</p><Link href="/about" className="text-link">Get to know Space Apps <ArrowUpRight size={18} aria-hidden="true" /></Link></div>
+        <div className="hero-video-overlay" style={{ pointerEvents: 'none', position: 'absolute', inset: 0, zIndex: 2 }}>
+          <StarsBackground pointerEvents={false} className="absolute inset-0 w-full h-full z-0" />
         </div>
-        <div className="benefit-grid">{benefits.map(({ number, title, text, Icon }) => <article className="benefit" key={number}><div className="benefit-top"><span>{number}</span><Icon size={25} aria-hidden="true" /></div><h3>{title}</h3><p>{text}</p></article>)}</div>
-      </section>
 
-      <section className="home-challenges" aria-labelledby="challenges-title">
-        <div className="challenge-heading"><div><p className="eyebrow">A starting point for every mind</p><h2 id="challenges-title">Different skills.<br /><span>Shared discoveries.</span></h2></div><Link href="/challenges" className="action-link">Explore the challenges <ArrowUpRight size={18} aria-hidden="true" /></Link></div>
-        <div className="discovery-grid">
-          <Link href="/challenges" className="discovery-card"><Globe2 size={33} aria-hidden="true" /><span className="discovery-index">01 / Earth</span><h3>A better view<br />of our planet.</h3><p>Climate, oceans, biodiversity and the world we call home.</p><span className="discovery-link">Explore Earth science <ArrowUpRight size={20} aria-hidden="true" /></span></Link>
-          <Link href="/challenges" className="discovery-card"><Telescope size={33} aria-hidden="true" /><span className="discovery-index">02 / Space</span><h3>Questions beyond<br />the horizon.</h3><p>Space exploration, astronomy and a universe to understand.</p><span className="discovery-link">Explore space <ArrowUpRight size={20} aria-hidden="true" /></span></Link>
-          <Link href="/challenges" className="discovery-card"><Lightbulb size={33} aria-hidden="true" /><span className="discovery-index">03 / Possibility</span><h3>New ways to<br />tell the story.</h3><p>Research, design and creative ideas that make science accessible.</p><span className="discovery-link">Find your approach <ArrowUpRight size={20} aria-hidden="true" /></span></Link>
+        {/* No Particles in video section */}
+
+        <div className="floating-elements">
+          <div className="floating-dot"></div>
+          <div className="floating-dot"></div>
+          <div className="floating-dot"></div>
+          <div className="floating-dot"></div>
+          <div className="floating-dot"></div>
         </div>
-        <p className="challenge-note">Explore these areas of interest, then choose your project from the official 2026 challenge briefs.</p>
+
+        <div className="hero-content-wrapper stagger-container">
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+            <div className="hero-subtitle stagger-item" style={{ textAlign: 'center', width: '100%' }}>
+              Global Innovation Challenge
+            </div>
+            {/* This will only fade in, not type */}
+            <h1 className="hero-main-title fade-in" style={{ textAlign: 'center', width: '100%' }}>
+              Building Solutions
+              <br />
+              for Space
+            </h1>
+            {/* This will trigger typing effect when it comes into view */}
+            <p className="hero-description typing-content" data-typing-speed="80" style={{ textAlign: 'center', width: '100%' }}>
+              Join the NASA Space Apps Challenge {event.year} in Lucknow, the world&apos;s
+              largest global hackathon. Use NASA&apos;s open data to develop innovative
+              solutions for challenges we face on Earth and in space.
+            </p>
+            <p className="event-summary">{event.dates} · {event.venue}, Lucknow</p>
+            <div className="hero-cta-buttons stagger-item" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 24 }}>
+              <Button asChild className="hero-btn primary">
+                <Link href={event.registrationUrl}>Register Now</Link>
+              </Button>
+              <Button asChild className="hero-btn primary">
+                <Link href="#about">Learn More</Link>
+              </Button>
+            </div>
+            <div className="hero-community">
+              <a href={event.whatsappUrl} target="_blank" rel="noopener noreferrer">Join our WhatsApp community ↗</a>
+              <p>Event updates, questions and finding your team.</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="scroll-indicator fade-in" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', position: 'absolute', left: '50%', bottom: 40, transform: 'translateX(-50%)', pointerEvents: 'none' }}>
+          <div className="scroll-arrow"></div>
+          <div className="scroll-text">Scroll Down</div>
+        </div>
+
+        {/* Smooth bottom gradient overlay for video section */}
+        <div
+          style={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            bottom: 0,
+            height: '120px',
+            zIndex: 3,
+            pointerEvents: 'none',
+            background: 'linear-gradient(180deg, rgba(0,0,0,0) 0%, #000 100%)',
+          }}
+        ></div>
       </section>
 
-      <section className="home-join">
-        <div><p className="eyebrow">Your next idea starts here</p><h2>Two days.<br />A whole new perspective.</h2><p>No team or project idea yet? Start with curiosity. Find your people along the way.</p></div>
-        <div className="join-actions"><a href={event.registrationUrl} className="action-link primary">Register for Lucknow <ArrowUpRight size={20} aria-hidden="true" /></a><Link href="/timeline" className="text-link">See the 2026 timeline <ArrowUpRight size={17} aria-hidden="true" /></Link></div>
+      <section id="about" className="section fade-section" style={{ position: 'relative', zIndex: 1 }}>
+        <div className="section-content stagger-container">
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '10px',
+              alignItems: 'flex-start', // Ensures children align to the top/left
+              width: '100%',
+              maxWidth: '900px',
+            }}
+          >
+            <h3 className="stagger-item" style={{ marginBottom: 0, alignSelf: 'flex-start' }}>
+              Global Innovation Challenge
+            </h3>
+            <h2 className="main-heading stagger-item" style={{ marginBottom: 0, alignSelf: 'flex-start' }}>
+              Hack The Universe
+            </h2>
+            <p
+              className="typing-content"
+              data-typing-speed="70"
+              style={{
+                margin: 0,
+                marginBottom: 64,
+                maxWidth: '700px',
+                width: '100%',
+                textAlign: 'left',
+                boxSizing: 'content-box',
+                overflowWrap: 'break-word',
+                alignSelf: 'flex-start',
+              }}
+            >
+              NASA Space Apps Challenge is an international hackathon where teams
+              of technologists, scientists, designers, artists, educators,
+              entrepreneurs, and students across the globe collaborate and engage
+              with publicly available data to design innovative solutions for
+              challenges we face on Earth and in space. Over the course of one
+              weekend, participants around the world come together to work on
+              challenges designed by NASA.
+            </p>
+            <Button asChild className="hero-btn primary stagger-item" style={{ marginTop: '10px' }}>
+              <Link href="/about">Learn More</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="challenges"
+        className="section reverse challenges-section fade-section"
+        style={{ position: 'relative', zIndex: 1, background: 'transparent' }}
+      >
+        <div className="section-content stagger-container">
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '10px',
+              alignItems: 'flex-start',
+              justifyContent: 'flex-start', // Ensure children start at the top
+              width: '100%',
+              maxWidth: '900px',
+            }}
+          >
+            <h3 className="stagger-item" style={{ marginBottom: 0 }}>
+              Innovation Categories
+            </h3>
+            <h2 className="main-heading stagger-item" style={{ marginBottom: 0 }}>
+              Challenge Areas
+            </h2>
+            <p
+              className="typing-content"
+              data-typing-speed="75"
+              style={{
+                margin: 0,
+                marginBottom: 64,
+                maxWidth: '700px',
+                width: '100%',
+                textAlign: 'left',
+                boxSizing: 'border-box',
+                overflowWrap: 'break-word',
+                alignSelf: 'stretch', // Stretch to fill available width, but only as tall as content
+              }}
+            >
+              The 2026 challenges span multiple disciplines and focus areas,
+              from Earth observation and climate science to space exploration and
+              astrophysics. Participants can choose from challenges that range
+              from beginner-friendly to expert-level, ensuring everyone can
+              contribute meaningfully.
+              <br />
+              Explore the official 2026 challenge briefs and their linked NASA
+              datasets to find a project that interests your team.
+              Whether you&apos;re interested in developing mobile apps, creating data
+              visualizations, or building hardware prototypes, there&apos;s a challenge
+              for you.
+            </p>
+            <Button asChild className="hero-btn primary stagger-item" style={{ marginTop: '10px', alignSelf: 'flex-start' }}>
+              <Link href="/timeline">Event Schedule</Link>
+            </Button>
+          </div>
+        </div>
       </section>
     </div>
   );

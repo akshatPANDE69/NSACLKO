@@ -1,40 +1,33 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { event } from "@/lib/event";
 import ScrollProgressBar from "./components/ScrollProgressBar";
 import NavBar from "./components/navbar";
 import Footer from "./components/footer";
-import { event } from "@/lib/event";
+import { Providers } from "./components/Providers";
 
 import "./styles/base.css";
 import "./styles/index.css";
-
-const spaceGrotesk = localFont({
-  src: [{ path: "./fonts/SpaceGrotesk-Regular.ttf", weight: "400" }, { path: "./fonts/SpaceGrotesk-Bold.ttf", weight: "700" }],
-  variable: "--font-display",
-  display: "swap",
-});
+import "./styles/timeline.css";
+import "./styles/contact.css";
+import "./styles/fixes.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://nsaclko.vercel.app"),
-  title: { default: "NASA Space Apps Challenge 2026 | Lucknow", template: "%s | NASA Space Apps Lucknow 2026" },
-  description: `Join NASA Space Apps Challenge in Lucknow on ${event.dates} at SRGI. All backgrounds welcome. Register and join our WhatsApp community.`,
-  openGraph: {
-    title: "NASA Space Apps Challenge 2026 | Lucknow",
-    description: `${event.dates}. SR Group of Institutions, Lucknow. Bring your curiosity and build with a team.`,
-    type: "website",
-    locale: "en_IN",
-  },
-  twitter: { card: "summary" },
+  title: "NASA Space Apps Challenge 2026 | Lucknow",
+  description: `Join NASA Space Apps Challenge in Lucknow on ${event.dates} at SRGI. All streams and experience levels are welcome.`,
+  icons: { icon: "/globe.svg" },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="en" data-scroll-behavior="smooth">
-      <body className={spaceGrotesk.variable}>
-        <a href="#main-content" className="skip-link">Skip to content</a>
+    <html lang="en">
+      <body>
         <ScrollProgressBar />
         <NavBar />
-        <main id="main-content" tabIndex={-1}>{children}</main>
+        <main id="main-content"><Providers>{children}</Providers></main>
         <Footer />
       </body>
     </html>

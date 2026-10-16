@@ -1,48 +1,71 @@
 "use client";
 
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import { Menu, X, ArrowUpRight } from "lucide-react";
-import { event } from "@/lib/event";
-
-const links = [
-  { href: "/about", label: "About" },
-  { href: "/challenges", label: "Challenges" },
-  { href: "/timeline", label: "Timeline" },
-  { href: "/contact", label: "Contact" },
-];
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+} from "../components/components/ui/navigation-menu";
 
 export default function Navbar() {
-  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const toggle = useRef<HTMLButtonElement>(null);
-
   useEffect(() => {
     if (!open) return;
-    const dismiss = (e: KeyboardEvent) => {
-      if (e.key === "Escape") { setOpen(false); toggle.current?.focus(); }
+    const close = (event: KeyboardEvent) => {
+      if (event.key === "Escape") { setOpen(false); toggle.current?.focus(); }
     };
-    document.addEventListener("keydown", dismiss);
-    return () => document.removeEventListener("keydown", dismiss);
+    document.addEventListener("keydown", close);
+    return () => document.removeEventListener("keydown", close);
   }, [open]);
-
   return (
-    <header className="site-header">
-      <nav className="nav-container" aria-label="Main navigation">
-        <Link href="/" className="site-logo" onClick={() => setOpen(false)} aria-label="NASA Space Apps Lucknow home">
-          NASA SPACE APPS<span>LUCKNOW {event.year}</span>
+    <nav id="navbar" className="nav" aria-label="Main navigation">
+      <div className="nav-container">
+        <Link href="/" className="logo" onClick={() => setOpen(false)}>
+          NASA SPACE APPS
         </Link>
-        <button ref={toggle} className="nav-toggle" type="button" aria-label={open ? "Close navigation" : "Open navigation"} aria-expanded={open} aria-controls="main-navigation" onClick={() => setOpen(!open)}>
-          {open ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
-        </button>
-        <ul id="main-navigation" className="nav-links" data-open={open}>
-          {links.map(({ href, label }) => (
-            <li key={href}><Link href={href} aria-current={pathname === href ? "page" : undefined} onClick={() => setOpen(false)}>{label}</Link></li>
-          ))}
-          <li><a href={event.registrationUrl} className="nav-register">Register <ArrowUpRight size={15} aria-hidden="true" /></a></li>
-        </ul>
-      </nav>
-    </header>
+
+        <button ref={toggle} type="button" className="nav-toggle" aria-label={open ? "Close navigation" : "Open navigation"} aria-expanded={open} aria-controls="nav-menu" onClick={() => setOpen(!open)}>{open ? "✕" : "☰"}</button>
+        <div id="nav-menu" className="nav-menu" data-open={open}>
+        <NavigationMenu>
+          <NavigationMenuList className="nav-links">
+            <NavigationMenuItem>
+              <NavigationMenuLink asChild>
+                <Link href="/about" className="nav-link" onClick={() => setOpen(false)}>
+                  About
+                </Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+
+            <NavigationMenuItem>
+              <NavigationMenuLink asChild>
+                <Link href="/challenges" className="nav-link" onClick={() => setOpen(false)}>
+                  Challenges
+                </Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+
+            <NavigationMenuItem>
+              <NavigationMenuLink asChild>
+                <Link href="/timeline" className="nav-link" onClick={() => setOpen(false)}>
+                  Timeline
+                </Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+
+            <NavigationMenuItem>
+              <NavigationMenuLink asChild>
+                <Link href="/contact" className="nav-link" onClick={() => setOpen(false)}>
+                  Contact
+                </Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>
+        </div>
+      </div>
+    </nav>
   );
 }

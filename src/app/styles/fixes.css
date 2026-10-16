@@ -1,0 +1,65 @@
+/* Targeted fixes for the existing design. Keep content available without JS. */
+html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+#navbar.nav { padding: 0; }
+.nav-links a { isolation: isolate; }
+.nav-toggle { display: none; }
+.nav-menu { display: block; }
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 2px solid #a7d7fc !important; outline-offset: 4px; }
+.typing-content, .stagger-item, .hero-main-title, .hero-cta-buttons, .timeline-item, .main-heading { opacity: 1 !important; transform: none; }
+.typing-content { display: block; }
+.hero-video-section { height: auto; min-height: 800px; }
+.hero-video-background { top: 0; }
+.hero-video-container { height: 100%; }
+.hero-video-background video { object-fit: cover; }
+.scroll-indicator { bottom: 16px !important; }
+.home-page .hero-content-wrapper { padding: 0 24px; margin-top: 0; width: 100%; }
+.home-page .hero-cta-buttons { flex-wrap: wrap; margin-top: 28px; }
+.event-summary { font-size: 14px; color: #ccc; margin-top: 20px; text-align: center; }
+.hero-community { margin-top: 24px; position: relative; z-index: 25; }
+.hero-community a { display: inline-block; padding: 8px 0; color: #9ee6b8; border-bottom: 1px solid #4b7960; font-size: 15px; }
+.hero-community a:hover { color: #c6f8d8; }
+.hero-community p { font-size: 12px; color: #aaa; margin-top: 8px; }
+.about-container .hero-subtitle, .challenges-container .hero-subtitle { opacity: 1; transform: none; animation: none; }
+.about-container .about-content { padding-top: 120px; }
+.about-container .stat-number { font-size: clamp(1.5rem, 4.5vw, 3rem); }
+.challenges-container { padding-top: 120px; }
+.contact-page > section:first-child { padding-top: 130px; }
+.timeline-header h1 { font-size: 48px; font-weight: 300; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 20px; }
+.contact-page .text-gray-400 { overflow-wrap: anywhere; }
+.mission-card::before, .challenge-card::before, .hero-btn::before { pointer-events: none; }
+.challenge-card a { display: block; text-align: center; }
+.challenge-card h3 { overflow-wrap: anywhere; }
+@media (max-width: 768px) {
+  .nav-container { flex-direction: row; align-items: center; flex-wrap: wrap; padding: 16px 20px; }
+  .logo { margin-bottom: 0; }
+  .nav-toggle { display: flex; align-items: center; justify-content: center; padding: 8px; border: 1px solid #555; border-radius: 5px; background: #111; color: white; min-width: 42px; min-height: 42px; }
+  .nav-menu { display: none; width: 100%; padding-top: 16px; }
+  .nav-menu[data-open="true"] { display: block; }
+  .nav-menu > div { max-width: none; justify-content: flex-start; }
+  .nav-links { width: 100%; gap: 2px; }
+  .nav-links a { min-height: 44px; padding: 10px 0; font-size: 13px; }
+  .hero-video-section { height: auto; min-height: 100svh; padding: 140px 0 80px; }
+  .hero-video-background, .hero-video-background video { top: 0; height: 100%; min-height: 100%; }
+  .hero-video-background video { object-fit: cover; }
+  .home-page .hero-content-wrapper { padding: 0 20px; }
+  .hero-main-title { font-size: clamp(2rem, 8vw, 3.5rem); line-height: 1.15; letter-spacing: 1px; }
+  .home-page .hero-subtitle { font-size: 12px; letter-spacing: 2px; }
+  .home-page .hero-description.typing-content { font-size: 16px; width: 100%; }
+  .home-page .hero-cta-buttons { gap: 12px !important; }
+  .home-page .hero-btn { font-size: 11px !important; padding: 14px 22px !important; letter-spacing: 1px !important; }
+  .scroll-indicator { display: none !important; }
+  .section { min-height: auto; padding: 64px 0; }
+  .section-content { width: 100%; padding: 0 24px; }
+  .section h2 { font-size: 2.3rem; }
+  .section .typing-content { width: 100%; margin-left: 0; margin-right: 0; }
+  .timeline-header h1 { font-size: 36px; letter-spacing: 2px; }
+  .timeline-item .timeline-date, .timeline-item .timeline-content { grid-column: 1; order: initial !important; }
+  .about-container .hero-title, .challenges-container .hero-title { font-size: clamp(2rem, 7.5vw, 3rem); letter-spacing: 2px; }
+  .contact-page h1 { font-size: 2.5rem; }
+  footer { padding: 64px 24px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .hero-video-background video, [data-slot="stars-background"], .home-particles { display: none; }
+}
