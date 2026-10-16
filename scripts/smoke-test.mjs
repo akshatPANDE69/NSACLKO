@@ -20,7 +20,7 @@ child.stdout.on("data", (chunk) => { output += chunk; });
 child.stderr.on("data", (chunk) => { output += chunk; });
 const registration = "https://www.spaceappschallenge.org/2026/local-events/lucknow/";
 const community = "https://chat.whatsapp.com/BEEGqEyXkg82LwfPSSjdpk";
-const routes = ["/", "/about", "/challenges", "/timeline", "/contact"];
+const routes = ["/", "/about", "/team", "/challenges", "/timeline", "/contact"];
 
 try {
   let ready = false;

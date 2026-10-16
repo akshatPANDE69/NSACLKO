@@ -1,0 +1,114 @@
+/* Team Page Styles */
+
+.team-page {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  background: radial-gradient(ellipse at 50% 0%, rgba(56, 189, 248, 0.08), transparent 60%),
+              radial-gradient(circle at 80% 60%, rgba(168, 85, 247, 0.05), transparent 50%),
+              #000000;
+  color: #ffffff;
+}
+
+.team-shell {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 120px 24px 80px;
+}
+
+.team-header {
+  text-align: center;
+  max-width: 860px;
+  margin: 0 auto 48px;
+}
+
+.team-eyebrow {
+  display: inline-block;
+  color: #7dd3fc;
+  font-family: var(--igloo-font, monospace);
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  padding: 4px 14px;
+  border-radius: 9999px;
+  background: rgba(14, 165, 233, 0.1);
+  border: 1px solid rgba(14, 165, 233, 0.25);
+}
+
+.team-title {
+  color: #ffffff;
+  font-size: clamp(2.5rem, 6vw, 4.8rem);
+  font-weight: 300;
+  letter-spacing: 0.16em;
+  line-height: 1.15;
+  text-transform: uppercase;
+  margin: 0 0 20px;
+}
+
+.team-subtitle {
+  color: #a1a1aa;
+  font-size: clamp(1rem, 1.8vw, 1.25rem);
+  font-weight: 300;
+  line-height: 1.7;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.team-carousel-section {
+  position: relative;
+  margin: 40px auto 72px;
+  padding: 40px 20px;
+  border-radius: 24px;
+  background: rgba(18, 18, 24, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.team-section-heading {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.team-section-label {
+  font-family: var(--igloo-font, monospace);
+  font-size: 12px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: #38bdf8;
+  margin-bottom: 8px;
+}
+
+.team-section-title {
+  font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #f4f4f5;
+}
+
+/* Text selectability for team page */
+.team-title,
+.team-subtitle,
+.team-page h1,
+.team-page h2,
+.team-page h3,
+.team-page p,
+.team-page span,
+.team-page blockquote {
+  user-select: text;
+}
+
+@media (max-width: 640px) {
+  .team-shell {
+    padding: 100px 16px 60px;
+  }
+  .team-carousel-section {
+    padding: 24px 12px;
+    margin-top: 24px;
+  }
+  .team-title {
+    letter-spacing: 0.1em;
+  }
+}

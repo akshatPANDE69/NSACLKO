@@ -41,6 +41,14 @@ export default function Navbar() {
 
             <NavigationMenuItem>
               <NavigationMenuLink asChild>
+                <Link href="/team" className="nav-link" onClick={() => setOpen(false)}>
+                  Team
+                </Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+
+            <NavigationMenuItem>
+              <NavigationMenuLink asChild>
                 <Link href="/challenges" className="nav-link" onClick={() => setOpen(false)}>
                   Challenges
                 </Link>

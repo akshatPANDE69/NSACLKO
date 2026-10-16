@@ -30,6 +30,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .about-container .about-content { padding-top: 120px; }
 .about-container .stat-number { font-size: clamp(1.5rem, 4.5vw, 3rem); }
 .challenges-container { padding-top: 120px; }
+.team-page { padding-top: 120px; }
 .contact-page > section:first-child { padding-top: 130px; }
 .timeline-header h1 { font-size: 48px; font-weight: 300; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 20px; }
 .contact-page .text-gray-400 { overflow-wrap: anywhere; }

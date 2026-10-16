@@ -10,6 +10,10 @@ const links = [
         title: 'About',
         href: '/about',
     },
+    {
+        title: 'Team',
+        href: '/team',
+    },
     { title: 'Register', href: event.registrationUrl },
     { title: 'WhatsApp community', href: event.whatsappUrl },
 ]
