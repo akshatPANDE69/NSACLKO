@@ -101,7 +101,7 @@ const Particles: React.FC<ParticlesProps> = ({
   sizeRandomness = 1,
   cameraDistance = 20,
   disableRotation = false,
-  className,
+  className = "",
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const mouseRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
@@ -224,6 +224,7 @@ const Particles: React.FC<ParticlesProps> = ({
     };
   }, [
     particleCount,
+    particleColors,
     particleSpread,
     speed,
     moveParticlesOnHover,
