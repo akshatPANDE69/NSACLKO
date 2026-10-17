@@ -1,30 +1,18 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { Card } from "@/components/ui/card"
+import * as React from "react";
+import Image from "next/image";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
+  Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious,
   type CarouselApi,
-} from "@/components/ui/carousel"
-import {
-  Linkedin,
-  Github,
-  Twitter,
-  Mail,
-  Sparkles,
-  ChevronLeft,
-  ChevronRight,
-  Quote,
-} from "lucide-react"
+} from "@/components/ui/carousel";
+import { Linkedin, Github, Twitter, Mail } from "lucide-react";
 
 export interface TeamMember {
   id: number
   name: string
+  photoUrl?: string
   role: string
   department: string
   badge: string
@@ -138,292 +126,130 @@ export const TEAM_MEMBERS: TeamMember[] = [
   },
 ]
 
-export function Pattern() {
-  const [api, setApi] = React.useState<CarouselApi>()
-  const [current, setCurrent] = React.useState(0)
-  const [count, setCount] = React.useState(TEAM_MEMBERS.length)
-
-  React.useEffect(() => {
-    if (!api) return
-
-    setCount(api.scrollSnapList().length)
-    setCurrent(api.selectedScrollSnap())
-
-    const handleSelect = () => {
-      setCurrent(api.selectedScrollSnap())
-    }
-
-    api.on("select", handleSelect)
-    api.on("reInit", handleSelect)
-
-    return () => {
-      api.off("select", handleSelect)
-    }
-  }, [api])
-
-  const currentMember = TEAM_MEMBERS[current] || TEAM_MEMBERS[0]
-
-  return (
-    <div className="w-full flex flex-col items-center">
-      {/* Carousel Container */}
-      <div className="relative w-full max-w-xs sm:max-w-sm md:max-w-md mx-auto px-4">
-        <Carousel
-          setApi={setApi}
-          opts={{
-            align: "center",
-            loop: true,
-          }}
-          className="w-full"
-        >
-          <CarouselContent>
-            {TEAM_MEMBERS.map((member, index) => {
-              const isActive = index === current
-              return (
-                <CarouselItem key={member.id} className="basis-full">
-                  <div className="p-1">
-                    <Card
-                      className={`relative aspect-square overflow-hidden border p-0 rounded-2xl transition-all duration-500 shadow-2xl ${
-                        isActive
-                          ? "border-cyan-500/50 shadow-cyan-500/10 ring-1 ring-cyan-500/30"
-                          : "border-white/10 opacity-75 hover:opacity-100"
-                      }`}
-                    >
-                      <img
-                        src={`https://picsum.photos/800/800?grayscale&random=${member.id}`}
-                        alt={member.name}
-                        width={800}
-                        height={800}
-                        className="h-full w-full object-cover select-none pointer-events-none transition-transform duration-700 hover:scale-105"
-                      />
-
-                      {/* Vignette & Gradients */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none" />
-
-                      {/* Top Badges */}
-                      <div className="absolute top-3 left-3 right-3 flex justify-between items-center pointer-events-none">
-                        <span className="text-[10px] font-mono tracking-widest uppercase bg-black/60 backdrop-blur-md text-cyan-300 border border-cyan-500/30 px-2.5 py-1 rounded-full">
-                          {member.badge}
-                        </span>
-                        <span className="text-[10px] font-mono tracking-widest text-gray-400 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/10">
-                          {String(index + 1).padStart(2, "0")} /{" "}
-                          {String(TEAM_MEMBERS.length).padStart(2, "0")}
-                        </span>
-                      </div>
-
-                      {/* Bottom Info Banner on Image */}
-                      <div className="absolute bottom-3 left-3 right-3 pointer-events-none">
-                        <p className="text-white text-base font-medium truncate">
-                          {member.name}
-                        </p>
-                        <p className="text-cyan-400 text-xs font-mono truncate">
-                          {member.role}
-                        </p>
-                      </div>
-                    </Card>
-                  </div>
-                </CarouselItem>
-              )
-            })}
-          </CarouselContent>
-
-          {/* Desktop Navigation Arrows */}
-          <CarouselPrevious className="hidden sm:inline-flex -left-12 md:-left-16 bg-zinc-900/80 hover:bg-white hover:text-black border-white/20 text-white backdrop-blur-md" />
-          <CarouselNext className="hidden sm:inline-flex -right-12 md:-right-16 bg-zinc-900/80 hover:bg-white hover:text-black border-white/20 text-white backdrop-blur-md" />
-        </Carousel>
-
-        {/* Mobile Navigation Controls */}
-        <div className="flex sm:hidden items-center justify-between mt-3 px-2">
-          <button
-            type="button"
-            onClick={() => api?.scrollPrev()}
-            className="p-2 rounded-full bg-zinc-900/80 border border-white/15 text-white active:scale-95"
-            aria-label="Previous team member"
-          >
-            <ChevronLeft className="w-4 h-4" />
-          </button>
-          <span className="text-xs font-mono text-gray-400">
-            {String(current + 1).padStart(2, "0")} / {String(count).padStart(2, "0")}
-          </span>
-          <button
-            type="button"
-            onClick={() => api?.scrollNext()}
-            className="p-2 rounded-full bg-zinc-900/80 border border-white/15 text-white active:scale-95"
-            aria-label="Next team member"
-          >
-            <ChevronRight className="w-4 h-4" />
-          </button>
-        </div>
-
-        {/* Thumbnail Dots Bar */}
-        <div className="flex items-center justify-center gap-2 mt-4">
-          {TEAM_MEMBERS.map((_, idx) => (
-            <button
-              key={idx}
-              type="button"
-              onClick={() => api?.scrollTo(idx)}
-              aria-label={`Jump to team member ${idx + 1}`}
-              className={`transition-all duration-300 rounded-full ${
-                idx === current
-                  ? "w-8 h-2 bg-gradient-to-r from-cyan-400 to-blue-500 shadow-sm shadow-cyan-400/50"
-                  : "w-2 h-2 bg-white/20 hover:bg-white/50"
-              }`}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Dynamic Text Section - Updates based on active slide */}
-      <div className="w-full max-w-2xl mx-auto mt-8 px-4 text-center">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={current}
-            initial={{ opacity: 0, y: 15, filter: "blur(6px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            exit={{ opacity: 0, y: -15, filter: "blur(6px)" }}
-            transition={{ duration: 0.35, ease: "easeOut" }}
-            className="space-y-4"
-          >
-            {/* Department tag */}
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono uppercase tracking-widest text-cyan-300 bg-cyan-950/40 border border-cyan-800/40 backdrop-blur-sm">
-              <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-              <span>{currentMember.department}</span>
-            </div>
-
-            {/* Name / Title */}
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light tracking-wide text-white">
-              {currentMember.name}
-            </h2>
-
-            {/* Role */}
-            <p className="text-base sm:text-lg font-mono text-cyan-400 tracking-wider">
-              {currentMember.role}
-            </p>
-
-            {/* Bio */}
-            <p className="text-sm sm:text-base text-gray-300 leading-relaxed font-sans max-w-xl mx-auto">
-              {currentMember.bio}
-            </p>
-
-            {/* Quote if present */}
-            {currentMember.quote && (
-              <div className="pt-2">
-                <blockquote className="inline-flex items-center gap-2 text-xs sm:text-sm italic text-gray-400 font-mono border-l-2 border-cyan-500/50 pl-3 py-1 text-left max-w-lg mx-auto">
-                  <Quote className="w-3.5 h-3.5 text-cyan-400 shrink-0 inline" />
-                  <span>&ldquo;{currentMember.quote}&rdquo;</span>
-                </blockquote>
-              </div>
-            )}
-
-            {/* Specialties / Skills */}
-            <div className="flex flex-wrap items-center justify-center gap-2 pt-3">
-              {currentMember.specialties.map((tag) => (
-                <span
-                  key={tag}
-                  className="text-xs font-mono text-gray-300 bg-white/5 border border-white/10 px-3 py-1 rounded-full hover:border-white/30 transition-colors"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-
-            {/* Social Links */}
-            <div className="flex items-center justify-center gap-4 pt-4">
-              {currentMember.socials.linkedin && (
-                <a
-                  href={currentMember.socials.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2.5 rounded-full bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:border-cyan-400 hover:bg-cyan-950/40 transition-all"
-                  aria-label={`${currentMember.name} LinkedIn`}
-                >
-                  <Linkedin className="w-4 h-4" />
-                </a>
-              )}
-              {currentMember.socials.github && (
-                <a
-                  href={currentMember.socials.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2.5 rounded-full bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:border-cyan-400 hover:bg-cyan-950/40 transition-all"
-                  aria-label={`${currentMember.name} GitHub`}
-                >
-                  <Github className="w-4 h-4" />
-                </a>
-              )}
-              {currentMember.socials.twitter && (
-                <a
-                  href={currentMember.socials.twitter}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2.5 rounded-full bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:border-cyan-400 hover:bg-cyan-950/40 transition-all"
-                  aria-label={`${currentMember.name} X / Twitter`}
-                >
-                  <Twitter className="w-4 h-4" />
-                </a>
-              )}
-              {currentMember.socials.email && (
-                <a
-                  href={currentMember.socials.email}
-                  className="p-2.5 rounded-full bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:border-cyan-400 hover:bg-cyan-950/40 transition-all"
-                  aria-label={`Email ${currentMember.name}`}
-                >
-                  <Mail className="w-4 h-4" />
-                </a>
-              )}
-            </div>
-          </motion.div>
-        </AnimatePresence>
-      </div>
-
-      {/* Quick Team Member Thumbnail Selector */}
-      <div className="mt-12 w-full max-w-3xl px-4 border-t border-white/10 pt-8">
-        <p className="text-center text-xs font-mono uppercase tracking-widest text-gray-500 mb-5">
-          Select Team Member To View
-        </p>
-        <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
-          {TEAM_MEMBERS.map((member, idx) => {
-            const isSelected = idx === current
-            return (
-              <button
-                key={member.id}
-                type="button"
-                onClick={() => api?.scrollTo(idx)}
-                className={`group flex flex-col items-center p-2 rounded-xl border transition-all duration-300 ${
-                  isSelected
-                    ? "bg-cyan-950/30 border-cyan-400/60 shadow-lg shadow-cyan-950/50"
-                    : "bg-zinc-900/40 border-white/10 hover:border-white/30 hover:bg-zinc-900/80"
-                }`}
-              >
-                <div
-                  className={`w-12 h-12 rounded-full overflow-hidden border-2 mb-2 transition-transform duration-300 group-hover:scale-105 ${
-                    isSelected ? "border-cyan-400" : "border-white/20"
-                  }`}
-                >
-                  <img
-                    src={`https://picsum.photos/800/800?grayscale&random=${member.id}`}
-                    alt={member.name}
-                    width={48}
-                    height={48}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <span
-                  className={`text-[11px] font-medium leading-tight truncate w-full text-center ${
-                    isSelected ? "text-cyan-300" : "text-gray-400 group-hover:text-white"
-                  }`}
-                >
-                  {member.name.split(" ")[0]}
-                </span>
-                <span className="text-[9px] font-mono text-gray-500 truncate w-full text-center">
-                  {member.badge}
-                </span>
-              </button>
-            )
-          })}
-        </div>
-      </div>
-    </div>
-  )
+export function TeamMemberImage({ member, size, eager = false }: { member: TeamMember; size: number; eager?: boolean }) {
+  if (member.photoUrl) {
+    return <Image className="team-avatar" src={member.photoUrl} alt="" width={size} height={size}
+      draggable={false} loading={eager ? "eager" : "lazy"} unoptimized />;
+  }
+  const names = member.name.replace(/^(Dr\.?|Prof\.?)\s+/i, "").trim().split(/\s+/);
+  const initials = `${names[0][0]}${names.length > 1 ? names[names.length - 1][0] : ""}`;
+  return <span className="team-avatar team-avatar-placeholder" aria-hidden="true">{initials}</span>;
 }
 
-export default Pattern
+export function TeamSocialLinks({ member }: { member: TeamMember }) {
+  const links = [
+    { href: member.socials.linkedin, label: `${member.name} LinkedIn`, Icon: Linkedin },
+    { href: member.socials.github, label: `${member.name} GitHub`, Icon: Github },
+    { href: member.socials.twitter, label: `${member.name} X / Twitter`, Icon: Twitter },
+    { href: member.socials.email, label: `Email ${member.name}`, Icon: Mail },
+  ];
+
+  return (
+    <div className="team-social-links">
+      {links.map(({ href, label, Icon }) => href && (
+        <a key={label} href={href} aria-label={label}
+          {...(!href.startsWith("mailto:") && { target: "_blank", rel: "noopener noreferrer" })}>
+          <Icon size={16} aria-hidden="true" />
+        </a>
+      ))}
+    </div>
+  );
+}
+
+export function Pattern() {
+  const [api, setApi] = React.useState<CarouselApi>();
+  const [current, setCurrent] = React.useState(0);
+  const reducedMotion = useReducedMotion();
+
+  React.useEffect(() => {
+    if (!api) return;
+    const syncSelection = () => setCurrent(api.selectedScrollSnap());
+    syncSelection();
+    api.on("select", syncSelection);
+    api.on("reInit", syncSelection);
+    return () => {
+      api.off("select", syncSelection);
+      api.off("reInit", syncSelection);
+    };
+  }, [api]);
+
+  const currentMember = TEAM_MEMBERS[current] || TEAM_MEMBERS[0];
+
+  return (
+    <div className="team-spotlight">
+      <div className="team-spotlight-grid">
+        <div className="team-visual">
+          <Carousel setApi={setApi} opts={{ align: "center", loop: true, duration: reducedMotion ? 0 : 25 }}
+            className="team-carousel" aria-label="Team member portraits" tabIndex={0}>
+            <CarouselContent>
+              {TEAM_MEMBERS.map((member, index) => (
+                <CarouselItem key={member.id} className="team-slide"
+                  aria-label={`${index + 1} of ${TEAM_MEMBERS.length}: ${member.name}`}
+                  aria-hidden={index !== current}>
+                  <figure className="team-portrait">
+                    <TeamMemberImage member={member} size={800} eager={index === 0} />
+                    <figcaption>
+                      <span>{member.badge}</span>
+                      <p>{member.name}</p>
+                    </figcaption>
+                  </figure>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <div className="team-carousel-controls">
+              <p className="team-carousel-count" aria-live="polite" aria-atomic="true">
+                <span>{String(current + 1).padStart(2, "0")}</span>
+                <span aria-hidden="true"> / </span>
+                <span>{String(TEAM_MEMBERS.length).padStart(2, "0")}</span>
+              </p>
+              <div className="team-arrow-group">
+                <CarouselPrevious className="team-carousel-arrow" aria-label="Previous team member" />
+                <CarouselNext className="team-carousel-arrow" aria-label="Next team member" />
+              </div>
+            </div>
+          </Carousel>
+          <div className="team-carousel-dots" role="group" aria-label="Choose a team member">
+            {TEAM_MEMBERS.map((member, index) => (
+              <button key={member.id} type="button" onClick={() => api?.scrollTo(index)}
+                aria-label={`Jump to team member ${index + 1}`} aria-pressed={current === index}>
+                <span />
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="team-profile" aria-live="polite" aria-atomic="true">
+          <AnimatePresence initial={false} mode="wait">
+            <motion.div key={currentMember.id} className="team-member-details"
+              initial={reducedMotion ? false : { opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: reducedMotion ? 1 : 0 }}
+              transition={{ duration: reducedMotion ? 0 : 0.2 }}>
+              <p className="team-section-label">{currentMember.department}</p>
+              <h3>{currentMember.name}</h3>
+              <p className="team-member-role">{currentMember.role}</p>
+              <p className="team-member-bio">{currentMember.bio}</p>
+              {currentMember.quote && <blockquote>{currentMember.quote}</blockquote>}
+              <ul className="team-specialties" aria-label="Specialties">
+                {currentMember.specialties.map((specialty) => <li key={specialty}>{specialty}</li>)}
+              </ul>
+              <TeamSocialLinks member={currentMember} />
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </div>
+
+      <div className="team-member-selector" role="group" aria-label="Select a team member">
+        {TEAM_MEMBERS.map((member, index) => (
+          <button key={member.id} type="button" onClick={() => api?.scrollTo(index)}
+            aria-label={`View ${member.name}`} aria-pressed={index === current}>
+            <TeamMemberImage member={member} size={48} />
+            <span>{member.name}<small>{member.badge}</small></span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default Pattern;
