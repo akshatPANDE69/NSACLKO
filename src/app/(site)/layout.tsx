@@ -4,6 +4,7 @@ import ScrollProgressBar from "@/app/components/ScrollProgressBar";
 import NavBar from "@/app/components/navbar";
 import Footer from "@/app/components/footer";
 import { Providers } from "@/app/components/Providers";
+import SiteBackground from "@/app/components/SiteBackground";
 
 import "@/app/styles/base.css";
 import "@/app/styles/index.css";
@@ -24,7 +25,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" data-scroll-behavior="smooth">
-      <body>
+      <body className="site-shell">
+        <SiteBackground />
         <a href="#main-content" className="skip-link">Skip to content</a>
         <ScrollProgressBar />
         <NavBar />

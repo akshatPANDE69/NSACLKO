@@ -1,0 +1,13 @@
+/* Keep the original star scene behind page content and interactive controls. */
+body.site-shell { isolation: isolate; }
+.site-star-background { position: fixed; inset: 0; z-index: -1; opacity: .65; pointer-events: none; }
+.site-star-background > .challenge-space-background { width: 100%; height: 100%; }
+
+/* Retain each page's gradients, cards and layout while revealing the stars. */
+#main-content > .about-container,
+#main-content > .contact-page,
+#main-content .timeline-section { background-color: transparent; }
+
+@media (prefers-reduced-motion: reduce) {
+  .site-star-background { display: none; }
+}
