@@ -39,11 +39,11 @@ export default function Home() {
       {/* Global Particles background, not in video section */}
       <div className="home-particles" style={{ width: '100%', height: '100%', position: 'fixed', top: 0, left: 0, zIndex: 0, pointerEvents: 'none' }}>
         <Particles
-          particleColors={["#ffffff", "#ffffff"]}
-          particleCount={600}
+          particleColors={["#ffffff", "#ffffff", "#f0f8ff"]}
+          particleCount={350}
           particleSpread={10}
-          speed={0.1}
-          particleBaseSize={90}
+          speed={0.04}
+          particleBaseSize={55}
           moveParticlesOnHover={false}
           alphaParticles={true}
           disableRotation={false}
