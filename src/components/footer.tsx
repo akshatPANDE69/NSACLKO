@@ -1,5 +1,6 @@
 import { event } from '@/lib/event'
 import Link from 'next/link'
+import { FaWhatsapp } from 'react-icons/fa'
 
 const links = [
     {
@@ -23,7 +24,6 @@ const links = [
         href: '/game',
     },
     { title: 'Register', href: event.registrationUrl },
-    { title: 'WhatsApp community', href: event.whatsappUrl },
 ]
 
 export default function FooterSection() {
@@ -48,11 +48,20 @@ export default function FooterSection() {
                 </div>
                 <div className="my-8 flex flex-wrap justify-center gap-6 text-sm">
                     <Link
+                        href={event.whatsappUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="WhatsApp community"
+                        title="Join our WhatsApp community"
+                        className="inline-flex size-11 items-center justify-center rounded-full text-[#25d366] transition-colors hover:bg-white/5 hover:text-[#5deb91]">
+                        <FaWhatsapp className="size-6" aria-hidden="true" focusable="false" />
+                    </Link>
+                    <Link
                         href={event.instagramUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="Instagram"
-                        className="text-muted-foreground hover:text-primary block">
+                        className="text-muted-foreground hover:text-primary inline-flex size-11 items-center justify-center rounded-full hover:bg-white/5">
                         <svg
                             className="size-6"
                             xmlns="http://www.w3.org/2000/svg"
