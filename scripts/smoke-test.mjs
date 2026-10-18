@@ -35,6 +35,8 @@ try {
   for (const route of routes) {
     const response = await fetch(origin + route);
     assert.equal(response.status, 200, `${route} must load`);
+    assert.equal(response.headers.get("cross-origin-opener-policy"), route === "/game" ? "same-origin-allow-popups" : null,
+      "Google popup communication must be enabled on the game route only");
     const html = await response.text();
     const document = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, "");
     pages[route] = document;
