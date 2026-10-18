@@ -1,18 +1,16 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 
-const CANVAS_WIDTH = 800;
-const CANVAS_HEIGHT = 480;
-const BIRD_X = 180;
-const BIRD_RADIUS = 17;
-const PIPE_WIDTH = 78;
-const PIPE_GAP = 158;
-const FLOOR_HEIGHT = 34;
+import { GAME, createFlight, stepFlight, type Pipe, type Replay } from "@/lib/game/engine";
+import { useGameLeaderboard, type RankedRun } from "./useGameLeaderboard";
+import GameLeaderboard from "./GameLeaderboard";
+
+const { width: CANVAS_WIDTH, height: CANVAS_HEIGHT, birdX: BIRD_X, birdRadius: BIRD_RADIUS,
+  pipeWidth: PIPE_WIDTH, pipeGap: PIPE_GAP, floorHeight: FLOOR_HEIGHT } = GAME;
 const STORAGE_KEY = "nsac-flappy-bird-high-score";
-
-type Pipe = { x: number; gapY: number; scored: boolean };
-type Phase = "ready" | "playing" | "gameover";
+type Phase = "ready" | "starting" | "playing" | "gameover";
+type Submission = { run: RankedRun; replay: Replay };
 
 function drawScene(
   context: CanvasRenderingContext2D,
@@ -116,175 +114,184 @@ function drawScene(
 }
 
 export default function FlappyBirdGame() {
+  const leaderboard = useGameLeaderboard();
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const playAreaRef = useRef<HTMLDivElement>(null);
+  const flightRef = useRef(createFlight(1));
   const phaseRef = useRef<Phase>("ready");
-  const birdYRef = useRef(CANVAS_HEIGHT / 2);
-  const birdVelocityRef = useRef(0);
-  const pipesRef = useRef<Pipe[]>([]);
-  const scoreRef = useRef(0);
+  const pendingFlap = useRef(false);
+  const flapTicks = useRef<number[]>([]);
+  const runRef = useRef<RankedRun | null>(null);
+  const previousTime = useRef(0);
+  const accumulator = useRef(0);
   const bestRef = useRef(0);
+  const autoRankedUser = useRef("");
   const [phase, setPhase] = useState<Phase>("ready");
   const [score, setScore] = useState(0);
   const [best, setBest] = useState(0);
+  const [mode, setMode] = useState<"practice" | "ranked">("practice");
+  const [rankedFlight, setRankedFlight] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [pending, setPending] = useState<Submission | null>(null);
+  const [flightMessage, setFlightMessage] = useState("");
+  const [saveFailed, setSaveFailed] = useState(false);
 
   useEffect(() => {
     try {
       const stored = Number(window.localStorage.getItem(STORAGE_KEY) ?? 0);
-      if (Number.isSafeInteger(stored) && stored >= 0) {
-        bestRef.current = stored;
-        setBest(stored);
-      }
-    } catch (error) {
-      console.warn("Could not load the Flappy Bird high score from local storage.", error);
-    }
-  }, []);
-
-  const startGame = useCallback(() => {
-    birdYRef.current = CANVAS_HEIGHT / 2;
-    birdVelocityRef.current = 0;
-    pipesRef.current = [
-      { x: CANVAS_WIDTH + 140, gapY: 235, scored: false },
-      { x: CANVAS_WIDTH + 500, gapY: 285, scored: false },
-    ];
-    scoreRef.current = 0;
-    setScore(0);
-    phaseRef.current = "playing";
-    setPhase("playing");
-  }, []);
-
-  const flap = useCallback(() => {
-    if (phaseRef.current === "playing") birdVelocityRef.current = -7.4;
+      if (Number.isSafeInteger(stored) && stored >= 0) { bestRef.current = stored; setBest(stored); }
+    } catch { /* Private browsing may disable local storage. */ }
   }, []);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    const context = canvas?.getContext("2d");
-    if (!canvas || !context) {
-      console.error("Flappy Bird could not start because a 2D canvas context is unavailable.");
-      return;
+    if (leaderboard.user && leaderboard.board?.available && autoRankedUser.current !== leaderboard.user.id) {
+      autoRankedUser.current = leaderboard.user.id;
+      setMode("ranked");
+    } else if (!leaderboard.user) {
+      autoRankedUser.current = "";
+      setMode("practice");
     }
+  }, [leaderboard.user, leaderboard.board?.available]);
 
+  const saveFlight = async (submission: Submission) => {
+    setSaving(true);
+    setSaveFailed(false);
+    setFlightMessage("Checking and saving your flight…");
+    try {
+      const verifiedScore = await leaderboard.submit(submission.run, submission.replay);
+      setPending(null);
+      setFlightMessage(verifiedScore > 0 ? `Flight verified. ${verifiedScore} points saved to the leaderboard.` : "Flight verified. Score at least one point to join the leaderboard.");
+    } catch (error) {
+      setSaveFailed(true);
+      setFlightMessage(error instanceof Error ? error.message : "Your score could not be saved. Please try again.");
+    } finally { setSaving(false); }
+  };
+
+  const finishRef = useRef(() => {});
+  finishRef.current = () => {
+    phaseRef.current = "gameover";
+    setPhase("gameover");
+    const flight = flightRef.current;
+    setScore(flight.score);
+    if (flight.score > bestRef.current) {
+      bestRef.current = flight.score;
+      setBest(flight.score);
+      try { window.localStorage.setItem(STORAGE_KEY, String(flight.score)); }
+      catch { /* The flight is still playable without browser storage. */ }
+    }
+    if (runRef.current) {
+      const submission = { run: runRef.current, replay: { ticks: flight.tick, flaps: [...flapTicks.current] } };
+      runRef.current = null;
+      setPending(submission);
+      void saveFlight(submission);
+    }
+  };
+
+  const startGame = async () => {
+    if (phaseRef.current === "playing" || phaseRef.current === "starting" || pending || saving) return;
+    setFlightMessage("");
+    setSaveFailed(false);
+    let run: RankedRun | null = null;
+    if (mode === "ranked") {
+      phaseRef.current = "starting";
+      setPhase("starting");
+      try { run = await leaderboard.startRanked(); }
+      catch (error) {
+        phaseRef.current = "ready";
+        setPhase("ready");
+        setFlightMessage(error instanceof Error ? error.message : "Ranked flight could not start. Please try again.");
+        return;
+      }
+    }
+    const seed = run?.seed ?? (window.crypto.getRandomValues(new Uint32Array(1))[0] || 1);
+    runRef.current = run;
+    flightRef.current = createFlight(seed);
+    setRankedFlight(Boolean(run));
+    pendingFlap.current = true;
+    flapTicks.current = [];
+    previousTime.current = 0;
+    accumulator.current = 0;
+    setScore(0);
+    phaseRef.current = "playing";
+    setPhase("playing");
+    playAreaRef.current?.focus({ preventScroll: true });
+  };
+
+  useEffect(() => {
+    const context = canvasRef.current?.getContext("2d");
+    if (!context) return;
     let frame = 0;
-    let previousTime = 0;
-    let lastScore = 0;
-    let pipeCount = 2;
-    const finishGame = () => {
-      phaseRef.current = "gameover";
-      setPhase("gameover");
-      if (scoreRef.current > bestRef.current) {
-        bestRef.current = scoreRef.current;
-        setBest(scoreRef.current);
-        try {
-          window.localStorage.setItem(STORAGE_KEY, String(scoreRef.current));
-        } catch (error) {
-          console.warn("Could not save the Flappy Bird high score to local storage.", error);
-        }
-      }
-    };
-
+    let displayedScore = 0;
+    const stepMs = 1000 / GAME.ticksPerSecond;
     const animate = (time: number) => {
-      const delta = previousTime === 0 ? 1 : Math.min((time - previousTime) / (1000 / 60), 2);
-      previousTime = time;
-
+      const elapsed = previousTime.current ? Math.min(time - previousTime.current, 250) : 0;
+      previousTime.current = time;
+      const flight = flightRef.current;
       if (phaseRef.current === "playing") {
-        birdVelocityRef.current += 0.38 * delta;
-        birdYRef.current += birdVelocityRef.current * delta;
-        const pipes = pipesRef.current;
-        for (const pipe of pipes) {
-          pipe.x -= 3.1 * delta;
-          const top = pipe.gapY - PIPE_GAP / 2;
-          const bottom = pipe.gapY + PIPE_GAP / 2;
-          const overlapsBird = BIRD_X + BIRD_RADIUS > pipe.x && BIRD_X - BIRD_RADIUS < pipe.x + PIPE_WIDTH;
-          if (overlapsBird && (birdYRef.current - BIRD_RADIUS < top || birdYRef.current + BIRD_RADIUS > bottom)) {
-            finishGame();
-            break;
-          }
-          if (!pipe.scored && pipe.x + PIPE_WIDTH < BIRD_X) {
-            pipe.scored = true;
-            scoreRef.current += 1;
-          }
+        accumulator.current += elapsed;
+        while (accumulator.current >= stepMs && flight.alive) {
+          const flap = pendingFlap.current && flapTicks.current.length < GAME.maxFlaps;
+          if (flap) flapTicks.current.push(flight.tick);
+          pendingFlap.current = false;
+          stepFlight(flight, flap);
+          accumulator.current -= stepMs;
         }
-
-        if (scoreRef.current !== lastScore) {
-          lastScore = scoreRef.current;
-          setScore(lastScore);
-        }
-        if (phaseRef.current === "playing" && pipes[pipes.length - 1].x < CANVAS_WIDTH - 380) {
-          pipeCount += 1;
-          const gapY = 230 + Math.sin(pipeCount * 2.17) * 65;
-          pipes.push({ x: CANVAS_WIDTH + 40, gapY, scored: false });
-        }
-        pipesRef.current = pipes.filter((pipe) => pipe.x + PIPE_WIDTH > -20);
-        if (birdYRef.current - BIRD_RADIUS < 0 || birdYRef.current + BIRD_RADIUS > CANVAS_HEIGHT - FLOOR_HEIGHT) {
-          finishGame();
-        }
+        if (flight.score !== displayedScore) { displayedScore = flight.score; setScore(flight.score); }
+        if (!flight.alive) finishRef.current();
       }
-
       const idleBob = phaseRef.current === "ready" ? Math.sin(time / 280) * 8 : 0;
-      drawScene(context, birdYRef.current + idleBob, birdVelocityRef.current, pipesRef.current, scoreRef.current);
+      drawScene(context, flight.birdY + idleBob, flight.velocity, flight.pipes, flight.score);
       frame = window.requestAnimationFrame(animate);
     };
-
     frame = window.requestAnimationFrame(animate);
     return () => window.cancelAnimationFrame(frame);
   }, []);
 
+  const flapOrStart = () => {
+    if (phaseRef.current === "playing") pendingFlap.current = true;
+    else if (phaseRef.current !== "starting") void startGame();
+  };
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.code !== "Space" && event.code !== "ArrowUp") return;
     event.preventDefault();
-    if (phaseRef.current === "ready" || phaseRef.current === "gameover") startGame();
-    else flap();
+    if (!event.repeat) flapOrStart();
   };
-
-  const handlePointerDown = () => {
-    if (phaseRef.current === "ready" || phaseRef.current === "gameover") startGame();
-    else flap();
-  };
+  const busy = phase === "playing" || phase === "starting" || saving;
 
   return (
     <section className="flappy-game" aria-labelledby="flappy-game-title">
       <header className="flappy-game-header">
-        <p className="flappy-eyebrow">A little space-apps arcade</p>
+        <p className="flappy-eyebrow">NASA Space Apps Lucknow arcade</p>
         <h1 id="flappy-game-title">Flappy Bird</h1>
-        <p>Take flight, dodge the gates, and see how far you can go.</p>
+        <p>One more gate. One better flight. A shot at the top.</p>
       </header>
-
-      <div className="flappy-scoreboard" aria-label="Scoreboard">
-        <div><span>Score</span><strong aria-live="polite">{score}</strong></div>
-        <div><span>Personal best</span><strong aria-live="polite">{best}</strong></div>
-      </div>
-
-      <div
-        className="flappy-play-area"
-        onKeyDown={handleKeyDown}
-        onPointerDown={handlePointerDown}
-        role="group"
-        tabIndex={0}
-        aria-label="Flappy Bird game. Click or press Space or Arrow Up to fly."
-      >
-        <canvas
-          ref={canvasRef}
-          width={CANVAS_WIDTH}
-          height={CANVAS_HEIGHT}
-          aria-hidden="true"
-        />
-        {phase !== "playing" && (
-          <div className="flappy-overlay" aria-live="polite">
-            <p>{phase === "ready" ? "Ready for launch?" : "Flight ended"}</p>
-            <span>{phase === "ready" ? "Tap, click, or press Space to start" : `You scored ${score}. Take another flight?`}</span>
+      <div className="flappy-layout">
+        <div className="flappy-flight">
+          <div className="flappy-scoreboard" aria-label="Scoreboard">
+            <div><span>Score</span><strong>{score}</strong></div>
+            <div><span>Personal best</span><strong>{best}</strong></div>
           </div>
-        )}
+          <div className="flappy-mode" aria-label="Choose game mode">
+            <div><button type="button" aria-pressed={mode === "practice"} disabled={busy || Boolean(pending)} onClick={() => setMode("practice")}>Practice</button><button type="button" aria-pressed={mode === "ranked"} disabled={busy || Boolean(pending) || !leaderboard.user || !leaderboard.board?.available} onClick={() => setMode("ranked")}>Ranked flight</button></div>
+            <span>{mode === "ranked" ? "Your best flight counts" : "Sign in to compete"}</span>
+          </div>
+          <div ref={playAreaRef} className="flappy-play-area" onKeyDown={handleKeyDown} onPointerDown={() => { playAreaRef.current?.focus({ preventScroll: true }); flapOrStart(); }} role="group" tabIndex={0} aria-label="Flappy Bird game. Click or press Space or Arrow Up to fly.">
+            <canvas ref={canvasRef} width={CANVAS_WIDTH} height={CANVAS_HEIGHT} aria-hidden="true" />
+            {phase !== "playing" && <div className="flappy-overlay" aria-live="polite">
+              <p>{phase === "starting" ? "Preparing your flight…" : phase === "ready" ? "Ready for launch?" : "Flight ended"}</p>
+              <span>{phase === "starting" ? "Setting up your ranked game" : phase === "ready" ? "Tap, click, or press Space to start" : `${rankedFlight ? "Ranked flight" : "Practice flight"} · ${score} points`}</span>
+            </div>}
+          </div>
+          <div className="flappy-controls">
+            <p>Click or tap, or press <kbd>Space</kbd> / <kbd>↑</kbd> to flap.</p>
+            {phase !== "playing" && !pending && <button type="button" className="flappy-start-button" disabled={busy} onClick={() => void startGame()}>{phase === "starting" ? "Preparing…" : phase === "ready" ? "Start game" : "Play again"}</button>}
+          </div>
+          {flightMessage && <p className={`flappy-flight-message${saveFailed ? " flappy-save-error" : ""}`} role="status">{flightMessage}</p>}
+          {saveFailed && pending && <div className="flappy-retry"><button type="button" className="flappy-start-button" disabled={saving} onClick={() => void saveFlight(pending)}>Retry saving score</button><button type="button" className="flappy-text-button" disabled={saving} onClick={() => { setPending(null); setFlightMessage(""); setSaveFailed(false); }}>Discard unsaved flight</button></div>}
+          <p className="flappy-highscore-note">Personal best is saved in this browser. Only flights started in ranked mode join the leaderboard.</p>
+        </div>
+        <GameLeaderboard leaderboard={leaderboard} flightActive={busy} />
       </div>
-
-      <div className="flappy-controls">
-        <p>Click or tap the game, or press <kbd>Space</kbd> / <kbd>↑</kbd> to flap.</p>
-        {phase !== "playing" && (
-          <button type="button" className="flappy-start-button" onClick={startGame}>
-            {phase === "ready" ? "Start game" : "Play again"}
-          </button>
-        )}
-      </div>
-      <p className="flappy-highscore-note">Your personal best is saved in this browser.</p>
     </section>
   );
 }

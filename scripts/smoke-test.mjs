@@ -20,7 +20,7 @@ child.stdout.on("data", (chunk) => { output += chunk; });
 child.stderr.on("data", (chunk) => { output += chunk; });
 const registration = "https://www.spaceappschallenge.org/2026/local-events/lucknow/";
 const community = "https://chat.whatsapp.com/BEEGqEyXkg82LwfPSSjdpk";
-const routes = ["/", "/about", "/team", "/challenges", "/timeline", "/news", "/game", "/contact"];
+const routes = ["/", "/about", "/team", "/challenges", "/timeline", "/news", "/game", "/game/privacy", "/contact"];
 
 try {
   let ready = false;
@@ -68,6 +68,29 @@ try {
   assert.match(pages["/challenges"], /https:\/\/www\.spaceappschallenge\.org\/2026\/challenges\//);
   assert.match(pages["/game"], /Flappy Bird/);
   assert.match(pages["/game"], /personal best/i);
+  assert.match(pages["/game"], /Sign in with Google/);
+  assert.match(pages["/game"], /First place wins a surprise prize/);
+  assert.doesNotMatch(pages["/game"], /Supabase/i);
+  const session = await fetch(origin + "/api/game/session");
+  assert.equal(session.status, 200);
+  assert.equal(session.headers.get("cache-control"), "no-store");
+  const sessionData = await session.json();
+  assert.equal(sessionData.user, null, "An unauthenticated visitor cannot impersonate a player");
+  assert.equal(typeof sessionData.clientId, "string");
+  for (const endpoint of ["runs", "scores"]) {
+    const response = await fetch(origin + "/api/game/" + endpoint, { method: "POST", headers: { Origin: origin, "Content-Type": "application/json" }, body: "{}" });
+    assert.equal(response.status, 401, `${endpoint} requires Google authentication`);
+    assert.equal(response.headers.get("cache-control"), "no-store");
+  }
+  for (const endpoint of ["sign-in", "sign-out", "runs", "scores"]) {
+    const response = await fetch(origin + "/api/game/" + endpoint, { method: "POST", headers: { Origin: "https://attacker.example", "Content-Type": "application/json" }, body: "{}" });
+    assert.equal(response.status, 403, `${endpoint} rejects requests from another website`);
+  }
+  const oversizedSignIn = await fetch(origin + "/api/game/sign-in", { method: "POST", headers: { Origin: origin, "Content-Type": "application/json" }, body: JSON.stringify({ credential: "x".repeat(12000) }) });
+  assert.equal(oversizedSignIn.status, 413);
+  const noNonce = await fetch(origin + "/api/game/sign-in", { method: "POST", headers: { Origin: origin, "Content-Type": "application/json" }, body: JSON.stringify({ credential: "fake.token.signature", nonce: "unissued" }) });
+  assert.equal(noNonce.status, 403, "Sign in requires the server's browser challenge");
+  console.log("PASS game HTTP routes: guest sessions, Google requirement, cross site rejection and sign in request bounds");
   assert.match(pages["/timeline"], /11:59 PM local time/i);
   assert.match(pages["/timeline"], /id="navbar"/, "Timeline must retain the navigation from the last successful production deployment");
   assert.match(pages["/timeline"], />Event Timeline<\/h1>/);
