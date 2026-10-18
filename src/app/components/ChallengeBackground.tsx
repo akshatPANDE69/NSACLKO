@@ -3,7 +3,7 @@
 import { Component, useEffect, useState, type ReactNode } from "react";
 import Particles from "@/app/components/Particles";
 
-const colors = ["#ffffff", "#ffffff"];
+const colors = ["#ffffff", "#ffffff", "#f0f8ff"];
 
 class BackgroundFallback extends Component<{ children: ReactNode }, { failed: boolean }> {
   state = { failed: false };
@@ -21,5 +21,5 @@ export default function ChallengeBackground() {
     preference.addEventListener("change", update);
     return () => preference.removeEventListener("change", update);
   }, []);
-  return <div className="challenge-space-background" aria-hidden="true">{enabled && <BackgroundFallback><Particles particleColors={colors} particleCount={600} particleSpread={10} speed={0.1} particleBaseSize={90} moveParticlesOnHover={false} alphaParticles disableRotation={false} /></BackgroundFallback>}</div>;
+  return <div className="challenge-space-background" aria-hidden="true">{enabled && <BackgroundFallback><Particles particleColors={colors} particleCount={350} particleSpread={10} speed={0.04} particleBaseSize={55} moveParticlesOnHover={false} alphaParticles disableRotation={false} /></BackgroundFallback>}</div>;
 }
