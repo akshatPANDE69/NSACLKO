@@ -41,7 +41,15 @@ export function useGameLeaderboard() {
     finally { setAuthReady(true); }
   }, []);
 
-  useEffect(() => { void reloadAuth(); }, [reloadAuth]);
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    if (url.searchParams.get("signin") === "failed") {
+      setAuthError("Google sign in could not finish. Please try again.");
+      url.searchParams.delete("signin");
+      window.history.replaceState(null, "", url);
+    }
+    void reloadAuth();
+  }, [reloadAuth]);
 
   const refresh = useCallback(async () => {
     const request = ++requestNumber.current;

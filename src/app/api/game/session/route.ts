@@ -1,4 +1,4 @@
-import { getGooglePlayer, googleClientId, issueNonce, newSignInNonce } from "@/lib/game/google";
+import { getGooglePlayer, googleClientId, issueNonce, signInNonce } from "@/lib/game/google";
 import { gameFailure, gameResponse } from "@/lib/game/http";
 
 export const runtime = "nodejs";
@@ -8,7 +8,7 @@ export async function GET(request: Request) {
   try {
     const player = await getGooglePlayer(request, false);
     const clientId = googleClientId();
-    const nonce = !player && clientId ? newSignInNonce() : "";
+    const nonce = !player && clientId ? signInNonce(request) : "";
     const response = gameResponse({ user: player ? { id: player.id, name: player.name } : null, clientId, nonce });
     if (nonce) issueNonce(response, nonce);
     return response;
