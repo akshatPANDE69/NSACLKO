@@ -37,6 +37,8 @@ The server verifies Google's signature, audience, issuer, expiry, verified email
 
 Google's full page response is a bounded form POST. Its `g_csrf_token` field must match Google's browser cookie, and the signed identity token's nonce must match the app's anonymous HttpOnly nonce cookie. Missing, duplicate, mismatched and oversized fields are rejected. The anonymous nonce lasts five minutes and uses Secure and SameSite=None in production to reach the cross site callback. The authenticated session remains SameSite=Lax. Game tabs share the existing nonce so that opening a second tab does not invalidate a sign in already in progress.
 
+Guest pages renew their nonce every minute while visible and when returning from a sleeping tab or browser history. Overlapping session requests share one promise. A stale button is paused while its sign in check is refreshed. Expired checks, missing callback cookies and database failures have distinct messages beside the account controls; sign in errors do not hide the public leaderboard.
+
 A hash of Google's stable subject identifies each player. The `game_players` table contains the verified display name and private contact email. The public leaderboard returns only display name, score, rank and whether the row belongs to the current player. Emails, Google subjects, account IDs and flight controls are excluded from public responses.
 
 All three game tables use RLS and revoke browser role permissions. Database functions are executable only by the service role. The Next.js server verifies each player and uses the Supabase secret key for database operations. Changing scores by calling Supabase directly from a browser is denied.

@@ -87,8 +87,15 @@ try {
   });
   assert.equal(invalidGoogleReturn.status, 303);
   assert.equal(new URL(invalidGoogleReturn.headers.get("location")).pathname, "/game");
-  assert.equal(new URL(invalidGoogleReturn.headers.get("location")).searchParams.get("signin"), "failed");
+  assert.equal(new URL(invalidGoogleReturn.headers.get("location")).searchParams.get("signin"), "cookies");
   assert.equal(invalidGoogleReturn.headers.get("set-cookie"), null, "Invalid Google returns cannot set an authenticated session");
+  const expiredGoogleReturn = await fetch(origin + "/api/game/google", {
+    method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded", Cookie: "g_csrf_token=test-csrf" },
+    body: "credential=fake&g_csrf_token=test-csrf", redirect: "manual",
+  });
+  assert.equal(expiredGoogleReturn.status, 303);
+  assert.equal(new URL(expiredGoogleReturn.headers.get("location")).searchParams.get("signin"), "expired");
+  assert.equal(expiredGoogleReturn.headers.get("set-cookie"), null);
   for (const endpoint of ["runs", "scores"]) {
     const response = await fetch(origin + "/api/game/" + endpoint, { method: "POST", headers: { Origin: origin, "Content-Type": "application/json" }, body: "{}" });
     assert.equal(response.status, 401, `${endpoint} requires Google authentication`);

@@ -8,7 +8,7 @@ import { createClient } from "@supabase/supabase-js";
 import { PGlite } from "@electric-sql/pglite";
 import { GAME, createFlight, stepFlight, validateReplay } from "../src/lib/game/engine.ts";
 import { verifyGoogleCredential, sameNonce, readCookie, saveGoogleSession, sessionCookie, nonceCookie, issueNonce, signInNonce } from "../src/lib/game/google.ts";
-import { readGoogleRedirect } from "../src/lib/game/google-redirect.ts";
+import { GoogleRedirectError, readGoogleRedirect } from "../src/lib/game/google-redirect.ts";
 import { gameResponse, requireSameOrigin, readGameBody } from "../src/lib/game/http.ts";
 import { GameStore } from "../src/lib/game/store.ts";
 
@@ -102,6 +102,10 @@ assert.equal((await verifyGoogleCredential(redirect.credential, redirect.nonce, 
 for (const cookies of ["", `${nonceCookie}=${redirectNonce}`, `g_csrf_token=wrong; ${nonceCookie}=${redirectNonce}`, "g_csrf_token=fixture-csrf"]) {
   await assert.rejects(readGoogleRedirect(googleForm({}, cookies)), (error) => error.status === 403);
 }
+await assert.rejects(readGoogleRedirect(googleForm({}, "g_csrf_token=fixture-csrf")),
+  (error) => error instanceof GoogleRedirectError && error.reason === "expired");
+await assert.rejects(readGoogleRedirect(googleForm({}, `${nonceCookie}=${redirectNonce}`)),
+  (error) => error instanceof GoogleRedirectError && error.reason === "cookies");
 await assert.rejects(readGoogleRedirect(googleForm({ g_csrf_token: "wrong" })), (error) => error.status === 403);
 await assert.rejects(readGoogleRedirect(googleForm({ credential: "x".repeat(7001) })), /could not be read/);
 await assert.rejects(readGoogleRedirect(googleForm({ extra: "x".repeat(10001) })), (error) => error.status === 413);
