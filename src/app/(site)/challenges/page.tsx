@@ -17,7 +17,7 @@ export default function ChallengePage() {
           <p className="challenge-page-eyebrow">NASA Space Apps Challenge / {event.year}</p>
           <h1>Challenges</h1>
           <p className="challenge-page-intro">Start with a question that interests you.<br />See where your perspective can take it.</p>
-          <a href={event.challengesUrl} className="hero-btn primary">Browse NASA&apos;s {event.year} challenges <ArrowUpRight size={17} aria-hidden="true" /></a>
+          <a href="#challenge-catalog" className="hero-btn primary">Explore all {event.year} challenges <ArrowUpRight size={17} aria-hidden="true" /></a>
           <p className="challenge-page-caption">NASA&apos;s open data. Your ideas. Every background welcome.</p>
         </header>
 
