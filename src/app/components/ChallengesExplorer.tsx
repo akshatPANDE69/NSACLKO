@@ -20,49 +20,6 @@ const challenges = [
   { id: "13", category: "Creative", title: "Space Mission Design Game", description: "Help players understand the many constraints behind designing a space mission. Balance mission goals with budgets, instruments, power, communications, and other engineering choices.", ideas: "Build a strategy game or simulation where design decisions affect cost, capability, risk, and mission outcomes.", skills: "Game design · Systems thinking · Engineering · Coding", officialSlug: "space-mission-design-game" },
   { id: "14", category: "Creative", title: "The Earth Information Jukebox", description: "Turn Earth science information and visualizations into a new sensory experience. Explore how sound can make patterns in Earth data more accessible, memorable, or emotionally resonant.", ideas: "Create a sonification experience, interactive soundscape, or accessible multimedia story based on Earth information.", skills: "Sound design · Earth science · Creative coding · Accessibility", officialSlug: "the-earth-information-jukebox" },
 ];
-const officialMetadata: Record<
-  string,
-  { difficulty: string[]; subjects: string[] }
-> = {
-  "Build a Junior Astronaut Mission Trainer": {
-    difficulty: ["Intermediate", "Beginner/Youth"],
-    subjects: [
-      "Games",
-      "Planets & Moons",
-      "Software",
-      "Space Exploration",
-      "Sun",
-    ],
-  },
-
-  "Create Health Monitoring Software for Astronauts on Space Missions": {
-    difficulty: ["Intermediate"],
-    subjects: [
-      "Human Exploration",
-      "Software",
-      "Space Exploration",
-    ],
-  },
-
-  "Field Shift: Adapting Farms with NASA Data": {
-    difficulty: ["Advanced", "Intermediate"],
-    subjects: [
-      "Arts & Multimedia",
-      "Earth Science",
-      "Software",
-    ],
-  },
-
-  "The Earth Information Jukebox": {
-    difficulty: ["Beginner", "Intermediate", "Advanced"],
-    subjects: ["Extrasolar Objects", "Planets & Moons"],
-  },
-
-  "Be An Earth System Trend Detective!": {
-    difficulty: ["Beginner", "Intermediate", "Advanced"],
-    subjects: ["Extrasolar Objects", "Planets & Moons"],
-  },
-};
 
 const filters = ["All", "Earth", "Space", "Data", "Creative"];
 
@@ -95,20 +52,7 @@ export default function ChallengesExplorer() {
             <div className="challenge-card-top"><span>{challenge.id} / {challenge.category}</span><span>NASA Space Apps 2026</span></div>
             <h3>{challenge.title}</h3>
             {challenge.subtitle && <p className="challenge-card-subtitle">{challenge.subtitle}</p>}
-            <div className="challenge-official-metadata">
-  <p>
-    <strong>Difficulty:</strong>{" "}
-    {officialMetadata[challenge.title]?.difficulty.join(" · ") ??
-      "See official NASA brief"}
-  </p>
-
-  <p>
-    <strong>Subjects:</strong>{" "}
-    {officialMetadata[challenge.title]?.subjects.join(" · ") ??
-      "See official NASA brief"}
-  </p>
-</div>
-<p className="challenge-card-description">{challenge.description}</p>
+            <p className="challenge-card-description">{challenge.description}</p>
             <p className="challenge-card-skills">{challenge.skills}</p>
             <details className="challenge-details">
               <summary>Ideas for your solution</summary>
