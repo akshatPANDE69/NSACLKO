@@ -20,7 +20,10 @@
 .challenges-page .challenge-area-grid[data-single="true"] { grid-template-columns: minmax(0, 1fr); max-width: 780px; }
 .challenges-page .challenge-area-card { position: relative; min-width: 0; display: flex; flex-direction: column; padding: 34px; border: 1px solid #383838; border-radius: 8px; background: rgb(8 8 8 / 78%); backdrop-filter: blur(5px); transition: border-color .25s, background .25s; }
 .challenges-page .challenge-area-card:hover { border-color: #858585; background: rgb(18 18 18 / 88%); }
-.challenges-page .challenge-card-top { display: flex; justify-content: space-between; align-items: center; gap: 20px; margin-bottom: 30px; color: #d8d8d8; }
+.challenges-page .challenge-card-media { position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 6px; margin-bottom: 22px; border: 1px solid #333; background: #0c0c0c; }
+.challenges-page .challenge-card-img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; display: block; }
+.challenges-page .challenge-area-card:hover .challenge-card-img { transform: scale(1.04); }
+.challenges-page .challenge-card-top { display: flex; justify-content: space-between; align-items: center; gap: 20px; margin-bottom: 24px; color: #d8d8d8; }
 .challenges-page .challenge-card-top > span { color: #a8a8a8; font-size: 11px; letter-spacing: 1.8px; text-transform: uppercase; }
 .challenges-page .challenge-area-card h3 { color: #eee; font-size: clamp(1.45rem, 2.2vw, 1.85rem); font-weight: 300; letter-spacing: .8px; line-height: 1.25; text-transform: uppercase; margin: 0 0 18px; }
 .challenges-page .challenge-card-description { color: #bdbdbd; font-size: 16px; font-weight: 300; line-height: 1.8; margin-bottom: 20px; }

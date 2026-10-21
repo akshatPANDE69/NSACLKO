@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ArrowUpRight, MessageCircle } from "lucide-react";
-import { Pattern, TEAM_MEMBERS, TeamMemberImage, TeamSocialLinks } from "@/app/components/TeamCarousel";
+import { Pattern, TEAM_MEMBERS, TeamSocialLinks } from "@/app/components/TeamCarousel";
 import ChallengeBackground from "@/app/components/ChallengeBackground";
 import { event } from "@/lib/event";
 import "@/app/styles/team.css";
@@ -28,9 +28,9 @@ export default function TeamPageClient() {
           <div className="team-section-heading">
             <div>
               <p className="team-section-label">Team spotlight</p>
-              <h2 id="team-spotlight-title">Core crew &amp; mentors</h2>
+              <h2 id="team-spotlight-title">Core Team &amp; Leadership</h2>
             </div>
-            <p className="team-section-note">Explore the people behind the event.</p>
+            <p className="team-section-note">Explore the core leadership behind the event.</p>
           </div>
           <Pattern />
         </section>
@@ -53,8 +53,7 @@ export default function TeamPageClient() {
             {members.map((member) => (
               <article key={member.id} className="team-directory-card">
                 <div className="team-directory-card-header">
-                  <TeamMemberImage member={member} size={64} />
-                  <div><p className="team-section-label">{member.badge}</p><h3>{member.name}</h3></div>
+                  <div><p className="team-section-label">{member.badge} · {member.department}</p><h3>{member.name}</h3></div>
                 </div>
                 <p className="team-directory-role">{member.role}</p>
                 <p className="team-directory-bio">{member.bio}</p>

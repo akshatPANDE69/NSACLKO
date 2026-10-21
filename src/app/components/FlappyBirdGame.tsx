@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 
 import { GAME, createFlight, stepFlight, type Pipe, type Replay } from "@/lib/game/engine";
 import { useGameLeaderboard, type RankedRun } from "./useGameLeaderboard";
@@ -252,9 +252,15 @@ export default function FlappyBirdGame() {
     else if (phaseRef.current !== "starting") void startGame();
   };
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (!event.isTrusted) return;
     if (event.code !== "Space" && event.code !== "ArrowUp") return;
     event.preventDefault();
     if (!event.repeat) flapOrStart();
+  };
+  const handlePointerDown = (event: PointerEvent<HTMLDivElement>) => {
+    if (!event.isTrusted) return;
+    playAreaRef.current?.focus({ preventScroll: true });
+    flapOrStart();
   };
   const busy = phase === "playing" || phase === "starting" || saving;
 
@@ -275,7 +281,7 @@ export default function FlappyBirdGame() {
             <div><button type="button" aria-pressed={mode === "practice"} disabled={busy || Boolean(pending)} onClick={() => setMode("practice")}>Practice</button><button type="button" aria-pressed={mode === "ranked"} disabled={busy || Boolean(pending) || !leaderboard.user || !leaderboard.board?.available} onClick={() => setMode("ranked")}>Ranked flight</button></div>
             <span>{mode === "ranked" ? "Your best flight counts" : "Sign in to compete"}</span>
           </div>
-          <div ref={playAreaRef} className="flappy-play-area" onKeyDown={handleKeyDown} onPointerDown={() => { playAreaRef.current?.focus({ preventScroll: true }); flapOrStart(); }} role="group" tabIndex={0} aria-label="Flappy Bird game. Click or press Space or Arrow Up to fly.">
+          <div ref={playAreaRef} className="flappy-play-area" onKeyDown={handleKeyDown} onPointerDown={handlePointerDown} role="group" tabIndex={0} aria-label="Flappy Bird game. Click or press Space or Arrow Up to fly.">
             <canvas ref={canvasRef} width={CANVAS_WIDTH} height={CANVAS_HEIGHT} aria-hidden="true" />
             {phase !== "playing" && <div className="flappy-overlay" aria-live="polite">
               <p>{phase === "starting" ? "Preparing your flight…" : phase === "ready" ? "Ready for launch?" : "Flight ended"}</p>
