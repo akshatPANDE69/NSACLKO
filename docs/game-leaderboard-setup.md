@@ -17,9 +17,9 @@ References: [Google branding and support email](https://support.google.com/cloud
 1. Open [Google Auth Platform](https://console.cloud.google.com/auth/clients) with the account that should own this website's sign in. Create or select a project for NASA Space Apps Lucknow.
 2. Configure the app branding and choose External as the audience. Use the public support alias described above. Use only basic sign in information: openid, email and profile.
 3. Create an OAuth Web application client. Add `https://nsaclko.vercel.app`, `http://localhost`, `http://localhost:3000` and `http://127.0.0.1:3000` under Authorised JavaScript origins.
-4. Set `GOOGLE_CLIENT_ID` to the public client ID ending in `.apps.googleusercontent.com`. This popup implementation does not need a Google client secret or callback URI. The native Google button uses the standard popup flow; browser managed FedCM is disabled after it repeatedly disconnected Edge during live testing.
+4. Add `https://nsaclko.vercel.app/api/game/google` under Authorised redirect URIs. Set `GOOGLE_CLIENT_ID` to the public client ID ending in `.apps.googleusercontent.com`. No Google client secret is needed. On HTTPS, the native Google button uses full page sign in and returns to this endpoint, then `/game`. HTTP local testing keeps the original popup callback. Browser managed FedCM remains disabled.
 
-The local setup uses Google project `nasa-space-apps-lucknow` and the public support address `nsac-lucknow-support@googlegroups.com`. The app remains in Google's testing mode. Before public launch, deploy `/game/privacy`, complete the Google Branding requirements with the live game and privacy URLs, and publish the app audience. Do not set branding URLs to pages that have not been deployed.
+The setup uses Google project `nasa-space-apps-lucknow` and the public support address `nsac-lucknow-support@googlegroups.com`. The app remains in Google's testing mode. Basic Sign in with Google requests for name, email and profile are exempt from the testing user restriction, as explained in [Google's audience documentation](https://support.google.com/cloud/answer/15549945). Branding can use the deployed game and `/game/privacy` URLs. No additional OAuth scopes are requested.
 
 ## Supabase storage
 
@@ -29,11 +29,15 @@ The local setup uses Google project `nasa-space-apps-lucknow` and the public sup
 
 Google handles sign in directly and Supabase stores game data behind the server. This configuration does not use Supabase Auth or require its Google provider to be enabled. No Supabase client or privileged key is shipped to the browser.
 
-The migration has been applied to Supabase project `nuvcafyhhfwudtkmieuu`. Its server connection and the Google client ID are configured in the ignored local `.env.local` file. A real Google login, a completed ranked flight with zero points, saved replay, private contact storage and sign out were verified locally. Zero points creates no public leaderboard entry. Vercel environment configuration and public deployment are deferred at the owner's request.
+The migration has been applied to Supabase project `nuvcafyhhfwudtkmieuu`. Its server connection and the Google client ID are configured in the ignored local `.env.local` file. The owner configured the three Production environment variables in the existing Vercel project. The site remains at `https://nsaclko.vercel.app`; its game APIs connect to Supabase and real ranked scores are saved. A separate optional Netlify project was prepared but has no website deployment and does not replace the original address.
 
 ## Player privacy
 
 The server verifies Google's signature, audience, issuer, expiry, verified email and the browser nonce. A verified Google ID token is stored in a Secure, HttpOnly, SameSite cookie for at most its remaining lifetime, capped at one hour. Every authenticated game request verifies it again. Sign out clears that cookie.
+
+Google's full page response is a bounded form POST. Its `g_csrf_token` field must match Google's browser cookie, and the signed identity token's nonce must match the app's anonymous HttpOnly nonce cookie. Missing, duplicate, mismatched and oversized fields are rejected. The anonymous nonce lasts five minutes and uses Secure and SameSite=None in production to reach the cross site callback. The authenticated session remains SameSite=Lax. Game tabs share the existing nonce so that opening a second tab does not invalidate a sign in already in progress.
+
+Guest pages renew their nonce every minute while visible and when returning from a sleeping tab or browser history. Overlapping session requests share one promise. A stale button is paused while its sign in check is refreshed. Expired checks, missing callback cookies and database failures have distinct messages beside the account controls; sign in errors do not hide the public leaderboard.
 
 A hash of Google's stable subject identifies each player. The `game_players` table contains the verified display name and private contact email. The public leaderboard returns only display name, score, rank and whether the row belongs to the current player. Emails, Google subjects, account IDs and flight controls are excluded from public responses.
 

@@ -7,7 +7,7 @@ import GameGoogleSignIn from "./GameGoogleSignIn";
 type Props = { leaderboard: ReturnType<typeof useGameLeaderboard>; flightActive: boolean };
 
 export default function GameLeaderboard({ leaderboard, flightActive }: Props) {
-  const { user, googleConfig, board, authBusy, refreshing, error, signIn, signOut, refresh } = leaderboard;
+  const { user, googleConfig, board, authBusy, refreshing, authError, error, signIn, signOut, refresh } = leaderboard;
   const name = user?.name || "Space Explorer";
   return (
     <aside className="flappy-leaderboard" aria-labelledby="leaderboard-title">
@@ -31,6 +31,7 @@ export default function GameLeaderboard({ leaderboard, flightActive }: Props) {
             <p className="flappy-privacy">Your Google display name and best score will appear publicly. Your email stays private and helps us contact the prize winner. Sign in only if you agree.</p>
           </>
         )}
+        {authError && <p className="flappy-google-status" role="alert">{authError}</p>}
       </div>
 
       <div className="flappy-board-heading"><h2 id="leaderboard-title">Leaderboard</h2><button type="button" className="flappy-text-button" onClick={() => void refresh()} disabled={refreshing}>{refreshing ? "Loading…" : "Refresh"}</button></div>

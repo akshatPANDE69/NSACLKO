@@ -10,6 +10,9 @@ const secure = process.env.NODE_ENV === "production";
 export const sessionCookie = secure ? "__Host-nsac-game" : "nsac-game";
 export const nonceCookie = secure ? "__Host-nsac-game-nonce" : "nsac-game-nonce";
 const cookieOptions = { httpOnly: true, secure, sameSite: "lax" as const, path: "/" };
+// Google's full page flow returns a cross site POST. Only the short lived,
+// anonymous nonce needs SameSite=None; the authenticated session stays Lax.
+const nonceOptions = { ...cookieOptions, sameSite: secure ? "none" as const : "lax" as const };
 
 export function googleClientId() { return process.env.GOOGLE_CLIENT_ID || ""; }
 
@@ -57,18 +60,23 @@ export async function getGooglePlayer(request: Request, required = true): Promis
 
 export function newSignInNonce() { return randomBytes(32).toString("base64url"); }
 
+export function signInNonce(request: Request) {
+  const existing = readCookie(request, nonceCookie);
+  return /^[A-Za-z0-9_-]{43}$/.test(existing) ? existing : newSignInNonce();
+}
+
 export function issueNonce(response: NextResponse, nonce: string) {
-  response.cookies.set(nonceCookie, nonce, { ...cookieOptions, maxAge: 300 });
+  response.cookies.set(nonceCookie, nonce, { ...nonceOptions, maxAge: 300 });
 }
 
 export function saveGoogleSession(response: NextResponse, credential: string, expiresAt: number) {
   // Google's signed ID token is checked on every authenticated request. It is
   // never exposed by our API or used as a Google API access token.
   response.cookies.set(sessionCookie, credential, { ...cookieOptions, maxAge: Math.min(3600, Math.floor(expiresAt - Date.now() / 1000)) });
-  response.cookies.set(nonceCookie, "", { ...cookieOptions, maxAge: 0 });
+  response.cookies.set(nonceCookie, "", { ...nonceOptions, maxAge: 0 });
 }
 
 export function clearGoogleSession(response: NextResponse) {
   response.cookies.set(sessionCookie, "", { ...cookieOptions, maxAge: 0 });
-  response.cookies.set(nonceCookie, "", { ...cookieOptions, maxAge: 0 });
+  response.cookies.set(nonceCookie, "", { ...nonceOptions, maxAge: 0 });
 }

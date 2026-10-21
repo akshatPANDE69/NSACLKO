@@ -7,7 +7,8 @@ import { once } from "node:events";
 import { createClient } from "@supabase/supabase-js";
 import { PGlite } from "@electric-sql/pglite";
 import { GAME, createFlight, stepFlight, validateReplay } from "../src/lib/game/engine.ts";
-import { verifyGoogleCredential, sameNonce, readCookie, saveGoogleSession, sessionCookie } from "../src/lib/game/google.ts";
+import { verifyGoogleCredential, sameNonce, readCookie, saveGoogleSession, sessionCookie, nonceCookie, issueNonce, signInNonce } from "../src/lib/game/google.ts";
+import { GoogleRedirectError, readGoogleRedirect } from "../src/lib/game/google-redirect.ts";
 import { gameResponse, requireSameOrigin, readGameBody } from "../src/lib/game/http.ts";
 import { GameStore } from "../src/lib/game/store.ts";
 
@@ -89,6 +90,42 @@ assert.ok(session.headers.get("set-cookie").includes("SameSite=lax"));
 await assert.rejects(readGameBody(new Request("https://example.test", { method: "POST", body: "not json" })), (error) => error.status === 415);
 await assert.rejects(readGameBody(new Request("https://example.test", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text: "x".repeat(200) }) }), 100), (error) => error.status === 413);
 console.log("PASS Google identity: RSA signatures, audience, issuer, expiry, verified email, browser nonce, HttpOnly sessions and request bounds");
+
+const redirectNonce = "a".repeat(43);
+const redirectCredential = makeToken({ ...claims, nonce: redirectNonce });
+const googleForm = (fields = {}, cookies = `g_csrf_token=fixture-csrf; ${nonceCookie}=${redirectNonce}`) => new Request("https://example.test/api/game/google", {
+  method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded", Cookie: cookies },
+  body: new URLSearchParams({ credential: redirectCredential, g_csrf_token: "fixture-csrf", ...fields }),
+});
+const redirect = await readGoogleRedirect(googleForm());
+assert.equal((await verifyGoogleCredential(redirect.credential, redirect.nonce, verifyFixture)).player.email, claims.email);
+for (const cookies of ["", `${nonceCookie}=${redirectNonce}`, `g_csrf_token=wrong; ${nonceCookie}=${redirectNonce}`, "g_csrf_token=fixture-csrf"]) {
+  await assert.rejects(readGoogleRedirect(googleForm({}, cookies)), (error) => error.status === 403);
+}
+await assert.rejects(readGoogleRedirect(googleForm({}, "g_csrf_token=fixture-csrf")),
+  (error) => error instanceof GoogleRedirectError && error.reason === "expired");
+await assert.rejects(readGoogleRedirect(googleForm({}, `${nonceCookie}=${redirectNonce}`)),
+  (error) => error instanceof GoogleRedirectError && error.reason === "cookies");
+await assert.rejects(readGoogleRedirect(googleForm({ g_csrf_token: "wrong" })), (error) => error.status === 403);
+await assert.rejects(readGoogleRedirect(googleForm({ credential: "x".repeat(7001) })), /could not be read/);
+await assert.rejects(readGoogleRedirect(googleForm({ extra: "x".repeat(10001) })), (error) => error.status === 413);
+await assert.rejects(readGoogleRedirect(new Request("https://example.test/api/game/google", {
+  method: "POST", headers: { "Content-Type": "application/json" }, body: "{}",
+})), (error) => error.status === 415);
+for (const duplicated of ["g_csrf_token", "credential"]) {
+  const request = googleForm();
+  const body = new URLSearchParams(await request.text());
+  body.append(duplicated, body.get(duplicated));
+  await assert.rejects(readGoogleRedirect(new Request(request.url, { method: "POST", headers: request.headers, body })));
+}
+const sharedNonceRequest = new Request("https://example.test", { headers: { Cookie: `${nonceCookie}=${redirectNonce}` } });
+assert.equal(signInNonce(sharedNonceRequest), redirectNonce, "Opening another game tab must not invalidate an existing sign in");
+assert.match(signInNonce(new Request("https://example.test")), /^[A-Za-z0-9_-]{43}$/);
+const nonceResponse = gameResponse({});
+issueNonce(nonceResponse, redirectNonce);
+assert.equal(nonceResponse.cookies.get(nonceCookie).httpOnly, true);
+assert.equal(nonceResponse.cookies.get(nonceCookie).sameSite, process.env.NODE_ENV === "production" ? "none" : "lax");
+console.log("PASS Google full page sign in: signed identity, CSRF cookie and form token, browser nonce, multiple tabs and request bounds");
 
 // Execute the actual migration in PostgreSQL and exercise the Supabase SDK's
 // HTTP protocol against it. All profiles and credentials are synthetic fixtures.

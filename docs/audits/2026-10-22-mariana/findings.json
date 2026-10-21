@@ -1,0 +1,10 @@
+{
+  "audit": "2026-10-22-mariana",
+  "mode": "report",
+  "findings": [
+    {"id":"A-PERF-01","confidence":"UNVERIFIABLE","subtype":"NV_RUNTIME","severity":"MEDIUM","effort":"-","evidence":"NV_RUNTIME","dim":"perf"},
+    {"id":"B-DB-02","confidence":"UNVERIFIABLE","subtype":"NV_DASHBOARD","severity":"CRITICAL-OP","effort":"verify plan","evidence":"NV_DASHBOARD","dim":"DB"},
+    {"id":"B-DEP-01","confidence":"UNVERIFIABLE","subtype":"NV_TOOL","severity":"MEDIUM","effort":"install npm audit","evidence":"NV_TOOL","dim":"deps"}
+  ],
+  "proven_counts":{"A":7,"B":10,"C":4,"D":6}
+}

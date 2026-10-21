@@ -29,19 +29,63 @@ export function useGameLeaderboard() {
   const [error, setError] = useState("");
   const [authError, setAuthError] = useState("");
   const [authBusy, setAuthBusy] = useState(false);
+  const [authRefreshing, setAuthRefreshing] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const requestNumber = useRef(0);
+  const authRequest = useRef<Promise<void> | null>(null);
+  const authCheckedAt = useRef(0);
 
-  const reloadAuth = useCallback(async () => {
-    try {
-      const result = await gameRequest("session");
-      setUser(result.user);
-      setGoogleConfig(result.clientId && result.nonce ? { clientId: result.clientId, nonce: result.nonce } : null);
-    } catch { setAuthError("Google sign in could not load. Please refresh the page to try again."); }
-    finally { setAuthReady(true); }
+  const reloadAuth = useCallback(() => {
+    if (authRequest.current) return authRequest.current;
+    if (Date.now() - authCheckedAt.current > 180_000) setAuthRefreshing(true);
+    const request = (async () => {
+      try {
+        const result = await gameRequest("session");
+        authCheckedAt.current = Date.now();
+        setUser(result.user);
+        setGoogleConfig(result.clientId && result.nonce ? { clientId: result.clientId, nonce: result.nonce } : null);
+        if (result.user) setAuthError("");
+      } catch { setAuthError("Google sign in could not load. Please refresh the page to try again."); }
+      finally { setAuthReady(true); setAuthRefreshing(false); }
+    })();
+    authRequest.current = request;
+    void request.finally(() => { authRequest.current = null; });
+    return request;
   }, []);
 
-  useEffect(() => { void reloadAuth(); }, [reloadAuth]);
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const reason = url.searchParams.get("signin");
+    if (reason) {
+      const messages: Record<string, string> = {
+        expired: "Your sign in session expired. Please try the Google button again.",
+        cookies: "Your browser did not return the sign in check. Please refresh this page and try again.",
+        unavailable: "The leaderboard could not connect while signing you in. Please try again in a moment.",
+      };
+      setAuthError(messages[reason] || "Google sign in could not finish. Please try again.");
+      url.searchParams.delete("signin");
+      window.history.replaceState(null, "", url);
+    }
+    void reloadAuth();
+  }, [reloadAuth]);
+
+  useEffect(() => {
+    if (!authReady || user) return;
+    // Keep the five minute nonce alive while the page is in use. Returning
+    // from a sleeping tab also renews the button's nonce before the next login.
+    const renew = () => { if (document.visibilityState === "visible") void reloadAuth(); };
+    const onPageShow = (event: PageTransitionEvent) => { if (event.persisted) renew(); };
+    const interval = window.setInterval(renew, 60_000);
+    window.addEventListener("focus", renew);
+    window.addEventListener("pageshow", onPageShow);
+    document.addEventListener("visibilitychange", renew);
+    return () => {
+      window.clearInterval(interval);
+      window.removeEventListener("focus", renew);
+      window.removeEventListener("pageshow", onPageShow);
+      document.removeEventListener("visibilitychange", renew);
+    };
+  }, [authReady, user, reloadAuth]);
 
   const refresh = useCallback(async () => {
     const request = ++requestNumber.current;
@@ -110,6 +154,6 @@ export function useGameLeaderboard() {
     }
   };
 
-  return { user, googleConfig, authReady, authBusy, board, refreshing, error: authError || error,
+  return { user, googleConfig, authReady, authBusy: authBusy || authRefreshing, board, refreshing, authError, error,
     signIn, signOut, refresh, startRanked, submit };
 }

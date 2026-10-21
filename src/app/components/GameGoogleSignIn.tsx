@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 declare global {
   interface Window {
     google?: { accounts: { id: {
-      initialize(options: { client_id: string; nonce: string; callback(response: { credential: string }): void; auto_select: boolean; use_fedcm_for_button: boolean; ux_mode: "popup" }): void;
+      initialize(options: { client_id: string; nonce: string; callback?(response: { credential: string }): void; login_uri?: string; auto_select: boolean; use_fedcm_for_button: boolean; ux_mode: "popup" | "redirect" }): void;
       renderButton(element: HTMLElement, options: { type: string; theme: string; size: string; text: string; shape: string; width: number }): void;
       disableAutoSelect(): void;
     } } };
@@ -26,8 +26,10 @@ export default function GameGoogleSignIn({ clientId, nonce, busy, onCredential }
     const id = window.google?.accounts.id;
     const element = host.current;
     if (!ready || !id || !element) return;
-    id.initialize({ client_id: clientId, nonce, auto_select: false, use_fedcm_for_button: false, ux_mode: "popup",
-      callback: (response) => callback.current(response.credential) });
+    const redirect = window.location.protocol === "https:";
+    id.initialize({ client_id: clientId, nonce, auto_select: false, use_fedcm_for_button: false,
+      ...(redirect ? { ux_mode: "redirect" as const, login_uri: new URL("/api/game/google", window.location.origin).href }
+        : { ux_mode: "popup" as const, callback: (response: { credential: string }) => callback.current(response.credential) }) });
     id.renderButton(element, { type: "standard", theme: "outline", size: "large", text: "signin_with", shape: "rectangular", width: Math.min(320, Math.max(200, element.clientWidth)) });
     return () => element.replaceChildren();
   }, [ready, clientId, nonce]);

@@ -35,6 +35,8 @@ try {
   for (const route of routes) {
     const response = await fetch(origin + route);
     assert.equal(response.status, 200, `${route} must load`);
+    assert.equal(response.headers.get("cross-origin-opener-policy"), route === "/game" ? "same-origin-allow-popups" : null,
+      "Google popup communication must be enabled on the game route only");
     const html = await response.text();
     const document = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, "");
     pages[route] = document;
@@ -77,6 +79,23 @@ try {
   const sessionData = await session.json();
   assert.equal(sessionData.user, null, "An unauthenticated visitor cannot impersonate a player");
   assert.equal(typeof sessionData.clientId, "string");
+  if (sessionData.clientId) assert.match(session.headers.get("set-cookie"), /SameSite=None/i,
+    "The anonymous nonce must reach Google's cross site form callback");
+  const invalidGoogleReturn = await fetch(origin + "/api/game/google", {
+    method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: "credential=fake&g_csrf_token=missing-cookie", redirect: "manual",
+  });
+  assert.equal(invalidGoogleReturn.status, 303);
+  assert.equal(new URL(invalidGoogleReturn.headers.get("location")).pathname, "/game");
+  assert.equal(new URL(invalidGoogleReturn.headers.get("location")).searchParams.get("signin"), "cookies");
+  assert.equal(invalidGoogleReturn.headers.get("set-cookie"), null, "Invalid Google returns cannot set an authenticated session");
+  const expiredGoogleReturn = await fetch(origin + "/api/game/google", {
+    method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded", Cookie: "g_csrf_token=test-csrf" },
+    body: "credential=fake&g_csrf_token=test-csrf", redirect: "manual",
+  });
+  assert.equal(expiredGoogleReturn.status, 303);
+  assert.equal(new URL(expiredGoogleReturn.headers.get("location")).searchParams.get("signin"), "expired");
+  assert.equal(expiredGoogleReturn.headers.get("set-cookie"), null);
   for (const endpoint of ["runs", "scores"]) {
     const response = await fetch(origin + "/api/game/" + endpoint, { method: "POST", headers: { Origin: origin, "Content-Type": "application/json" }, body: "{}" });
     assert.equal(response.status, 401, `${endpoint} requires Google authentication`);

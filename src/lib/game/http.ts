@@ -15,8 +15,7 @@ export function requireSameOrigin(request: Request) {
   }
 }
 
-export async function readGameBody(request: Request, maxBytes = 150_000): Promise<unknown> {
-  if (!request.headers.get("content-type")?.startsWith("application/json")) throw new GameError("Send JSON to continue.", 415);
+async function readBoundedText(request: Request, maxBytes: number) {
   if (Number(request.headers.get("content-length")) > maxBytes) throw new GameError("Request is too large.", 413);
   const reader = request.body?.getReader();
   if (!reader) throw new GameError("A request body is required.");
@@ -32,8 +31,21 @@ export async function readGameBody(request: Request, maxBytes = 150_000): Promis
   const buffer = new Uint8Array(length);
   let offset = 0;
   for (const chunk of chunks) { buffer.set(chunk, offset); offset += chunk.byteLength; }
-  try { return JSON.parse(new TextDecoder().decode(buffer)); }
+  return new TextDecoder().decode(buffer);
+}
+
+export async function readGameBody(request: Request, maxBytes = 150_000): Promise<unknown> {
+  if (!request.headers.get("content-type")?.startsWith("application/json")) throw new GameError("Send JSON to continue.", 415);
+  const text = await readBoundedText(request, maxBytes);
+  try { return JSON.parse(text); }
   catch { throw new GameError("The request could not be read."); }
+}
+
+export async function readGameForm(request: Request, maxBytes = 10_000) {
+  if (!request.headers.get("content-type")?.startsWith("application/x-www-form-urlencoded")) {
+    throw new GameError("Google sign in could not be read.", 415);
+  }
+  return new URLSearchParams(await readBoundedText(request, maxBytes));
 }
 
 export function gameResponse(body: unknown, status = 200) {
