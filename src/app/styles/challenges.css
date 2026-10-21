@@ -83,3 +83,24 @@
 .challenges-page .challenge-official-catalog-link { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; margin-top: 12px; color: #e6e6e6; font-size: 12px; }
 .challenges-page .challenge-official-catalog-link:hover { text-decoration: underline; text-underline-offset: 5px; }
 
+.challenges-page .challenge-official-metadata {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin: 0 0 18px;
+  padding: 12px 0;
+  border-top: 1px solid #343434;
+  border-bottom: 1px solid #343434;
+}
+
+.challenges-page .challenge-official-metadata p {
+  margin: 0;
+  color: #bdbdbd;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.challenges-page .challenge-official-metadata strong {
+  color: #f0f0f0;
+  font-weight: 600;
+}
