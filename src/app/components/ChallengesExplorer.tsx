@@ -68,18 +68,3 @@ export default function ChallengesExplorer() {
     </section>
   );
 }
-/* Append these rules to src/app/styles/challenges.css */
-.challenges-page .challenge-search { display: flex; align-items: center; gap: 12px; max-width: 620px; min-height: 48px; margin: 26px 0 18px; padding: 0 16px; border: 1px solid #535353; border-radius: 8px; background: rgb(0 0 0 / 60%); color: #c9c9c9; }
-.challenges-page .challenge-search input { width: 100%; min-width: 0; border: 0; outline: 0; background: transparent; color: #f0f0f0; font: inherit; font-size: 14px; }
-.challenges-page .challenge-search input::placeholder { color: #a8a8a8; }
-.challenges-page .challenge-detail-card .challenge-card-top { margin-bottom: 24px; }
-.challenges-page .challenge-card-subtitle { color: #d1d1d1; font-size: 13px; line-height: 1.6; margin: -8px 0 16px; }
-.challenges-page .challenge-details { border-top: 1px solid #343434; padding-top: 16px; color: #bdbdbd; }
-.challenges-page .challenge-details summary { cursor: pointer; color: #eee; font-size: 12px; letter-spacing: .5px; min-height: 36px; }
-.challenges-page .challenge-details summary:hover { text-decoration: underline; text-underline-offset: 4px; }
-.challenges-page .challenge-details p { color: #bdbdbd; font-size: 14px; line-height: 1.75; padding: 10px 0 4px; }
-.challenges-page .challenge-empty-state { grid-column: 1 / -1; color: #bdbdbd; padding: 24px 0; }
-.challenges-page .challenge-catalog-note { color: #a8a8a8; font-size: 12px; line-height: 1.7; margin-top: 28px; }
-.challenges-page .challenge-official-catalog-link { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; margin-top: 12px; color: #e6e6e6; font-size: 12px; }
-.challenges-page .challenge-official-catalog-link:hover { text-decoration: underline; text-underline-offset: 5px; }
-
