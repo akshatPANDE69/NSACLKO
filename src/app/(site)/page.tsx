@@ -9,7 +9,7 @@ import React from "react";
 import { ArrowUpRight, ChartNoAxesCombined, Globe2, Orbit, Palette } from "lucide-react";
 
 import { StarsBackground } from "@/components/animate-ui/backgrounds/stars";
-import ScrollPageLoaderTransition from "@/components/ScrollPageLoaderTransition";
+
 
 const experience = [
   { title: "Explore the data", text: "Investigate a real question using NASA’s open data and resources." },
@@ -116,8 +116,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Scroll-driven Earth Transition: Hero → About ── */}
-      <ScrollPageLoaderTransition />
+
 
       <section id="about" className="section home-info-section fade-section" aria-labelledby="home-about-title" style={{ position: 'relative', zIndex: 1 }}>
         <div className="home-info-grid">
@@ -144,8 +143,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Scroll-driven Earth Transition: About → Challenges ── */}
-      <ScrollPageLoaderTransition />
+
 
       <section id="challenges" className="section home-info-section home-challenge-section fade-section" aria-labelledby="home-challenges-title" style={{ position: 'relative', zIndex: 1 }}>
         <div className="home-info-grid">
