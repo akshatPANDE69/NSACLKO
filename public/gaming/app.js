@@ -38,20 +38,13 @@ function initPreloader() {
   sessionStorage.setItem('gaming_preloader_seen', 'true');
 
   const manifest = [
-    { id: 'hero', type: 'video', url: 'hero%20section/hero%20video.mp4' },
-    { id: 'fifa', type: 'video', url: 'game%20card/fifa.mp4' },
-    { id: 'tekken', type: 'video', url: 'game%20card/tekken.mp4' },
-    { id: 'mk', type: 'video', url: 'game%20card/mortal%20kombat.mp4' },
-    { id: 'bgmi', type: 'video', url: 'game%20card/bgmi.mp4' },
-    { id: 'cod', type: 'video', url: 'game%20card/cod.mp4' },
-    { id: 'freefire', type: 'video', url: 'game%20card/free%20fire.mp4' },
-    { id: 'logo', type: 'image', url: 'assets/space_apps_logo.png' },
-    { id: 'img_fifa', type: 'image', url: 'assets/card_fifa.jpg' },
-    { id: 'img_tekken', type: 'image', url: 'assets/card_tekken.jpg' },
-    { id: 'img_mk', type: 'image', url: 'assets/card_mk.jpg' },
-    { id: 'img_bgmi', type: 'image', url: 'assets/card_bgmi.jpg' },
-    { id: 'img_cod', type: 'image', url: 'assets/card_cod.jpg' },
-    { id: 'img_freefire', type: 'image', url: 'assets/card_freefire.jpg' }
+    { id: 'logo', url: 'assets/space_apps_logo.png' },
+    { id: 'img_fifa', url: 'assets/card_fifa.jpg' },
+    { id: 'img_tekken', url: 'assets/card_tekken.jpg' },
+    { id: 'img_mk', url: 'assets/card_mk.jpg' },
+    { id: 'img_bgmi', url: 'assets/card_bgmi.jpg' },
+    { id: 'img_cod', url: 'assets/card_cod.jpg' },
+    { id: 'img_freefire', url: 'assets/card_freefire.jpg' }
   ];
 
   let loadedCount = 0;
@@ -80,42 +73,21 @@ function initPreloader() {
     }, remainingWait);
   }
 
-  // Safety fallback timeout (12s max)
+  // Safety fallback timeout (4s max)
   setTimeout(() => {
     if (!isDone) completePreloader();
-  }, 12000);
+  }, 4000);
 
-  // Preload all manifest items concurrently
-  manifest.forEach(async (item) => {
-    try {
-      if (item.type === 'video') {
-        const res = await fetch(item.url);
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        const blob = await res.blob();
-        const blobUrl = URL.createObjectURL(blob);
-        if (gameIntel[item.id]) {
-          gameIntel[item.id].blobUrl = blobUrl;
-        } else if (item.id === 'hero') {
-          window.heroBlobUrl = blobUrl;
-          const hero = document.getElementById('heroVideo');
-          if (hero) hero.src = blobUrl;
-        }
-      } else if (item.type === 'image') {
-        await new Promise((resolve) => {
-          const img = new Image();
-          img.onload = resolve;
-          img.onerror = resolve;
-          img.src = item.url;
-        });
-      }
-    } catch (err) {
-      console.warn('Preload fallback for ' + item.url, err);
-    } finally {
+  // Preload UI images concurrently without blocking network for video streaming
+  manifest.forEach((item) => {
+    const img = new Image();
+    img.onload = img.onerror = () => {
       loadedCount++;
       if (loadedCount >= total && !isDone) {
         completePreloader();
       }
-    }
+    };
+    img.src = item.url;
   });
 }
 
