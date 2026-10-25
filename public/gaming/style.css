@@ -16,10 +16,10 @@
   --red-glow: rgba(20, 20, 20, 0.45);
   --red-dim: rgba(20, 20, 20, 0.12);
 
-  /* Primary accent mapped to Combat Red */
-  --gold: #111111;
-  --gold-glow: rgba(20, 20, 20, 0.45);
-  --gold-dim: rgba(20, 20, 20, 0.12);
+  /* Primary accent mapped to Light Gray / Silver */
+  --gold: #d4d4d8;
+  --gold-glow: rgba(255, 255, 255, 0.15);
+  --gold-dim: rgba(255, 255, 255, 0.08);
 
   /* ── Tactical Green Secondary Accent ── */
   --tac-green: #5a7a3a;
@@ -998,9 +998,9 @@ body {
   justify-content: center;
   gap: 10px;
   padding: 14px 28px;
-  background: var(--gold);
-  color: #ffffff !important;
-  border: none;
+  background: #ffffff;
+  color: #000000 !important;
+  border: 1px solid #ffffff;
   border-radius: 2px;
   font-family: var(--font-tech);
   font-size: 13px;
@@ -1009,18 +1009,18 @@ body {
   cursor: pointer;
   transition: all 0.3s ease;
   margin-top: 8px;
-  box-shadow: 0 4px 18px rgba(20, 20, 20, 0.35);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
 }
 
 .btn-submit span,
 .btn-submit * {
-  color: #ffffff !important;
+  color: #000000 !important;
 }
 
 .btn-submit:hover {
-  background: #222222;
-  color: #ffffff !important;
-  box-shadow: 0 0 24px var(--gold-glow);
+  background: #e4e4e7;
+  color: #000000 !important;
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.15);
   transform: translateY(-2px);
 }
 
@@ -1517,7 +1517,7 @@ body {
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.22em;
-  color: var(--gold);
+  color: #c4c4c4;
   margin-bottom: 26px;
   text-transform: uppercase;
   display: flex;
@@ -1536,7 +1536,7 @@ body {
 .spec-item {
   background: rgba(10, 14, 20, 0.72);
   border: 1px solid rgba(20, 20, 20, 0.18);
-  border-left: 3px solid var(--gold);
+  border-left: 3px solid #666666;
   padding: 14px 18px;
   border-radius: 2px;
   display: flex;
@@ -1628,9 +1628,9 @@ body {
   align-items: center;
   gap: 12px;
   padding: 15px 32px;
-  background: var(--gold);
-  color: #ffffff;
-  border: none;
+  background: #ffffff;
+  color: #000000 !important;
+  border: 1px solid #ffffff;
   border-radius: 2px;
   font-family: var(--font-tech);
   font-size: 13px;
@@ -1639,13 +1639,19 @@ body {
   cursor: pointer;
   text-decoration: none;
   transition: all 0.25s ease;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.7), 0 0 24px var(--gold-glow);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+
+.modal-action-row .btn-submit span,
+.modal-action-row .btn-submit * {
+  color: #000000 !important;
 }
 
 .modal-action-row .btn-submit:hover {
-  background: #222222;
+  background: #e4e4e7;
+  color: #000000 !important;
   transform: translateY(-2px);
-  box-shadow: 0 6px 26px rgba(0, 0, 0, 0.9), 0 0 32px var(--gold-glow);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.15);
 }
 
 .swipe-hint {
