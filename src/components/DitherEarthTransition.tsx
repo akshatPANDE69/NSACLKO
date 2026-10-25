@@ -209,7 +209,7 @@ export default function DitherEarthTransition() {
       setScrollProgress(p);
     };
 
-    let clock = new THREE.Clock();
+    const clock = new THREE.Clock();
     let continuousRotation = 0;
 
     const animate = () => {
@@ -393,7 +393,7 @@ export default function DitherEarthTransition() {
                 }}
               >
                 <div className="flex items-center justify-between text-xs text-white/60 font-mono mb-2 uppercase tracking-widest">
-                  <span className="text-white font-bold">{wp.id} // {wp.tag}</span>
+                  <span className="text-white font-bold">{wp.id}{' // '}{wp.tag}</span>
                   <Icon size={16} className="text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-white mb-2 tracking-wide">{wp.title}</h3>
