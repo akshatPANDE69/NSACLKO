@@ -9,6 +9,7 @@ import React from "react";
 import { ArrowUpRight, ChartNoAxesCombined, Globe2, Orbit, Palette } from "lucide-react";
 
 import { StarsBackground } from "@/components/animate-ui/backgrounds/stars";
+import ScrollPageLoaderTransition from "@/components/ScrollPageLoaderTransition";
 
 const experience = [
   { title: "Explore the data", text: "Investigate a real question using NASA’s open data and resources." },
@@ -58,7 +59,7 @@ export default function Home() {
             </video>
             <div
               style={{
-                background: "linear-gradient(135deg, #000428 0%, #004e92 100%)",
+                background: "linear-gradient(135deg, rgba(0,4,40,0.85) 0%, rgba(0,78,146,0.7) 100%)",
                 width: "100%",
                 height: "100%",
               }}
@@ -69,8 +70,6 @@ export default function Home() {
         <div className="hero-video-overlay" style={{ pointerEvents: 'none', position: 'absolute', inset: 0, zIndex: 2 }}>
           <StarsBackground pointerEvents={false} className="absolute inset-0 w-full h-full z-0" />
         </div>
-
-        {/* No Particles in video section */}
 
         <div className="floating-elements">
           <div className="floating-dot"></div>
@@ -85,13 +84,11 @@ export default function Home() {
             <div className="hero-subtitle stagger-item" style={{ textAlign: 'center', width: '100%' }}>
               Global Innovation Challenge
             </div>
-            {/* This will only fade in, not type */}
             <h1 className="hero-main-title fade-in" style={{ textAlign: 'center', width: '100%' }}>
               Building Solutions
               <br />
               for Space
             </h1>
-            {/* This will trigger typing effect when it comes into view */}
             <p className="hero-description typing-content" data-typing-speed="80" style={{ textAlign: 'center', width: '100%' }}>
               Join the NASA Space Apps Challenge {event.year} in Lucknow, the world&apos;s
               largest global hackathon. Use NASA&apos;s open data to develop innovative
@@ -117,21 +114,10 @@ export default function Home() {
           <div className="scroll-arrow"></div>
           <div className="scroll-text">Scroll Down</div>
         </div>
-
-        {/* Smooth bottom gradient overlay for video section */}
-        <div
-          style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            bottom: 0,
-            height: '120px',
-            zIndex: 3,
-            pointerEvents: 'none',
-            background: 'linear-gradient(180deg, rgba(0,0,0,0) 0%, #000 100%)',
-          }}
-        ></div>
       </section>
+
+      {/* ── Scroll-driven Earth Transition: Hero → About ── */}
+      <ScrollPageLoaderTransition />
 
       <section id="about" className="section home-info-section fade-section" aria-labelledby="home-about-title" style={{ position: 'relative', zIndex: 1 }}>
         <div className="home-info-grid">
@@ -157,6 +143,9 @@ export default function Home() {
           </aside>
         </div>
       </section>
+
+      {/* ── Scroll-driven Earth Transition: About → Challenges ── */}
+      <ScrollPageLoaderTransition />
 
       <section id="challenges" className="section home-info-section home-challenge-section fade-section" aria-labelledby="home-challenges-title" style={{ position: 'relative', zIndex: 1 }}>
         <div className="home-info-grid">

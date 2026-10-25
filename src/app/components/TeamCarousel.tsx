@@ -162,6 +162,18 @@ export const TEAM_MEMBERS: TeamMember[] = [
       email: "mailto:spaceappschallenge.lko@gmail.com",
     },
   },
+  {
+    id: 12,
+    name: "Naman Chandwani",
+    role: "Organizing Committee",
+    department: "Organizing Committee",
+    badge: "OC",
+    bio: "Supporting participant engagement, outreach activities, and on-ground event coordination.",
+    specialties: ["Outreach", "Participant Engagement"],
+    socials: {
+      email: "mailto:spaceappschallenge.lko@gmail.com",
+    },
+  },
 ];
 
 /* -------------------------------------------------------------------------- */
