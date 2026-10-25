@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>NASA Space Apps Challenge LKO — Gaming Subevent</title>
+  <meta name="description" content="Official Gaming Subevent of NASA Space Apps Challenge Lucknow. Compete in FIFA, Tekken, Mortal Kombat, BGMI, COD Multiplayer, and Free Fire Clash Squad.">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23080A0E'/%3E%3Cpolygon points='16,6 26,24 6,24' fill='%23FF2A3B'/%3E%3C/svg%3E">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Chakra+Petch:ital,wght@0,400;0,600;0,700;1,600&family=Exo+2:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&family=Teko:wght@600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css?v=10">
+</head>
+<body>
+
+  <!-- MISSION CONTROL PRELOADER SCREEN -->
+  <div id="preloader" class="preloader-overlay" aria-label="Loading site assets">
+    <div class="preloader-center">
+      <div class="preloader-brand">
+        <img src="assets/space_apps_logo.png" alt="NASA Space Apps Challenge" class="preloader-logo">
+        <span class="preloader-city"><span class="city-white">LUCK</span><span class="city-red">NOW</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="site-wrapper">
+
+    <!-- NAVIGATION HEADER -->
+    <header class="site-header" id="home">
+      <div class="nav-brand">
+        <a href="#home" class="brand-link" aria-label="NASA Space Apps Challenge Lucknow">
+          <img src="assets/space_apps_logo.png" alt="NASA Space Apps Challenge" class="brand-logo-img">
+          <div class="brand-text">
+            <span class="brand-city"><span class="city-white">LUCK</span><span class="city-red">NOW</span></span>
+            <span class="brand-sub">SUBEVENT</span>
+          </div>
+        </a>
+      </div>
+
+      <nav class="nav-menu" id="navMenu" aria-label="Main Navigation">
+        <a href="#home" class="nav-item active">HOME</a>
+        <a href="#games" class="nav-item">GAMES</a>
+        <a href="#registration" class="nav-item">REGISTRATION</a>
+        <a href="#schedule" class="nav-item">SCHEDULE</a>
+        <a href="#faq" class="nav-item">FAQ</a>
+      </nav>
+
+      <div class="nav-action">
+        <a href="#registration" class="btn-register-top">
+          <span class="btn-text-full">REGISTER NOW</span>
+          <span class="btn-text-mobile">REGISTER</span>
+          <span class="chevron-gold">&gt;</span>
+        </a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- FULLSCREEN VIDEO HERO SECTION -->
+    <section class="hero-video-section">
+      <div class="hero-video-wrapper">
+        <video 
+          id="heroVideo" 
+          class="hero-video-player" 
+          autoplay 
+          loop 
+          playsinline 
+          webkit-playsinline
+          preload="auto">
+          <source src="hero%20section/hero%20video.mp4" type="video/mp4">
+          <source src="hero section/hero video.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <div class="hero-video-overlay"></div>
+      </div>
+
+      <!-- Tactical Audio Controller (Compact Icon Only) -->
+      <div class="hero-audio-control">
+        <button id="audioToggleBtn" class="btn-audio-toggle" aria-label="Toggle Hero Video Audio" title="Toggle Audio">
+          <svg id="audioIcon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+            <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Scroll Prompt Cue -->
+      <div class="hero-scroll-prompt">
+        <a href="#games" class="scroll-link" aria-label="Scroll to The Games">
+          <span class="scroll-text">ENTER ARENA</span>
+          <span class="scroll-arrow">⌄</span>
+        </a>
+      </div>
+
+      <h1 class="sr-only">NASA Space Apps Challenge Lucknow — Gaming Subevent</h1>
+    </section>
+
+    <!-- SECTION DIVIDER BAR: / THE GAMES -->
+    <div class="section-bar" id="games">
+      <div class="bar-left">
+        <span class="slash-gold">/</span>
+        <h2 class="bar-title">THE GAMES</h2>
+      </div>
+      <div class="bar-right">
+        <span class="swipe-hint" aria-hidden="true">SWIPE ⟷</span>
+        <span class="bar-subtitle">CHOOSE YOUR BATTLE</span>
+        <span class="slash-gold-double">//</span>
+      </div>
+    </div>
+
+    <!-- THE GAMES GRID SECTION -->
+    <section class="games-section">
+      <div class="games-strip">
+
+        <!-- CARD 1: FIFA -->
+        <article class="game-card" data-game="fifa" tabindex="0" onclick="openGameModal('fifa')">
+          <div class="card-media">
+            <img src="assets/card_fifa.jpg" alt="FIFA EA FC" class="card-img" loading="eager">
+            <div class="card-hover-overlay">
+              <span class="btn-inspect">RULES</span>
+            </div>
+          </div>
+          <div class="card-info">
+            <div class="card-text">
+              <span class="card-name">FIFA</span>
+              <span class="card-sub">CONSOLE 1V1</span>
+            </div>
+            <span class="card-arrow">&gt;</span>
+          </div>
+        </article>
+
+        <!-- CARD 2: TEKKEN -->
+        <article class="game-card" data-game="tekken" tabindex="0" onclick="openGameModal('tekken')">
+          <div class="card-media">
+            <img src="assets/card_tekken.jpg" alt="TEKKEN 8" class="card-img" loading="eager">
+            <div class="card-hover-overlay">
+              <span class="btn-inspect">RULES</span>
+            </div>
+          </div>
+          <div class="card-info">
+            <div class="card-text">
+              <span class="card-name">TEKKEN</span>
+              <span class="card-sub">CONSOLE 1V1</span>
+            </div>
+            <span class="card-arrow">&gt;</span>
+          </div>
+        </article>
+
+        <!-- CARD 3: MORTAL KOMBAT -->
+        <article class="game-card" data-game="mk" tabindex="0" onclick="openGameModal('mk')">
+          <div class="card-media">
+            <img src="assets/card_mk.jpg" alt="MORTAL KOMBAT 1" class="card-img" loading="eager">
+            <div class="card-hover-overlay">
+              <span class="btn-inspect">RULES</span>
+            </div>
+          </div>
+          <div class="card-info">
+            <div class="card-text">
+              <span class="card-name">MK 1</span>
+              <span class="card-sub">CONSOLE 1V1</span>
+            </div>
+            <span class="card-arrow">&gt;</span>
+          </div>
+        </article>
+
+        <!-- CARD 4: BGMI -->
+        <article class="game-card" data-game="bgmi" tabindex="0" onclick="openGameModal('bgmi')">
+          <div class="card-media">
+            <img src="assets/card_bgmi.jpg" alt="BGMI CLASH SQUAD" class="card-img" loading="eager">
+            <div class="card-hover-overlay">
+              <span class="btn-inspect">RULES</span>
+            </div>
+          </div>
+          <div class="card-info">
+            <div class="card-text">
+              <span class="card-name">BGMI</span>
+              <span class="card-sub">CLASH SQUAD</span>
+            </div>
+            <span class="card-arrow">&gt;</span>
+          </div>
+        </article>
+
+        <!-- CARD 5: COD -->
+        <article class="game-card" data-game="cod" tabindex="0" onclick="openGameModal('cod')">
+          <div class="card-media">
+            <img src="assets/card_cod.jpg" alt="CALL OF DUTY MULTIPLAYER" class="card-img" loading="eager">
+            <div class="card-hover-overlay">
+              <span class="btn-inspect">RULES</span>
+            </div>
+          </div>
+          <div class="card-info">
+            <div class="card-text">
+              <span class="card-name">COD</span>
+              <span class="card-sub">MULTIPLAYER</span>
+            </div>
+            <span class="card-arrow">&gt;</span>
+          </div>
+        </article>
+
+        <!-- CARD 6: FREE FIRE -->
+        <article class="game-card" data-game="freefire" tabindex="0" onclick="openGameModal('freefire')">
+          <div class="card-media">
+            <img src="assets/card_freefire.jpg" alt="FREE FIRE CLASH SQUAD" class="card-img" loading="eager">
+            <div class="card-hover-overlay">
+              <span class="btn-inspect">RULES</span>
+            </div>
+          </div>
+          <div class="card-info">
+            <div class="card-text">
+              <span class="card-name">FREE FIRE</span>
+              <span class="card-sub">CLASH SQUAD</span>
+            </div>
+            <span class="card-arrow">&gt;</span>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- MOCKUP FOOTER ACCENT BAR -->
+    <div class="landing-footer-accent">
+      <div class="notch-gold"></div>
+      <div class="footer-left-tx">NASA SPACE APPS CHALLENGE LKO 2026</div>
+      <div class="footer-right-tx">PLAY  //  CONNECT  //  BUILD</div>
+    </div>
+
+    <!-- REGISTRATION SECTION -->
+    <section class="sub-section" id="registration">
+      <div class="section-bar">
+        <div class="bar-left">
+          <span class="slash-gold">/</span>
+          <h2 class="bar-title">REGISTRATION TERMINAL</h2>
+        </div>
+        <div class="bar-right">
+          <span class="bar-subtitle">LOCK YOUR BRACKET SLOT</span>
+          <span class="slash-gold-double">//</span>
+        </div>
+      </div>
+
+      <div class="registration-panel">
+        <div class="panel-info">
+          <h3>OFFICIAL OPERATOR ENTRY</h3>
+          <p>
+            Choose your battle. Slots across console duels (FIFA, Tekken 8, Mortal Kombat 1) and mobile squad clashes (BGMI, COD, Free Fire) are strictly limited.
+          </p>
+          <div class="prize-pill">
+            <span class="pill-label">ESTIMATED PRIZE POOL</span>
+            <span class="pill-val">₹50,000+ &amp; TROPHIES</span>
+          </div>
+          <ul class="reg-bullets">
+            <li>✓ Official NASA Space Apps LKO Certificate for all competitors</li>
+            <li>✓ Exclusive Gaming Swag &amp; Merch for finalists</li>
+            <li>✓ Live stream casting for top-tier matches</li>
+          </ul>
+        </div>
+
+        <form class="registration-form" id="regForm" onsubmit="handleFormSubmit(event)">
+          <div class="input-grid">
+            <div class="input-field">
+              <label for="regName">SQUAD LEADER / DUELIST NAME *</label>
+              <input type="text" id="regName" required placeholder="e.g. Aryan Sharma">
+            </div>
+            <div class="input-field">
+              <label for="regTag">IN-GAME ALIAS / GAMERTAG *</label>
+              <input type="text" id="regTag" required placeholder="e.g. VORTEX_99">
+            </div>
+          </div>
+
+          <div class="input-grid">
+            <div class="input-field">
+              <label for="regEmail">EMAIL ADDRESS *</label>
+              <input type="email" id="regEmail" required placeholder="operator@spaceappslko.org">
+            </div>
+            <div class="input-field">
+              <label for="regPhone">PHONE / WHATSAPP *</label>
+              <input type="tel" id="regPhone" required placeholder="+91 98765 43210">
+            </div>
+          </div>
+
+          <div class="input-grid">
+            <div class="input-field">
+              <label for="regGame">CHOSEN ARENA TITLE *</label>
+              <select id="regGame" required>
+                <option value="" disabled selected>Select Game...</option>
+                <option value="fifa">FIFA / EA FC (Console 1v1)</option>
+                <option value="tekken">Tekken 8 (Console 1v1)</option>
+                <option value="mk">Mortal Kombat 1 (Console 1v1)</option>
+                <option value="bgmi">BGMI Multiplayer Clash Squad (Mobile 4v4)</option>
+                <option value="cod">Call of Duty Multiplayer (Mobile 5v5)</option>
+                <option value="freefire">Free Fire Clash Squad (Mobile 4v4)</option>
+              </select>
+            </div>
+            <div class="input-field">
+              <label for="regTeam">TEAM NAME (OR 'SOLO' FOR 1V1)</label>
+              <input type="text" id="regTeam" placeholder="e.g. Lucknow Titans">
+            </div>
+          </div>
+
+          <div class="input-field full-width">
+            <label for="regRoster">SQUAD ROSTER &amp; IN-GAME UIDS (FOR SQUADS)</label>
+            <textarea id="regRoster" rows="2" placeholder="Player 1: UID, Player 2: UID, Player 3: UID, Player 4: UID..."></textarea>
+          </div>
+
+          <button type="submit" class="btn-submit" id="submitBtn">
+            <span>SUBMIT REGISTRATION</span>
+            <span class="chevron-gold">&gt;</span>
+          </button>
+
+          <div class="form-feedback" id="formFeedback"></div>
+        </form>
+      </div>
+    </section>
+
+    <!-- SCHEDULE SECTION -->
+    <section class="sub-section" id="schedule">
+      <div class="section-bar">
+        <div class="bar-left">
+          <span class="slash-gold">/</span>
+          <h2 class="bar-title">TOURNAMENT TIMELINE</h2>
+        </div>
+        <div class="bar-right">
+          <span class="bar-subtitle">PHASE TIMINGS &amp; ARENA SLOTS</span>
+          <span class="slash-gold-double">//</span>
+        </div>
+      </div>
+
+      <div class="timeline-container">
+        <div class="timeline-row">
+          <div class="t-time">09:30 AM</div>
+          <div class="t-badge">PHASE 01</div>
+          <div class="t-info">
+            <h4>CHECK-IN &amp; CONTROLLER DIAGNOSTICS</h4>
+            <p>Roster verification, device inspection, and Discord channel check-in.</p>
+          </div>
+        </div>
+
+        <div class="timeline-row">
+          <div class="t-time">11:00 AM</div>
+          <div class="t-badge">PHASE 02</div>
+          <div class="t-info">
+            <h4>CONSOLE QUALIFIERS: FIFA, TEKKEN &amp; MK</h4>
+            <p>Single elimination rounds on official PS5 pods.</p>
+          </div>
+        </div>
+
+        <div class="timeline-row">
+          <div class="t-time">01:30 PM</div>
+          <div class="t-badge">PHASE 03</div>
+          <div class="t-info">
+            <h4>MOBILE CLASH SQUADS: BGMI &amp; FREE FIRE</h4>
+            <p>Custom room bracket clashes with LAN network sync.</p>
+          </div>
+        </div>
+
+        <div class="timeline-row">
+          <div class="t-time">03:30 PM</div>
+          <div class="t-badge">PHASE 04</div>
+          <div class="t-info">
+            <h4>COD MULTIPLAYER TACTICAL SHOWDOWN</h4>
+            <p>Search &amp; Destroy best of 3 tactical matches.</p>
+          </div>
+        </div>
+
+        <div class="timeline-row">
+          <div class="t-time">05:30 PM</div>
+          <div class="t-badge">PHASE 05</div>
+          <div class="t-info">
+            <h4>GRAND FINALS &amp; CEREMONY</h4>
+            <p>Mainstage live stream casting, trophy award, and NASA Space Apps LKO awards.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ SECTION -->
+    <section class="sub-section" id="faq">
+      <div class="section-bar">
+        <div class="bar-left">
+          <span class="slash-gold">/</span>
+          <h2 class="bar-title">PROTOCOL &amp; FAQ</h2>
+        </div>
+        <div class="bar-right">
+          <span class="bar-subtitle">EVERYTHING YOU NEED TO KNOW</span>
+          <span class="slash-gold-double">//</span>
+        </div>
+      </div>
+
+      <div class="faq-accordion">
+        <div class="faq-card">
+          <button class="faq-head" onclick="toggleFaq(this)">
+            <span>Are controllers provided for FIFA, Tekken, and Mortal Kombat?</span>
+            <span class="faq-plus">+</span>
+          </button>
+          <div class="faq-body">
+            <p>Official PS5 DualSense controllers are provided on-site. Competitors are also allowed to bring their own personal fightsticks, hitboxes, or controllers (subject to referee inspection before match starts).</p>
+          </div>
+        </div>
+
+        <div class="faq-card">
+          <button class="faq-head" onclick="toggleFaq(this)">
+            <span>What are the device rules for BGMI, COD, and Free Fire?</span>
+            <span class="faq-plus">+</span>
+          </button>
+          <div class="faq-body">
+            <p>Strictly BYOD (Bring Your Own Device) on smartphone handhelds only. iPads/tablets, PC emulators, gaming triggers, and third-party macro tools are strictly prohibited and result in immediate disqualification.</p>
+          </div>
+        </div>
+
+        <div class="faq-card">
+          <button class="faq-head" onclick="toggleFaq(this)">
+            <span>Can I compete in both Console and Mobile tournaments?</span>
+            <span class="faq-plus">+</span>
+          </button>
+          <div class="faq-body">
+            <p>Yes, provided the scheduled phase times do not overlap directly. Console qualifiers start in the morning and Mobile clashes proceed in the afternoon.</p>
+          </div>
+        </div>
+
+        <div class="faq-card">
+          <button class="faq-head" onclick="toggleFaq(this)">
+            <span>Where is the offline venue in Lucknow?</span>
+            <span class="faq-plus">+</span>
+          </button>
+          <div class="faq-body">
+            <p>The offline gaming hub is situated at the main NASA Space Apps Challenge Lucknow auditorium. Exact room numbers and Discord check-in passes are dispatched via email upon registration approval.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAIN FOOTER -->
+    <footer class="site-footer">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="footer-brand-header">
+            <img src="assets/space_apps_logo.png" alt="NASA Space Apps Challenge" class="footer-logo">
+            <div class="brand-text">
+              <span class="brand-city"><span class="city-white">LUCK</span><span class="city-red">NOW</span></span>
+              <span class="brand-sub">GAMING SUBEVENT</span>
+            </div>
+          </div>
+          <p>
+            NASA Space Apps Challenge Lucknow Esports Subevent is organized to foster competitive synergy, sportsmanship, and technological camaraderie among gaming enthusiasts.
+          </p>
+        </div>
+        <div class="footer-links">
+          <h4>EXPLORE</h4>
+          <a href="#home">Home</a>
+          <a href="#games">The Games</a>
+          <a href="#registration">Registration</a>
+          <a href="#schedule">Timeline</a>
+          <a href="#faq">FAQ</a>
+        </div>
+        <div class="footer-links">
+          <h4>SECTORS</h4>
+          <a href="javascript:void(0)" onclick="openGameModal('fifa')">FIFA / EA FC</a>
+          <a href="javascript:void(0)" onclick="openGameModal('tekken')">Tekken 8</a>
+          <a href="javascript:void(0)" onclick="openGameModal('mk')">Mortal Kombat 1</a>
+          <a href="javascript:void(0)" onclick="openGameModal('bgmi')">BGMI Clash Squad</a>
+          <a href="javascript:void(0)" onclick="openGameModal('cod')">COD Multiplayer</a>
+          <a href="javascript:void(0)" onclick="openGameModal('freefire')">Free Fire</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 NASA SPACE APPS CHALLENGE LUCKNOW</span>
+        <span>PLAY  //  COMPETE  //  CONNECT</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- GAME BRIEFING MODAL POPUP -->
+  <div class="modal-backdrop" id="gameModal" aria-hidden="true">
+    <div class="modal-box">
+      <!-- Background Video Layer -->
+      <div class="modal-video-wrapper">
+        <video id="modalVideo" class="modal-video-player" playsinline webkit-playsinline loop preload="auto"></video>
+        <div id="modalPoster" class="modal-poster-fallback"></div>
+        <div class="modal-video-overlay"></div>
+      </div>
+      <button class="btn-close-modal" onclick="closeGameModal()" aria-label="Close dialog">✕</button>
+      <button id="modalAudioToggle" class="btn-modal-audio" aria-label="Mute Game Sound" title="Mute Game Sound">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+          <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+          <path d="M15.54 8.46a5 5 0 0 1 0 7.07" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="modal-content-scroll" id="gameModalScroll">
+        <div class="modal-content" id="gameModalContent">
+          <!-- Injected via JavaScript -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js?v=8"></script>
+</body>
+</html>

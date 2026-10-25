@@ -13,6 +13,7 @@ const links = [
   { href: "/timeline", label: "Timeline" },
   { href: "/news", label: "News" },
   { href: "/game", label: "Game" },
+  { href: "/gaming", label: "Esports" },
   { href: "/contact", label: "Contact" },
 ];
 
