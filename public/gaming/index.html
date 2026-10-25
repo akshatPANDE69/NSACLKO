@@ -17,9 +17,9 @@
   <link rel="stylesheet" href="style.css?v=10">
 </head>
 <body>
-  <button style="position:fixed;top:16px;left:16px;z-index:99999;color:#fff;background:rgba(0,0,0,0.6);border:1px solid #FFD700;padding:8px 16px;border-radius:4px;cursor:pointer;font-family:sans-serif;font-size:14px;transition:background 0.2s ease" onclick="window.location.href='/' " onmouseover="this.style.background='rgba(0,0,0,0.8)'" onmouseout="this.style.background='rgba(0,0,0,0.6)'">← Back to Site</button>
 
   <!-- MISSION CONTROL PRELOADER SCREEN -->
+  <script>if (sessionStorage.getItem('gaming_preloader_seen')) { document.write('<style>#preloader { display: none !important; }</style>'); }</script>
   <div id="preloader" class="preloader-overlay" aria-label="Loading site assets">
     <div class="preloader-center">
       <div class="preloader-brand">
@@ -34,13 +34,7 @@
     <!-- NAVIGATION HEADER -->
     <header class="site-header" id="home">
       <div class="nav-brand">
-        <a href="#home" class="brand-link" aria-label="NASA Space Apps Challenge Lucknow">
-          <img src="assets/space_apps_logo.png" alt="NASA Space Apps Challenge" class="brand-logo-img">
-          <div class="brand-text">
-            <span class="brand-city"><span class="city-white">LUCK</span><span class="city-red">NOW</span></span>
-            <span class="brand-sub">SUBEVENT</span>
-          </div>
-        </a>
+        <a href="/" class="brand-logo-main" aria-label="Back to main NASA Space Apps site">NASA SPACE APPS</a>
       </div>
 
       <nav class="nav-menu" id="navMenu" aria-label="Main Navigation">

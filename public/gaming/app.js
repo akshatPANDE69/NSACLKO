@@ -26,14 +26,25 @@ function initPreloader() {
 
   if (!preloader) return;
 
+  // Only run the preloader animation once per session
+  if (sessionStorage.getItem('gaming_preloader_seen')) {
+    preloader.style.display = 'none';
+    if (typeof startHeroVideoPlayback === 'function') {
+      startHeroVideoPlayback();
+    }
+    return;
+  }
+
+  sessionStorage.setItem('gaming_preloader_seen', 'true');
+
   const manifest = [
     { id: 'hero', type: 'video', url: 'hero%20section/hero%20video.mp4' },
-    { id: 'fifa', type: 'video', url: 'game%20card%20/fifa.mp4' },
-    { id: 'tekken', type: 'video', url: 'game%20card%20/tekken.mp4' },
-    { id: 'mk', type: 'video', url: 'game%20card%20/mortal%20kombat.mp4' },
-    { id: 'bgmi', type: 'video', url: 'game%20card%20/bgmi.mp4' },
-    { id: 'cod', type: 'video', url: 'game%20card%20/cod.mp4' },
-    { id: 'freefire', type: 'video', url: 'game%20card%20/free%20fire.mp4' },
+    { id: 'fifa', type: 'video', url: 'game%20card/fifa.mp4' },
+    { id: 'tekken', type: 'video', url: 'game%20card/tekken.mp4' },
+    { id: 'mk', type: 'video', url: 'game%20card/mortal%20kombat.mp4' },
+    { id: 'bgmi', type: 'video', url: 'game%20card/bgmi.mp4' },
+    { id: 'cod', type: 'video', url: 'game%20card/cod.mp4' },
+    { id: 'freefire', type: 'video', url: 'game%20card/free%20fire.mp4' },
     { id: 'logo', type: 'image', url: 'assets/space_apps_logo.png' },
     { id: 'img_fifa', type: 'image', url: 'assets/card_fifa.jpg' },
     { id: 'img_tekken', type: 'image', url: 'assets/card_tekken.jpg' },
@@ -180,7 +191,7 @@ const gameIntel = {
   fifa: {
     title: 'FIFA / EA FC 25',
     subtitle: 'CONSOLE 1V1 • PLAYSTATION 5 PODS',
-    video: 'game%20card%20/fifa.mp4',
+    video: 'game%20card/fifa.mp4',
     poster: 'assets/card_fifa.jpg',
     specs: [
       { label: 'MATCH DURATION', val: '6 Mins / Half' },
@@ -197,7 +208,7 @@ const gameIntel = {
   tekken: {
     title: 'TEKKEN 8',
     subtitle: 'CONSOLE 1V1 • IRON FIST ARENA',
-    video: 'game%20card%20/tekken.mp4',
+    video: 'game%20card/tekken.mp4',
     poster: 'assets/card_tekken.jpg',
     specs: [
       { label: 'MATCH FORMAT', val: 'Best of 3 Rounds' },
@@ -214,7 +225,7 @@ const gameIntel = {
   mk: {
     title: 'MORTAL KOMBAT 1',
     subtitle: 'CONSOLE 1V1 • NEXT-GEN KOMBAT',
-    video: 'game%20card%20/mortal%20kombat.mp4',
+    video: 'game%20card/mortal%20kombat.mp4',
     poster: 'assets/card_mk.jpg',
     specs: [
       { label: 'MATCH FORMAT', val: 'First to 2 (Finals FT3)' },
@@ -231,7 +242,7 @@ const gameIntel = {
   bgmi: {
     title: 'BGMI CLASH SQUAD',
     subtitle: 'MOBILE 4V4 • MULTIPLAYER BATTLEGROUND',
-    video: 'game%20card%20/bgmi.mp4',
+    video: 'game%20card/bgmi.mp4',
     poster: 'assets/card_bgmi.jpg',
     specs: [
       { label: 'ROUNDS TO WIN', val: 'First to 7 Rounds' },
@@ -248,7 +259,7 @@ const gameIntel = {
   cod: {
     title: 'CALL OF DUTY MULTIPLAYER',
     subtitle: 'MOBILE 5V5 • TACTICAL OPERATOR COMBAT',
-    video: 'game%20card%20/cod.mp4',
+    video: 'game%20card/cod.mp4',
     poster: 'assets/card_cod.jpg',
     specs: [
       { label: 'GAME MODES', val: 'Search & Destroy / HP' },
@@ -265,7 +276,7 @@ const gameIntel = {
   freefire: {
     title: 'FREE FIRE CLASH SQUAD',
     subtitle: 'MOBILE 4V4 • SURVIVAL ROUND ECONOMY',
-    video: 'game%20card%20/free%20fire.mp4',
+    video: 'game%20card/free%20fire.mp4',
     poster: 'assets/card_freefire.jpg',
     rotate: true,
     specs: [
