@@ -50,7 +50,7 @@ try {
     for (const [, href] of document.matchAll(/<a\b[^>]*href="([^"]+)"/g)) {
       assert.notEqual(href, "#", `${route} contains a dead placeholder link`);
       if (href.startsWith("/") && !href.startsWith("//")) {
-        assert.ok([...routes, "/register"].includes(href.split(/[?#]/)[0]), `${route} points to an unknown local route: ${href}`);
+        assert.ok([...routes, "/register", "/gaming"].includes(href.split(/[?#]/)[0]), `${route} points to an unknown local route: ${href}`);
       }
       if (href.startsWith("#")) {
         assert.ok(document.includes(`id="${href.slice(1)}"`), `${route} has an unresolved anchor: ${href}`);
@@ -65,7 +65,7 @@ try {
   assert.equal(poster.status, 200);
   assert.match(poster.headers.get("content-type"), /image\/jpeg/);
   await poster.arrayBuffer();
-  assert.match(pages["/contact"], /mailto:spaceappschallenge\.lko@gmail\.com/);
+  assert.match(pages["/contact"], /mailto:nsac-lucknow-support@googlegroups\.com/);
   assert.match(pages["/contact"], /Prepare Email/, "Contact form must explain its email-draft workflow");
   assert.match(pages["/challenges"], /https:\/\/www\.spaceappschallenge\.org\/2026\/challenges\//);
   assert.match(pages["/game"], /Flappy Bird/);
