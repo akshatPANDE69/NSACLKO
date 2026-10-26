@@ -1,179 +1,87 @@
-"use client";
-
-import React from "react";
-import { event } from "@/lib/event";
-import "@/app/styles/base.css";
-import "@/app/styles/about.css";
-import CountUp from "@/app/components/CountUp";
-import { Button } from "@/app/components/components/ui/button";
-import { Card, CardContent, CardTitle } from "@/app/components/components/ui/card";
+import type { Metadata } from "next";
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
+import { event } from "@/lib/event";
+import "@/app/styles/about.css";
+
+export const metadata: Metadata = {
+  title: "About Space Apps | NASA Space Apps Lucknow 2026",
+  description: `Discover NASA Space Apps Challenge in Lucknow. Join us on ${event.dates} at SRGI. All backgrounds and experience levels are welcome.`,
+};
+
+const steps = [
+  {
+    title: "Choose a challenge",
+    text: "Explore questions developed by NASA experts, then choose one that interests your team. Start with the challenge brief and its open data.",
+  },
+  {
+    title: "Develop your idea",
+    text: "Work together to research, experiment and build. Your project could be an app, a scientific model, a data visualisation or a creative way to explain an idea.",
+  },
+  {
+    title: "Share what you made",
+    text: "Present your project and the thinking behind it. Selected local projects can progress to global judging and consideration for Space Apps Global Awards.",
+  },
+];
 
 export default function About() {
   return (
-    <div className="about-container">
-      <div className="about-content">
-        <section className="hero-section">
-          <h1 className="hero-title">ABOUT</h1>
-          <p className="hero-subtitle">
-            The world&apos;s largest global hackathon, inspiring innovation for space
-            exploration and Earth challenges
-          </p>
+    <article className="about-container about-editorial" aria-labelledby="about-title">
+      <div className="about-layout">
+        <header className="about-intro">
+          <div>
+            <p className="about-kicker">NASA SPACE APPS / LUCKNOW {event.year}</p>
+            <h1 id="about-title">About <br />Space Apps</h1>
+          </div>
+          <div className="about-intro-copy">
+            <p className="about-lead">NASA&apos;s global hackathon.<br />A local place to take part.</p>
+            <p>NASA International Space Apps Challenge brings people together to explore questions about Earth and space using open data from NASA and its space agency partners. In Lucknow, we&apos;re coming together at SRGI to be part of it.</p>
+            <a className="about-text-link" href="https://www.spaceappschallenge.org/about/" target="_blank" rel="noopener noreferrer">About the global programme <ArrowUpRight size={16} aria-hidden="true" /></a>
+          </div>
+        </header>
+
+        <dl className="about-facts" aria-label="Lucknow event details">
+          <div><dt>When</dt><dd>{event.dates}<span>Two days to explore and create</span></dd></div>
+          <div><dt>Where</dt><dd>SRGI, Lucknow<span>{event.address}</span></dd></div>
+          <div><dt>Your team</dt><dd>Up to {event.teamLimit} people<span>Different skills are welcome</span></dd></div>
+        </dl>
+
+        <section className="about-section" aria-labelledby="about-participation-title">
+          <div className="about-section-heading">
+            <p className="about-kicker">WHO CAN TAKE PART</p>
+            <h2 id="about-participation-title">Every background <br />has a place here.</h2>
+          </div>
+          <div className="about-section-copy">
+            <p>You don&apos;t need to know how to code or have a hackathon behind you. School students, college students, professionals and curious beginners can all contribute.</p>
+            <p>Science, biology, commerce, humanities, art and design all bring useful perspectives. Researching a question, making sense of data, designing a prototype and telling its story are all part of developing a project.</p>
+            <p className="about-school-note">Bringing students from your school or college? <Link href="/contact">Talk to the organising team <ArrowUpRight size={16} aria-hidden="true" /></Link></p>
+          </div>
         </section>
 
-        <div className="content-grid">
-          <section className="content-section">
-            <h2 className="section-title">
-              What is NASA Space Apps Challenge?
-            </h2>
-            <p className="section-text">
-              NASA&apos;s International Space Apps Challenge is an annual hackathon
-              that takes place over 48 hours in cities around the world. The
-              event embraces collaborative problem-solving with a goal of
-              producing relevant open-source solutions to advance space
-              exploration missions and improve life on Earth.
-            </p>
-            <p className="section-text">
-              Each year, thousands of global citizens come together to work with
-              NASA data in order to solve challenges we face on Earth and in
-              space. Space Apps is more than a hackathon - it&apos;s a community of
-              innovators, scientists, coders, storytellers, makers, builders,
-              technologists, and entrepreneurs.
-            </p>
-          </section>
+        <section className="about-section about-experience" aria-labelledby="about-experience-title">
+          <div className="about-section-heading">
+            <p className="about-kicker">THE EXPERIENCE</p>
+            <h2 id="about-experience-title">What happens <br />over the two days.</h2>
+            <Link className="about-text-link" href="/challenges">Explore the challenges <ArrowUpRight size={16} aria-hidden="true" /></Link>
+          </div>
+          <ol className="about-steps">
+            {steps.map((step, index) => (
+              <li key={step.title}>
+                <span className="about-step-number" aria-hidden="true">0{index + 1}</span>
+                <div><h3>{step.title}</h3><p>{step.text}</p></div>
+              </li>
+            ))}
+          </ol>
+        </section>
 
-          <section className="content-section">
-            <h2 className="section-title">Our Mission</h2>
-            <div className="mission-grid">
-              {[
-                {
-                  title: "Inspire",
-                  text: "Engage and inspire people around the world to use NASA's open data for local and global solutions",
-                },
-                {
-                  title: "Innovate",
-                  text: "Foster innovation through collaborative problem-solving and cross-disciplinary teamwork",
-                },
-                {
-                  title: "Impact",
-                  text: "Create meaningful solutions that benefit both space exploration and life on Earth",
-                },
-              ].map((mission, index) => (
-                <Card key={index} className="mission-card">
-                  <CardContent className="card-content">
-                    <CardTitle className="card-title">
-                      {mission.title}
-                    </CardTitle>
-                    <p className="card-text">{mission.text}</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </section>
-
-          <section className="content-section">
-            <h2 className="section-title">Why Participate?</h2>
-            <p className="section-text">Join us on {event.dates} at {event.venue}, {event.address}. Students from science, commerce, humanities and biology are all welcome. No coding knowledge or previous hackathon experience is required. Teams can have up to {event.teamLimit} members.</p>
-            <p className="section-text">
-              Participating in NASA Space Apps Challenge is an opportunity to
-              collaborate with like-minded individuals, learn new skills, and
-              contribute to solving real-world problems. Whether you&apos;re a
-              developer, designer, scientist, or simply passionate about space
-              and technology, Space Apps offers a platform to make a difference.
-            </p>
-            <p className="section-text">
-              By joining Space Apps, you&apos;ll gain access to NASA&apos;s open data,
-              connect with experts and mentors, and have the chance to showcase
-              your solutions on a global stage.
-            </p>
-          </section>
-
-          <section className="content-section">
-            <h2 className="section-title">Global Impact</h2>
-            <p className="section-text">Cumulative figures from the <a href="https://www.spaceappschallenge.org/" className="underline">official Space Apps website</a>.</p>
-            <div className="stats-grid">
-              {[
-                { number: 487000, label: "Registrations Across All Editions", suffix: "+" },
-                { number: 3400, label: "Local Events Across All Editions", suffix: "+" },
-                { number: 190, label: "Countries and Territories", suffix: "+" },
-                { number: 17, label: "Space Agency Partners", suffix: "" },
-              ].map((stat, index) => (
-                <div key={index} className="stat-item">
-                  <div className="stat-number">
-                    <CountUp
-                      from={0}
-                      to={stat.number}
-                      separator=","
-                      direction="up"
-                      duration={1}
-                      className="count-up-text"
-                      startWhen={true}
-                    />
-                    {stat.suffix}
-                  </div>
-                  <div className="stat-label">{stat.label}</div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <section className="content-section">
-            <h2 className="section-title">How It Works</h2>
-            <div className="process-steps">
-              {[
-                {
-                  number: "01",
-                  title: "Choose Your Challenge",
-                  text: "Select from various challenges spanning Earth science, space exploration, and technology innovation",
-                },
-                {
-                  number: "02",
-                  title: "Form Your Team",
-                  text: "Collaborate with diverse minds from different backgrounds, skills, and perspectives",
-                },
-                {
-                  number: "03",
-                  title: "Build & Create",
-                  text: "Develop innovative solutions using NASA's open data, APIs, and cutting-edge technologies",
-                },
-                {
-                  number: "04",
-                  title: "Present & Impact",
-                  text: "Share your solution with the community and compete for global recognition",
-                },
-              ].map((step, index) => (
-                <div key={index} className="step">
-                  <div className="step-number">{step.number}</div>
-                  <div className="step-content">
-                    <h3 className="step-title">{step.title}</h3>
-                    <p className="step-text">{step.text}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <section className="cta-section">
-            <h2 className="cta-title">Ready to Make an Impact?</h2>
-            <p className="cta-text">
-              Join thousands of innovators worldwide in creating solutions that
-              matter. Whether you&apos;re a seasoned developer, a creative designer,
-              or simply passionate about space and technology, there&apos;s a place
-              for you at NASA Space Apps.
-            </p>
-            <div className="cta-buttons">
-              {[
-                { href: event.registrationUrl, text: "Register Now" },
-                { href: "/challenges", text: "View Challenges" },
-              ].map((button, index) => (
-                <Button key={index} asChild className="hero-btn primary">
-                  <Link href={button.href}>{button.text}</Link>
-                </Button>
-              ))}
-            </div>
-          </section>
-        </div>
+        <section className="about-join" aria-labelledby="about-join-title">
+          <div><h2 id="about-join-title">Join us in Lucknow.</h2><p>{event.dates} at {event.venue}.</p></div>
+          <div className="about-join-actions">
+            <a className="about-register" href={event.registrationUrl}>Register for Space Apps <ArrowUpRight size={18} aria-hidden="true" /></a>
+            <a className="about-text-link" href={event.whatsappUrl} target="_blank" rel="noopener noreferrer">Join the WhatsApp community <ArrowUpRight size={16} aria-hidden="true" /></a>
+          </div>
+        </section>
       </div>
-    </div>
+    </article>
   );
 }
