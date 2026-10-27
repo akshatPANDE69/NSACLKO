@@ -65,7 +65,10 @@ try {
   assert.equal(poster.status, 200);
   assert.match(poster.headers.get("content-type"), /image\/jpeg/);
   await poster.arrayBuffer();
-  assert.match(pages["/contact"], /mailto:nsac-lucknow-support@googlegroups\.com/);
+  for (const route of ["/contact", "/team", "/game/privacy"]) {
+    assert.match(pages[route], /mailto:nasaspaceappschallenge\.lucknow@gmail\.com/);
+    assert.doesNotMatch(pages[route], /nsac-lucknow-support@googlegroups\.com|spaceappschallenge\.lko@gmail\.com/);
+  }
   assert.match(pages["/contact"], /Prepare Email/, "Contact form must explain its email-draft workflow");
   assert.doesNotMatch(pages["/team"], /spaceappschallenge\.lko@gmail\.com|\/team\/\d+\.jpg/, "Team must use the verified address and available avatars");
   assert.match(pages["/challenges"], /https:\/\/www\.spaceappschallenge\.org\/2026\/challenges\//);
@@ -123,6 +126,8 @@ try {
   assert.equal(gamingDocument.status, 200);
   const esportsHtml = await gamingDocument.text();
   assert.match(esportsHtml, /Your details are stored privately/);
+  assert.match(esportsHtml, /mailto:nasaspaceappschallenge\.lucknow@gmail\.com/);
+  assert.doesNotMatch(esportsHtml, /nsac-lucknow-support@googlegroups\.com/);
   assert.match(esportsHtml, /href="\/" target="_top" class="back-home-link"/);
   assert.doesNotMatch(esportsHtml, /id="navMenu"|id="menuToggle"/);
   console.log("PASS Esports document and registration request boundaries");

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { event } from "@/lib/event";
 
 export const metadata: Metadata = {
   title: "Game privacy | NASA Space Apps Lucknow 2026",
@@ -42,7 +43,7 @@ export default function GamePrivacyPage() {
         </section>)}
         <section>
           <h2 className="mb-3 text-xl font-normal text-[#eee]">Contact and removal requests</h2>
-          <p className="text-sm leading-7">For questions about game records or to request removal of your account and scores, email <a className="break-words underline underline-offset-4 hover:text-white" href="mailto:nsac-lucknow-support@googlegroups.com">nsac-lucknow-support@googlegroups.com</a>. Organisers handle these requests privately.</p>
+          <p className="text-sm leading-7">For questions about game records or to request removal of your account and scores, email <a className="break-words underline underline-offset-4 hover:text-white" href={`mailto:${event.email}`}>{event.email}</a>. Organisers handle these requests privately.</p>
         </section>
       </div>
     </article>

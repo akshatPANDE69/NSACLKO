@@ -15,6 +15,6 @@ export const event = {
   challengesUrl: "https://www.spaceappschallenge.org/2026/challenges/",
   officialUrl: "https://www.spaceappschallenge.org/2026/",
   whatsappUrl: "https://chat.whatsapp.com/BEEGqEyXkg82LwfPSSjdpk",
-  email: "nsac-lucknow-support@googlegroups.com",
+  email: "nasaspaceappschallenge.lucknow@gmail.com",
   instagramUrl: "https://www.instagram.com/nsac_lko/",
 } as const;
