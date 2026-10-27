@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Chakra+Petch:ital,wght@0,400;0,600;0,700;1,600&family=Exo+2:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&family=Teko:wght@600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="style.css?v=11">
+  <link rel="stylesheet" href="style.css?v=12">
 </head>
 <body>
 
@@ -95,7 +95,7 @@
           <div class="card-media">
             <img src="assets/card_fifa.jpg" alt="FIFA EA FC" class="card-img" loading="eager">
             <div class="card-hover-overlay">
-              <span class="btn-inspect">RULES</span>
+              <span class="btn-inspect">REGISTER</span>
             </div>
           </div>
           <div class="card-info">
@@ -112,7 +112,7 @@
           <div class="card-media">
             <img src="assets/card_tekken.jpg" alt="TEKKEN 8" class="card-img" loading="eager">
             <div class="card-hover-overlay">
-              <span class="btn-inspect">RULES</span>
+              <span class="btn-inspect">REGISTER</span>
             </div>
           </div>
           <div class="card-info">
@@ -129,7 +129,7 @@
           <div class="card-media">
             <img src="assets/card_mk.jpg" alt="MORTAL KOMBAT 1" class="card-img" loading="eager">
             <div class="card-hover-overlay">
-              <span class="btn-inspect">RULES</span>
+              <span class="btn-inspect">REGISTER</span>
             </div>
           </div>
           <div class="card-info">
@@ -146,7 +146,7 @@
           <div class="card-media">
             <img src="assets/card_bgmi.jpg" alt="BGMI CLASH SQUAD" class="card-img" loading="eager">
             <div class="card-hover-overlay">
-              <span class="btn-inspect">RULES</span>
+              <span class="btn-inspect">REGISTER</span>
             </div>
           </div>
           <div class="card-info">
@@ -163,7 +163,7 @@
           <div class="card-media">
             <img src="assets/card_cod.jpg" alt="CALL OF DUTY MULTIPLAYER" class="card-img" loading="eager">
             <div class="card-hover-overlay">
-              <span class="btn-inspect">RULES</span>
+              <span class="btn-inspect">REGISTER</span>
             </div>
           </div>
           <div class="card-info">
@@ -180,7 +180,7 @@
           <div class="card-media">
             <img src="assets/card_freefire.jpg" alt="FREE FIRE CLASH SQUAD" class="card-img" loading="eager">
             <div class="card-hover-overlay">
-              <span class="btn-inspect">RULES</span>
+              <span class="btn-inspect">REGISTER</span>
             </div>
           </div>
           <div class="card-info">
@@ -201,94 +201,6 @@
       <div class="footer-left-tx">NASA SPACE APPS CHALLENGE LKO 2026</div>
       <div class="footer-right-tx">PLAY  //  CONNECT  //  BUILD</div>
     </div>
-
-    <!-- REGISTRATION SECTION -->
-    <section class="sub-section" id="registration">
-      <div class="section-bar">
-        <div class="bar-left">
-          <span class="slash-gold">/</span>
-          <h2 class="bar-title">REGISTRATION TERMINAL</h2>
-        </div>
-        <div class="bar-right">
-          <span class="bar-subtitle">LOCK YOUR BRACKET SLOT</span>
-          <span class="slash-gold-double">//</span>
-        </div>
-      </div>
-
-      <div class="registration-panel">
-        <div class="panel-info">
-          <h3>OFFICIAL OPERATOR ENTRY</h3>
-          <p>
-            Choose your battle. Slots across console duels (FIFA, Tekken 8, Mortal Kombat 1) and mobile squad clashes (BGMI, COD, Free Fire) are strictly limited.
-          </p>
-          <div class="prize-pill">
-            <span class="pill-label">ESTIMATED PRIZE POOL</span>
-            <span class="pill-val">₹50,000+ &amp; TROPHIES</span>
-          </div>
-          <ul class="reg-bullets">
-            <li>✓ Official NASA Space Apps LKO Certificate for all competitors</li>
-            <li>✓ Exclusive Gaming Swag &amp; Merch for finalists</li>
-            <li>✓ Live stream casting for top-tier matches</li>
-          </ul>
-        </div>
-
-        <form class="registration-form" id="regForm" onsubmit="handleFormSubmit(event)">
-          <div class="input-grid">
-            <div class="input-field">
-              <label for="regName">SQUAD LEADER / DUELIST NAME *</label>
-              <input type="text" id="regName" required maxlength="100" autocomplete="name" placeholder="e.g. Aryan Sharma">
-            </div>
-            <div class="input-field">
-              <label for="regTag">IN-GAME ALIAS / GAMERTAG *</label>
-              <input type="text" id="regTag" required maxlength="80" placeholder="e.g. VORTEX_99">
-            </div>
-          </div>
-
-          <div class="input-grid">
-            <div class="input-field">
-              <label for="regEmail">EMAIL ADDRESS *</label>
-              <input type="email" id="regEmail" required maxlength="254" autocomplete="email" placeholder="you@example.com">
-            </div>
-            <div class="input-field">
-              <label for="regPhone">PHONE / WHATSAPP *</label>
-              <input type="tel" id="regPhone" required maxlength="32" autocomplete="tel" placeholder="+91 98765 43210">
-            </div>
-          </div>
-
-          <div class="input-grid">
-            <div class="input-field">
-              <label for="regGame">CHOSEN ARENA TITLE *</label>
-              <select id="regGame" required>
-                <option value="" disabled selected>Select Game...</option>
-                <option value="fifa">FIFA / EA FC (Console 1v1)</option>
-                <option value="tekken">Tekken 8 (Console 1v1)</option>
-                <option value="mk">Mortal Kombat 1 (Console 1v1)</option>
-                <option value="bgmi">BGMI Multiplayer Clash Squad (Mobile 4v4)</option>
-                <option value="cod">Call of Duty Multiplayer (Mobile 5v5)</option>
-                <option value="freefire">Free Fire Clash Squad (Mobile 4v4)</option>
-              </select>
-            </div>
-            <div class="input-field">
-              <label for="regTeam">TEAM NAME (OR 'SOLO' FOR 1V1)</label>
-              <input type="text" id="regTeam" maxlength="100" placeholder="e.g. Lucknow Titans">
-            </div>
-          </div>
-
-          <div class="input-field full-width">
-            <label for="regRoster">SQUAD ROSTER &amp; IN-GAME UIDS (FOR SQUADS)</label>
-            <textarea id="regRoster" rows="2" maxlength="2000" placeholder="Player 1: UID, Player 2: UID, Player 3: UID, Player 4: UID..."></textarea>
-          </div>
-
-          <button type="submit" class="btn-submit" id="submitBtn">
-            <span>SUBMIT REGISTRATION</span>
-            <span class="chevron-gold">&gt;</span>
-          </button>
-
-          <p class="reg-data-note">Your details are stored privately for the Lucknow organising team to manage tournament entries and contact you. Registration does not guarantee a place. To correct or remove an entry, email <a href="mailto:nasaspaceappschallenge.lucknow@gmail.com">nasaspaceappschallenge.lucknow@gmail.com</a>.</p>
-          <div class="form-feedback" id="formFeedback" aria-live="polite" aria-atomic="true"></div>
-        </form>
-      </div>
-    </section>
 
     <!-- SCHEDULE SECTION -->
     <section class="sub-section" id="schedule">
@@ -426,7 +338,6 @@
           <h4>EXPLORE</h4>
           <a href="#home">Home</a>
           <a href="#games">The Games</a>
-          <a href="#registration">Registration</a>
           <a href="#schedule">Timeline</a>
           <a href="#faq">FAQ</a>
         </div>
@@ -449,7 +360,7 @@
   </div>
 
   <!-- GAME BRIEFING MODAL POPUP -->
-  <div class="modal-backdrop" id="gameModal" role="dialog" aria-modal="true" aria-label="Tournament rules" aria-hidden="true">
+  <div class="modal-backdrop" id="gameModal" role="dialog" aria-modal="true" aria-label="Game registration" aria-hidden="true">
     <div class="modal-box">
       <!-- Background Video Layer -->
       <div class="modal-video-wrapper">
@@ -473,6 +384,6 @@
     </div>
   </div>
 
-  <script src="app.js?v=10"></script>
+  <script src="app.js?v=11"></script>
 </body>
 </html>

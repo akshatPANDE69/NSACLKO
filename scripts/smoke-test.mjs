@@ -125,9 +125,13 @@ try {
   const gamingDocument = await fetch(origin + "/gaming/index.html");
   assert.equal(gamingDocument.status, 200);
   const esportsHtml = await gamingDocument.text();
-  assert.match(esportsHtml, /Your details are stored privately/);
-  assert.match(esportsHtml, /mailto:nasaspaceappschallenge\.lucknow@gmail\.com/);
-  assert.doesNotMatch(esportsHtml, /nsac-lucknow-support@googlegroups\.com/);
+  assert.doesNotMatch(esportsHtml, /id="registration"|href="#registration"/);
+  const esportsScript = await fetch(origin + "/gaming/app.js");
+  assert.equal(esportsScript.status, 200);
+  const esportsController = await esportsScript.text();
+  assert.match(esportsController, /Your details are stored privately/);
+  assert.match(esportsController, /mailto:nasaspaceappschallenge\.lucknow@gmail\.com/);
+  assert.doesNotMatch(esportsController, /nsac-lucknow-support@googlegroups\.com/);
   assert.match(esportsHtml, /href="\/" target="_top" class="back-home-link"/);
   assert.doesNotMatch(esportsHtml, /id="navMenu"|id="menuToggle"/);
   console.log("PASS Esports document and registration request boundaries");

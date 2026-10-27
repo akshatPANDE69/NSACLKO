@@ -7,8 +7,8 @@ let userManuallyMutedHero = false;
 let heroMutedBeforeModal = false;
 let updateHeroAudioUI = null;
 let startHeroVideoPlayback = null;
-let registrationBusy = false;
-let registrationAttempt = null;
+const registrationStates = new WeakMap();
+const gameModalPanels = new Map();
 let modalOpener = null;
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -132,7 +132,7 @@ function initMobileMenu() {
 
 function initNavScrollSpy() {
   const navItems = document.querySelectorAll('.nav-item');
-  const sections = ['home', 'games', 'registration', 'schedule', 'faq'];
+  const sections = ['home', 'games', 'schedule', 'faq'];
 
   window.addEventListener('scroll', () => {
     let current = 'home';
@@ -266,13 +266,54 @@ const gameIntel = {
   }
 };
 
+function gameRegistrationMarkup(gameKey) {
+  if (!Object.hasOwn(gameIntel, gameKey)) return '';
+  const data = gameIntel[gameKey];
+  const squadSize = { bgmi: 4, cod: 5, freefire: 4 }[gameKey];
+  const field = (name, label, type, attributes) => `
+    <div class="input-field">
+      <label for="${gameKey}-${name}">${label}</label>
+      <input id="${gameKey}-${name}" name="${name}" type="${type}" ${attributes}>
+    </div>`;
+  return `
+    <section class="modal-registration" aria-labelledby="${gameKey}-terminal-title">
+      <div class="terminal-heading">
+        <span class="terminal-kicker">REGISTRATION TERMINAL</span>
+        <h4 id="${gameKey}-terminal-title">${data.title}</h4>
+        <p>${squadSize ? `Register your ${squadSize}-player squad. Enter the squad leader's contact details below.` : 'Enter your player details for this 1v1 tournament.'} Fields marked * are required.</p>
+      </div>
+      <form class="registration-form" onsubmit="handleFormSubmit(event)">
+        <input type="hidden" name="game" value="${gameKey}">
+        <div class="input-grid">
+          ${field('name', squadSize ? 'SQUAD LEADER NAME *' : 'PLAYER NAME *', 'text', 'required maxlength="100" autocomplete="name"')}
+          ${field('alias', 'IN-GAME ALIAS / GAMERTAG *', 'text', 'required maxlength="80" autocomplete="off"')}
+        </div>
+        <div class="input-grid">
+          ${field('email', 'EMAIL ADDRESS *', 'email', 'required maxlength="254" autocomplete="email"')}
+          ${field('phone', 'PHONE / WHATSAPP *', 'tel', 'required maxlength="32" autocomplete="tel"')}
+        </div>
+        ${squadSize ? `
+          ${field('team', 'TEAM NAME', 'text', 'maxlength="100" autocomplete="off"')}
+          <div class="input-field">
+            <label for="${gameKey}-roster">SQUAD ROSTER &amp; IN-GAME UIDS</label>
+            <textarea id="${gameKey}-roster" name="roster" rows="3" maxlength="2000" placeholder="List your ${squadSize} players and their in-game UIDs"></textarea>
+          </div>` : ''}
+        <div class="form-feedback" data-form-feedback aria-live="polite" aria-atomic="true"></div>
+        <button type="submit" class="btn-submit">
+          <span>REGISTER FOR ${data.title}</span><span class="chevron-gold" aria-hidden="true">&gt;</span>
+        </button>
+        <p class="reg-data-note">Your details are stored privately for the Lucknow organising team to manage tournament entries and contact you. Registration does not guarantee a place. To correct or remove an entry, email <a href="mailto:nasaspaceappschallenge.lucknow@gmail.com">nasaspaceappschallenge.lucknow@gmail.com</a>.</p>
+      </form>
+    </section>`;
+}
+
 function openGameModal(gameKey) {
   const modal = document.getElementById('gameModal');
   const content = document.getElementById('gameModalContent');
   const modalVideo = document.getElementById('modalVideo');
   const modalPoster = document.getElementById('modalPoster');
   const modalScroll = document.getElementById('gameModalScroll');
-  const data = gameIntel[gameKey];
+  const data = Object.hasOwn(gameIntel, gameKey) ? gameIntel[gameKey] : null;
 
   if (!modal || !content || !data) return;
   if (!modal.classList.contains('active')) modalOpener = document.activeElement;
@@ -328,8 +369,12 @@ function openGameModal(gameKey) {
     `;
   }
 
-  content.innerHTML = `
-    <h3 class="modal-title">${data.title}</h3>
+  let panel = gameModalPanels.get(gameKey);
+  if (!panel) {
+    panel = document.createElement('div');
+    panel.className = 'modal-game-content';
+    panel.innerHTML = `
+    <h3 class="modal-title" id="${gameKey}-modal-title">${data.title}</h3>
     <div class="modal-subtitle">${data.subtitle}</div>
     
     <div class="modal-specs">
@@ -341,18 +386,20 @@ function openGameModal(gameKey) {
       `).join('')}
     </div>
 
-    <h4 class="modal-rules-heading">OFFICIAL BRACKET REGULATIONS</h4>
-    <ul class="modal-rules-list">
-      ${data.rules.map(r => `<li>${r}</li>`).join('')}
-    </ul>
-
-    <div class="modal-action-row">
-      <button class="btn-submit" onclick="selectGameAndScroll('${gameKey}')">
-        <span>REGISTER FOR THIS TITLE</span>
-        <span class="chevron-gold">&gt;</span>
-      </button>
-    </div>
+    <details class="modal-rules">
+      <summary>TOURNAMENT RULES</summary>
+      <ul class="modal-rules-list">
+        ${data.rules.map(r => `<li>${r}</li>`).join('')}
+      </ul>
+    </details>
+    ${gameRegistrationMarkup(gameKey)}
   `;
+    gameModalPanels.set(gameKey, panel);
+    content.append(panel);
+  }
+  // Keep each game's draft and pending receipt in its own DOM panel.
+  for (const [key, gamePanel] of gameModalPanels) gamePanel.hidden = key !== gameKey;
+  modal.setAttribute('aria-labelledby', `${gameKey}-modal-title`);
 
   if (modalScroll) {
     modalScroll.scrollTop = 0;
@@ -426,19 +473,6 @@ function initModalAudioToggle() {
   });
 }
 
-function selectGameAndScroll(gameKey) {
-  closeGameModal();
-  const select = document.getElementById('regGame');
-  if (select) {
-    select.value = gameKey;
-    select.focus({ preventScroll: true });
-  }
-  const regSection = document.getElementById('registration');
-  if (regSection) {
-    regSection.scrollIntoView({ behavior: 'smooth' });
-  }
-}
-
 function initModalHandlers() {
   const modal = document.getElementById('gameModal');
   if (modal) {
@@ -458,7 +492,7 @@ function initModalHandlers() {
       openGameModal(e.target.dataset.game);
     }
     if (e.key === 'Tab' && modal?.classList.contains('active')) {
-      const controls = Array.from(modal.querySelectorAll('button, a[href], input, select, textarea, [tabindex]:not([tabindex="-1"])')).filter(control => !control.disabled && control.getClientRects().length);
+      const controls = Array.from(modal.querySelectorAll('button, a[href], input, select, textarea, summary, [tabindex]:not([tabindex="-1"])')).filter(control => !control.disabled && control.getClientRects().length);
       const first = controls[0];
       const last = controls[controls.length - 1];
       if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last?.focus(); }
@@ -489,16 +523,19 @@ function toggleFaq(button) {
 
 async function handleFormSubmit(e) {
   e.preventDefault();
-  if (registrationBusy) return;
-  const form = document.getElementById('regForm');
-  const submitBtn = document.getElementById('submitBtn');
-  const feedback = document.getElementById('formFeedback');
+  const form = e.currentTarget;
+  if (!form) return;
+  const state = registrationStates.get(form) || { busy: false, attempt: null };
+  if (state.busy) return;
+  registrationStates.set(form, state);
+  const submitBtn = form.querySelector('[type="submit"]');
+  const feedback = form.querySelector('[data-form-feedback]');
   if (!form || !submitBtn || !feedback || !form.reportValidity()) return;
-  const value = id => document.getElementById(id).value.trim();
-  const details = { name: value('regName'), alias: value('regTag'), email: value('regEmail'), phone: value('regPhone'), game: value('regGame'), team: value('regTeam'), roster: value('regRoster') };
+  const value = name => form.elements.namedItem(name)?.value.trim() || '';
+  const details = { name: value('name'), alias: value('alias'), email: value('email'), phone: value('phone'), game: value('game'), team: value('team'), roster: value('roster') };
   const signature = JSON.stringify({ ...details, email: details.email.toLowerCase() });
   const originalContent = submitBtn.innerHTML;
-  registrationBusy = true;
+  state.busy = true;
   submitBtn.textContent = 'SAVING REGISTRATION...';
   submitBtn.disabled = true;
   feedback.className = 'form-feedback';
@@ -507,17 +544,17 @@ async function handleFormSubmit(e) {
     const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(signature));
     const fingerprint = Array.from(new Uint8Array(digest), byte => byte.toString(16).padStart(2, '0')).join('');
     const storageKey = `esports:pending:${fingerprint}`;
-    if (!registrationAttempt || registrationAttempt.signature !== signature) {
+    if (!state.attempt || state.attempt.signature !== signature) {
       let key;
       try { key = sessionStorage.getItem(storageKey); } catch { /* Storage can be unavailable in private browsers. */ }
       if (!/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(key || '')) key = crypto.randomUUID();
-      registrationAttempt = { signature, key, storageKey };
+      state.attempt = { signature, key, storageKey };
     }
     // Store only a random request key indexed by a digest, never form details.
-    try { sessionStorage.setItem(storageKey, registrationAttempt.key); } catch { /* Same-page retry still works. */ }
+    try { sessionStorage.setItem(storageKey, state.attempt.key); } catch { /* Same-page retry still works. */ }
     const response = await fetch('/api/tournaments/registrations', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...details, key: registrationAttempt.key }),
+      body: JSON.stringify({ ...details, key: state.attempt.key }),
       signal: AbortSignal.timeout(20000)
     });
     const result = await response.json();
@@ -528,8 +565,8 @@ async function handleFormSubmit(e) {
     feedback.setAttribute('role', 'status');
     feedback.textContent = `Registration received. Your reference is ${result.reference}. Keep it for organiser queries. Your tournament place is subject to confirmation.`;
     form.reset();
-    try { sessionStorage.removeItem(registrationAttempt.storageKey); } catch { /* No registration details are stored here. */ }
-    registrationAttempt = null;
+    try { sessionStorage.removeItem(state.attempt.storageKey); } catch { /* No registration details are stored here. */ }
+    state.attempt = null;
   } catch (error) {
     feedback.className = 'form-feedback error';
     feedback.setAttribute('role', 'alert');
@@ -537,7 +574,7 @@ async function handleFormSubmit(e) {
       ? 'We could not confirm your registration. Your details are still here. Please try again.'
       : error.message;
   } finally {
-    registrationBusy = false;
+    state.busy = false;
     submitBtn.innerHTML = originalContent;
     submitBtn.disabled = false;
   }
@@ -546,7 +583,6 @@ async function handleFormSubmit(e) {
 // Global scope bindings for inline HTML handlers
 window.openGameModal = openGameModal;
 window.closeGameModal = closeGameModal;
-window.selectGameAndScroll = selectGameAndScroll;
 window.toggleFaq = toggleFaq;
 window.handleFormSubmit = handleFormSubmit;
 

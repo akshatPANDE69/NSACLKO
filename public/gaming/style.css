@@ -1528,6 +1528,50 @@ body {
   flex-grow: 1;
 }
 
+.modal-game-content { min-width: 0; }
+.modal-game-content[hidden] { display: none; }
+
+.modal-rules {
+  margin-bottom: 24px;
+  border-block: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(8, 10, 14, 0.85);
+}
+.modal-rules summary {
+  padding: 16px;
+  cursor: pointer;
+  color: #e4e4e7;
+  font: 600 12px/1.5 var(--font-tech);
+  letter-spacing: 0.14em;
+}
+.modal-rules .modal-rules-list { margin: 4px 16px 20px; }
+
+.modal-registration {
+  background: rgba(8, 10, 14, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  padding: clamp(18px, 3vw, 32px);
+}
+.terminal-heading { margin-bottom: 24px; }
+.terminal-kicker {
+  color: #b6b8be;
+  font: 12px/1.5 var(--font-tech);
+  letter-spacing: 0.14em;
+}
+.terminal-heading h4 {
+  margin: 8px 0;
+  color: #fff;
+  font: 600 clamp(26px, 4vw, 36px)/1.1 var(--font-display);
+}
+.terminal-heading p { margin: 0; color: #b6b8be; font: 14px/1.6 var(--font-body); }
+.modal-registration .input-field { min-width: 0; }
+.modal-registration input:not([type="hidden"]),
+.modal-registration textarea { width: 100%; min-height: 44px; border-color: #51555e; }
+.modal-registration textarea { resize: vertical; }
+.modal-registration .btn-submit { width: 100%; letter-spacing: 0.08em; }
+.modal-registration .reg-data-note { margin-top: 0; }
+.modal-registration .btn-submit:disabled { opacity: 0.65; cursor: wait; transform: none; }
+.modal-registration :focus-visible,
+.modal-rules summary:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+
 .modal-title {
   font-family: var(--font-display);
   font-size: 52px;
