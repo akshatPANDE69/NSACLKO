@@ -7,7 +7,7 @@ html { scroll-behavior: smooth; scroll-padding-top: 100px; }
 a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 2px solid #a7d7fc !important; outline-offset: 4px; }
 .typing-content, .stagger-item, .hero-main-title, .hero-cta-buttons, .timeline-item, .main-heading { opacity: 1 !important; transform: none; }
 .typing-content { display: block; }
-.hero-video-section { height: auto; min-height: 800px; }
+.hero-video-section { height: auto; min-height: 880px; }
 /* Clip the background without letting focused controls scroll the hero internally. */
 .home-page .hero-video-section { overflow: clip; }
 .hero-video-background { top: 0; }
@@ -71,7 +71,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   .nav-menu > div { max-width: none; justify-content: flex-start; }
   .nav-links { width: 100%; gap: 2px; }
   .nav-links a { min-height: 44px; padding: 10px 0; font-size: 13px; }
-  .hero-video-section { height: auto; min-height: 100svh; padding: 120px 0 88px; align-items: flex-start; }
+  .hero-video-section { height: auto; min-height: 110svh; padding: 120px 0 88px; align-items: flex-start; }
   .hero-video-background, .hero-video-background video { top: 0; height: 100%; min-height: 100%; }
   .hero-video-background video { object-fit: cover; }
   .home-page .hero-content-wrapper { padding: 0 20px; }

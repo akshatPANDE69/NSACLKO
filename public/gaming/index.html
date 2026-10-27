@@ -12,9 +12,10 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Chakra+Petch:ital,wght@0,400;0,600;0,700;1,600&family=Exo+2:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&family=Teko:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,400;0,600;0,700;1,600&family=Rajdhani:wght@500;600;700&family=Teko:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="assets/hero-poster.webp" fetchpriority="high">
 
-  <link rel="stylesheet" href="style.css?v=12">
+  <link rel="stylesheet" href="style.css?v=13">
 </head>
 <body>
 
@@ -33,9 +34,9 @@
           loop 
           playsinline 
           webkit-playsinline
-          preload="auto">
+          poster="assets/hero-poster.webp"
+          preload="metadata">
           <source src="hero%20section/hero%20video.mp4" type="video/mp4">
-          <source src="hero section/hero video.mp4" type="video/mp4">
           Your browser does not support the video tag.
         </video>
         <div class="hero-video-overlay"></div>
@@ -83,7 +84,7 @@
         <!-- CARD 1: FIFA -->
         <article class="game-card" role="button" aria-haspopup="dialog" data-game="fifa" tabindex="0" onclick="openGameModal('fifa')">
           <div class="card-media">
-            <img src="assets/card_fifa.jpg" alt="FIFA EA FC" class="card-img" loading="eager">
+            <img src="assets/card_fifa.webp" alt="FIFA EA FC" class="card-img" width="736" height="920" loading="lazy" decoding="async">
             <div class="card-hover-overlay">
               <span class="btn-inspect">REGISTER</span>
             </div>
@@ -100,7 +101,7 @@
         <!-- CARD 2: TEKKEN -->
         <article class="game-card" role="button" aria-haspopup="dialog" data-game="tekken" tabindex="0" onclick="openGameModal('tekken')">
           <div class="card-media">
-            <img src="assets/card_tekken.jpg" alt="TEKKEN 8" class="card-img" loading="eager">
+            <img src="assets/card_tekken.webp" alt="TEKKEN 8" class="card-img" width="599" height="1024" loading="lazy" decoding="async">
             <div class="card-hover-overlay">
               <span class="btn-inspect">REGISTER</span>
             </div>
@@ -117,7 +118,7 @@
         <!-- CARD 3: MORTAL KOMBAT -->
         <article class="game-card" role="button" aria-haspopup="dialog" data-game="mk" tabindex="0" onclick="openGameModal('mk')">
           <div class="card-media">
-            <img src="assets/card_mk.jpg" alt="MORTAL KOMBAT 1" class="card-img" loading="eager">
+            <img src="assets/card_mk.webp" alt="MORTAL KOMBAT 1" class="card-img" width="736" height="1019" loading="lazy" decoding="async">
             <div class="card-hover-overlay">
               <span class="btn-inspect">REGISTER</span>
             </div>
@@ -134,7 +135,7 @@
         <!-- CARD 4: BGMI -->
         <article class="game-card" role="button" aria-haspopup="dialog" data-game="bgmi" tabindex="0" onclick="openGameModal('bgmi')">
           <div class="card-media">
-            <img src="assets/card_bgmi.jpg" alt="BGMI CLASH SQUAD" class="card-img" loading="eager">
+            <img src="assets/card_bgmi.webp" alt="BGMI CLASH SQUAD" class="card-img" width="735" height="733" loading="lazy" decoding="async">
             <div class="card-hover-overlay">
               <span class="btn-inspect">REGISTER</span>
             </div>
@@ -151,7 +152,7 @@
         <!-- CARD 5: COD -->
         <article class="game-card" role="button" aria-haspopup="dialog" data-game="cod" tabindex="0" onclick="openGameModal('cod')">
           <div class="card-media">
-            <img src="assets/card_cod.jpg" alt="CALL OF DUTY MULTIPLAYER" class="card-img" loading="eager">
+            <img src="assets/card_cod.webp" alt="CALL OF DUTY MULTIPLAYER" class="card-img" width="682" height="1024" loading="lazy" decoding="async">
             <div class="card-hover-overlay">
               <span class="btn-inspect">REGISTER</span>
             </div>
@@ -168,7 +169,7 @@
         <!-- CARD 6: FREE FIRE -->
         <article class="game-card" role="button" aria-haspopup="dialog" data-game="freefire" tabindex="0" onclick="openGameModal('freefire')">
           <div class="card-media">
-            <img src="assets/card_freefire.jpg" alt="FREE FIRE CLASH SQUAD" class="card-img" loading="eager">
+            <img src="assets/card_freefire.webp" alt="FREE FIRE CLASH SQUAD" class="card-img" width="455" height="640" loading="lazy" decoding="async">
             <div class="card-hover-overlay">
               <span class="btn-inspect">REGISTER</span>
             </div>
@@ -354,7 +355,7 @@
     <div class="modal-box">
       <!-- Background Video Layer -->
       <div class="modal-video-wrapper">
-        <video id="modalVideo" class="modal-video-player" playsinline webkit-playsinline loop preload="auto"></video>
+        <video id="modalVideo" class="modal-video-player" playsinline webkit-playsinline loop preload="none"></video>
         <div id="modalPoster" class="modal-poster-fallback"></div>
         <div class="modal-video-overlay"></div>
       </div>
@@ -374,6 +375,6 @@
     </div>
   </div>
 
-  <script src="app.js?v=11"></script>
+  <script src="app.js?v=12"></script>
 </body>
 </html>

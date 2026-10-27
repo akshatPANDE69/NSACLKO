@@ -6,6 +6,7 @@ import { Button } from "@/app/components/components/ui/button";
 import EffectsInitializer from "@/app/components/EffectsInitializer";
 import Particles from "@/app/components/Particles";
 import React from "react";
+import { observeVideoVisibility } from "@/lib/video-visibility";
 import { ArrowUpRight, ChartNoAxesCombined, Globe2, Orbit, Palette } from "lucide-react";
 
 import { StarsBackground } from "@/components/animate-ui/backgrounds/stars";
@@ -28,9 +29,7 @@ export default function Home() {
   const videoRef = React.useRef<HTMLVideoElement>(null);
 
   React.useEffect(() => {
-    if (videoRef.current) {
-      void videoRef.current.play().catch(() => {});
-    }
+    if (videoRef.current) return observeVideoVisibility(videoRef.current);
   }, []);
 
   return (

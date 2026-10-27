@@ -135,6 +135,9 @@ try {
   assert.match(esportsHtml, /href="\/" target="_top" class="back-home-link"/);
   assert.doesNotMatch(esportsHtml, /id="navMenu"|id="menuToggle"/);
   console.log("PASS Esports document and registration request boundaries");
+  const gamingShell = await (await fetch(origin + "/gaming")).text();
+  assert.ok(gamingShell.includes('src="/gaming/index.html"'));
+  assert.doesNotMatch(gamingShell, /class="site-star-background"/, "Esports must not draw stars hidden behind its fullscreen iframe");
   assert.match(pages["/timeline"], /11:59 PM local time/i);
   assert.match(pages["/timeline"], /id="navbar"/, "Timeline must retain the navigation from the last successful production deployment");
   assert.match(pages["/timeline"], />Event Timeline<\/h1>/);

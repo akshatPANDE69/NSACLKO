@@ -6,7 +6,7 @@
 let userManuallyMutedHero = false;
 let heroMutedBeforeModal = false;
 let updateHeroAudioUI = null;
-let startHeroVideoPlayback = null;
+let heroInView = true;
 const registrationStates = new WeakMap();
 const gameModalPanels = new Map();
 let modalOpener = null;
@@ -244,12 +244,12 @@ function openGameModal(gameKey) {
   if (!modal || !content || !data) return;
   if (!modal.classList.contains('active')) modalOpener = document.activeElement;
 
-  // Hero section continues looping uninterrupted; mute audio temporarily so modal audio is clear
+  // Decode only the visible game video while its registration terminal is open.
   const heroVideo = document.getElementById('heroVideo');
   if (heroVideo) {
     heroMutedBeforeModal = heroVideo.muted;
     heroVideo.muted = true;
-    if (heroVideo.paused) heroVideo.play().catch(() => {});
+    heroVideo.pause();
   }
 
   // Video Background Controller
@@ -335,12 +335,14 @@ function openGameModal(gameKey) {
     modal.classList.add('active');
     modal.setAttribute('aria-hidden', 'false');
     modal.querySelector('.btn-close-modal')?.focus({ preventScroll: true });
+    syncGameMediaPlayback();
   });
   document.body.style.overflow = 'hidden';
 }
 
 function closeGameModal() {
   const modal = document.getElementById('gameModal');
+  if (!modal?.classList.contains('active')) return;
   const modalVideo = document.getElementById('modalVideo');
   if (modal) {
     if (modal.classList.contains('active')) modalOpener?.focus({ preventScroll: true });
@@ -354,15 +356,15 @@ function closeGameModal() {
     modalVideo.removeAttribute('src');
     modalVideo.load();
   }
-  // Restore hero video audio & ensure hero continues uninterrupted on loop
+  // Resume the hero at its previous position only when it is visible.
   const heroVideo = document.getElementById('heroVideo');
   if (heroVideo) {
     heroVideo.muted = userManuallyMutedHero ? true : heroMutedBeforeModal;
     if (typeof updateHeroAudioUI === 'function') {
       updateHeroAudioUI(heroVideo.muted);
     }
-    if (heroVideo.paused) heroVideo.play().catch(() => {});
   }
+  syncGameMediaPlayback();
 }
 
 function initModalAudioToggle() {
@@ -516,6 +518,19 @@ window.handleFormSubmit = handleFormSubmit;
    6. FULLSCREEN HERO VIDEO & AUDIO CONTROLLER
    ============================================================= */
 
+function syncGameMediaPlayback() {
+  const hero = document.getElementById('heroVideo');
+  const modalVideo = document.getElementById('modalVideo');
+  const modalActive = document.getElementById('gameModal')?.classList.contains('active');
+  const update = (video, shouldPlay) => {
+    if (!video) return;
+    if (!shouldPlay) video.pause();
+    else if (video.paused) video.play().catch(() => {});
+  };
+  update(hero, !document.hidden && heroInView && !modalActive);
+  update(modalVideo, !document.hidden && modalActive && !!modalVideo?.getAttribute('src'));
+}
+
 function initHeroVideo() {
   const video = document.getElementById('heroVideo');
   const audioBtn = document.getElementById('audioToggleBtn');
@@ -551,84 +566,27 @@ function initHeroVideo() {
     }
   };
 
-  // Ensure video starts from 0:00 (from starting) when page loads
-  video.currentTime = 0;
+  // Muted autoplay can start immediately without a blocked audible attempt.
   video.loop = true;
-
-  video.addEventListener('loadedmetadata', () => {
-    video.currentTime = 0;
-  });
-
-  // Guarantee hero section never stops and loops continuously
-  video.addEventListener('ended', () => {
-    video.currentTime = 0;
-    video.play().catch(() => {});
-  });
-
-  // Audio level default: open with sound
   video.volume = 0.85;
-  video.muted = false;
-
-  // Unmute on the very first user interaction anywhere on the document
-  const unmuteOnFirstGesture = () => {
-    if (!userManuallyMutedHero) {
-      video.muted = false;
-      video.volume = 0.85;
-      video.play().catch(() => {});
-      updateHeroAudioUI(false);
-    }
-    ['click', 'pointerdown', 'keydown', 'touchstart', 'scroll'].forEach(evt => {
-      window.removeEventListener(evt, unmuteOnFirstGesture, true);
+  video.muted = true;
+  updateHeroAudioUI(true);
+  document.addEventListener('visibilitychange', syncGameMediaPlayback);
+  if (typeof IntersectionObserver !== 'undefined') {
+    const observer = new IntersectionObserver(([entry]) => {
+      heroInView = entry.isIntersecting;
+      syncGameMediaPlayback();
     });
-  };
-
-  ['click', 'pointerdown', 'keydown', 'touchstart', 'scroll'].forEach(evt => {
-    window.addEventListener(evt, unmuteOnFirstGesture, { once: true, capture: true });
-  });
-
-  // Playback triggered right when preloader completes
-  startHeroVideoPlayback = function() {
-    if (window.heroBlobUrl && video) {
-      video.src = window.heroBlobUrl;
-    }
-    video.currentTime = 0;
-    const playPromise = video.play();
-
-    if (playPromise !== undefined) {
-      playPromise.then(() => {
-        updateHeroAudioUI(false);
-      }).catch(() => {
-        video.muted = true;
-        video.currentTime = 0;
-        video.play().catch(() => {});
-        updateHeroAudioUI(false);
-      });
-    }
-  };
-
-  // Start playback immediately
-  startHeroVideoPlayback();
+    observer.observe(video);
+  }
+  syncGameMediaPlayback();
 
   // Audio button toggle: only switch off when user manually chooses
   audioBtn.addEventListener('click', (e) => {
     e.stopPropagation();
     userManuallyMutedHero = !video.muted;
     video.muted = !video.muted;
-    if (!video.muted && video.paused) {
-      video.play().catch(() => {});
-    }
+    syncGameMediaPlayback();
     updateHeroAudioUI(video.muted);
   });
 }
-
-// Ensure video restarts from 0:00 when entire window finishes loading
-window.addEventListener('load', () => {
-  const video = document.getElementById('heroVideo');
-  if (video) {
-    video.currentTime = 0;
-    if (video.paused) {
-      video.play().catch(() => {});
-    }
-  }
-});
-
