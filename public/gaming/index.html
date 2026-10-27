@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Chakra+Petch:ital,wght@0,400;0,600;0,700;1,600&family=Exo+2:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&family=Teko:wght@600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="style.css?v=10">
+  <link rel="stylesheet" href="style.css?v=11">
 </head>
 <body>
 
@@ -31,35 +31,10 @@
 
   <div class="site-wrapper">
 
-    <!-- NAVIGATION HEADER -->
-    <header class="site-header" id="home">
-      <div class="nav-brand">
-        <a href="/" class="brand-logo-main" aria-label="Back to main NASA Space Apps site">NASA SPACE APPS</a>
-      </div>
-
-      <nav class="nav-menu" id="navMenu" aria-label="Main Navigation">
-        <a href="#home" class="nav-item active">HOME</a>
-        <a href="#games" class="nav-item">GAMES</a>
-        <a href="#registration" class="nav-item">REGISTRATION</a>
-        <a href="#schedule" class="nav-item">SCHEDULE</a>
-        <a href="#faq" class="nav-item">FAQ</a>
-      </nav>
-
-      <div class="nav-action">
-        <a href="#registration" class="btn-register-top">
-          <span class="btn-text-full">REGISTER NOW</span>
-          <span class="btn-text-mobile">REGISTER</span>
-          <span class="chevron-gold">&gt;</span>
-        </a>
-        <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">
-          <span></span>
-          <span></span>
-        </button>
-      </div>
-    </header>
+    <a href="/" target="_top" class="back-home-link"><span aria-hidden="true">&larr;</span> Back to home</a>
 
     <!-- FULLSCREEN VIDEO HERO SECTION -->
-    <section class="hero-video-section">
+    <section class="hero-video-section" id="home">
       <div class="hero-video-wrapper">
         <video 
           id="heroVideo" 
@@ -116,7 +91,7 @@
       <div class="games-strip">
 
         <!-- CARD 1: FIFA -->
-        <article class="game-card" data-game="fifa" tabindex="0" onclick="openGameModal('fifa')">
+        <article class="game-card" role="button" aria-haspopup="dialog" data-game="fifa" tabindex="0" onclick="openGameModal('fifa')">
           <div class="card-media">
             <img src="assets/card_fifa.jpg" alt="FIFA EA FC" class="card-img" loading="eager">
             <div class="card-hover-overlay">
@@ -133,7 +108,7 @@
         </article>
 
         <!-- CARD 2: TEKKEN -->
-        <article class="game-card" data-game="tekken" tabindex="0" onclick="openGameModal('tekken')">
+        <article class="game-card" role="button" aria-haspopup="dialog" data-game="tekken" tabindex="0" onclick="openGameModal('tekken')">
           <div class="card-media">
             <img src="assets/card_tekken.jpg" alt="TEKKEN 8" class="card-img" loading="eager">
             <div class="card-hover-overlay">
@@ -150,7 +125,7 @@
         </article>
 
         <!-- CARD 3: MORTAL KOMBAT -->
-        <article class="game-card" data-game="mk" tabindex="0" onclick="openGameModal('mk')">
+        <article class="game-card" role="button" aria-haspopup="dialog" data-game="mk" tabindex="0" onclick="openGameModal('mk')">
           <div class="card-media">
             <img src="assets/card_mk.jpg" alt="MORTAL KOMBAT 1" class="card-img" loading="eager">
             <div class="card-hover-overlay">
@@ -167,7 +142,7 @@
         </article>
 
         <!-- CARD 4: BGMI -->
-        <article class="game-card" data-game="bgmi" tabindex="0" onclick="openGameModal('bgmi')">
+        <article class="game-card" role="button" aria-haspopup="dialog" data-game="bgmi" tabindex="0" onclick="openGameModal('bgmi')">
           <div class="card-media">
             <img src="assets/card_bgmi.jpg" alt="BGMI CLASH SQUAD" class="card-img" loading="eager">
             <div class="card-hover-overlay">
@@ -184,7 +159,7 @@
         </article>
 
         <!-- CARD 5: COD -->
-        <article class="game-card" data-game="cod" tabindex="0" onclick="openGameModal('cod')">
+        <article class="game-card" role="button" aria-haspopup="dialog" data-game="cod" tabindex="0" onclick="openGameModal('cod')">
           <div class="card-media">
             <img src="assets/card_cod.jpg" alt="CALL OF DUTY MULTIPLAYER" class="card-img" loading="eager">
             <div class="card-hover-overlay">
@@ -201,7 +176,7 @@
         </article>
 
         <!-- CARD 6: FREE FIRE -->
-        <article class="game-card" data-game="freefire" tabindex="0" onclick="openGameModal('freefire')">
+        <article class="game-card" role="button" aria-haspopup="dialog" data-game="freefire" tabindex="0" onclick="openGameModal('freefire')">
           <div class="card-media">
             <img src="assets/card_freefire.jpg" alt="FREE FIRE CLASH SQUAD" class="card-img" loading="eager">
             <div class="card-hover-overlay">
@@ -261,22 +236,22 @@
           <div class="input-grid">
             <div class="input-field">
               <label for="regName">SQUAD LEADER / DUELIST NAME *</label>
-              <input type="text" id="regName" required placeholder="e.g. Aryan Sharma">
+              <input type="text" id="regName" required maxlength="100" autocomplete="name" placeholder="e.g. Aryan Sharma">
             </div>
             <div class="input-field">
               <label for="regTag">IN-GAME ALIAS / GAMERTAG *</label>
-              <input type="text" id="regTag" required placeholder="e.g. VORTEX_99">
+              <input type="text" id="regTag" required maxlength="80" placeholder="e.g. VORTEX_99">
             </div>
           </div>
 
           <div class="input-grid">
             <div class="input-field">
               <label for="regEmail">EMAIL ADDRESS *</label>
-              <input type="email" id="regEmail" required placeholder="operator@spaceappslko.org">
+              <input type="email" id="regEmail" required maxlength="254" autocomplete="email" placeholder="you@example.com">
             </div>
             <div class="input-field">
               <label for="regPhone">PHONE / WHATSAPP *</label>
-              <input type="tel" id="regPhone" required placeholder="+91 98765 43210">
+              <input type="tel" id="regPhone" required maxlength="32" autocomplete="tel" placeholder="+91 98765 43210">
             </div>
           </div>
 
@@ -295,13 +270,13 @@
             </div>
             <div class="input-field">
               <label for="regTeam">TEAM NAME (OR 'SOLO' FOR 1V1)</label>
-              <input type="text" id="regTeam" placeholder="e.g. Lucknow Titans">
+              <input type="text" id="regTeam" maxlength="100" placeholder="e.g. Lucknow Titans">
             </div>
           </div>
 
           <div class="input-field full-width">
             <label for="regRoster">SQUAD ROSTER &amp; IN-GAME UIDS (FOR SQUADS)</label>
-            <textarea id="regRoster" rows="2" placeholder="Player 1: UID, Player 2: UID, Player 3: UID, Player 4: UID..."></textarea>
+            <textarea id="regRoster" rows="2" maxlength="2000" placeholder="Player 1: UID, Player 2: UID, Player 3: UID, Player 4: UID..."></textarea>
           </div>
 
           <button type="submit" class="btn-submit" id="submitBtn">
@@ -309,7 +284,8 @@
             <span class="chevron-gold">&gt;</span>
           </button>
 
-          <div class="form-feedback" id="formFeedback"></div>
+          <p class="reg-data-note">Your details are stored privately for the Lucknow organising team to manage tournament entries and contact you. Registration does not guarantee a place. To correct or remove an entry, email <a href="mailto:nsac-lucknow-support@googlegroups.com">nsac-lucknow-support@googlegroups.com</a>.</p>
+          <div class="form-feedback" id="formFeedback" aria-live="polite" aria-atomic="true"></div>
         </form>
       </div>
     </section>
@@ -473,7 +449,7 @@
   </div>
 
   <!-- GAME BRIEFING MODAL POPUP -->
-  <div class="modal-backdrop" id="gameModal" aria-hidden="true">
+  <div class="modal-backdrop" id="gameModal" role="dialog" aria-modal="true" aria-label="Tournament rules" aria-hidden="true">
     <div class="modal-box">
       <!-- Background Video Layer -->
       <div class="modal-video-wrapper">
@@ -497,6 +473,6 @@
     </div>
   </div>
 
-  <script src="app.js?v=8"></script>
+  <script src="app.js?v=10"></script>
 </body>
 </html>

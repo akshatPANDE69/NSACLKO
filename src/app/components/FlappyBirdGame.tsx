@@ -279,7 +279,7 @@ export default function FlappyBirdGame() {
           </div>
           <div className="flappy-mode" aria-label="Choose game mode">
             <div><button type="button" aria-pressed={mode === "practice"} disabled={busy || Boolean(pending)} onClick={() => setMode("practice")}>Practice</button><button type="button" aria-pressed={mode === "ranked"} disabled={busy || Boolean(pending) || !leaderboard.user || !leaderboard.board?.available} onClick={() => setMode("ranked")}>Ranked flight</button></div>
-            <span>{mode === "ranked" ? "Your best flight counts" : "Sign in to compete"}</span>
+            <span>{mode === "ranked" ? "Your best flight counts" : leaderboard.user ? "Switch to ranked to compete" : "Sign in to compete"}</span>
           </div>
           <div ref={playAreaRef} className="flappy-play-area" onKeyDown={handleKeyDown} onPointerDown={handlePointerDown} role="group" tabIndex={0} aria-label="Flappy Bird game. Click or press Space or Arrow Up to fly.">
             <canvas ref={canvasRef} width={CANVAS_WIDTH} height={CANVAS_HEIGHT} aria-hidden="true" />

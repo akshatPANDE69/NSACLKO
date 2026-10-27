@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint src",
     "typecheck": "tsc --noEmit",
-    "test": "npm run test:game && node scripts/smoke-test.mjs",
+    "test": "npm run test:game && npm run test:tournaments && node scripts/smoke-test.mjs",
+    "test:tournaments": "node --conditions=react-server --import=tsx scripts/tournament-test.mjs && node scripts/tournament-browser-test.mjs",
     "test:game": "node --conditions=react-server --import=tsx scripts/game-test.mjs"
   },
   "dependencies": {

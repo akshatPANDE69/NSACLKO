@@ -67,6 +67,7 @@ try {
   await poster.arrayBuffer();
   assert.match(pages["/contact"], /mailto:nsac-lucknow-support@googlegroups\.com/);
   assert.match(pages["/contact"], /Prepare Email/, "Contact form must explain its email-draft workflow");
+  assert.doesNotMatch(pages["/team"], /spaceappschallenge\.lko@gmail\.com|\/team\/\d+\.jpg/, "Team must use the verified address and available avatars");
   assert.match(pages["/challenges"], /https:\/\/www\.spaceappschallenge\.org\/2026\/challenges\//);
   assert.match(pages["/game"], /Flappy Bird/);
   assert.match(pages["/game"], /personal best/i);
@@ -110,6 +111,21 @@ try {
   const noNonce = await fetch(origin + "/api/game/sign-in", { method: "POST", headers: { Origin: origin, "Content-Type": "application/json" }, body: JSON.stringify({ credential: "fake.token.signature", nonce: "unissued" }) });
   assert.equal(noNonce.status, 403, "Sign in requires the server's browser challenge");
   console.log("PASS game HTTP routes: guest sessions, Google requirement, cross site rejection and sign in request bounds");
+  const invalidTournament = await fetch(origin + "/api/tournaments/registrations", {
+    method: "POST", headers: { Origin: origin, "Content-Type": "application/json" }, body: "{}",
+  });
+  assert.equal(invalidTournament.status, 400);
+  const crossSiteTournament = await fetch(origin + "/api/tournaments/registrations", {
+    method: "POST", headers: { Origin: "https://other.example", "Content-Type": "application/json" }, body: "{}",
+  });
+  assert.equal(crossSiteTournament.status, 403);
+  const gamingDocument = await fetch(origin + "/gaming/index.html");
+  assert.equal(gamingDocument.status, 200);
+  const esportsHtml = await gamingDocument.text();
+  assert.match(esportsHtml, /Your details are stored privately/);
+  assert.match(esportsHtml, /href="\/" target="_top" class="back-home-link"/);
+  assert.doesNotMatch(esportsHtml, /id="navMenu"|id="menuToggle"/);
+  console.log("PASS Esports document and registration request boundaries");
   assert.match(pages["/timeline"], /11:59 PM local time/i);
   assert.match(pages["/timeline"], /id="navbar"/, "Timeline must retain the navigation from the last successful production deployment");
   assert.match(pages["/timeline"], />Event Timeline<\/h1>/);

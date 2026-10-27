@@ -7,12 +7,13 @@ let userManuallyMutedHero = false;
 let heroMutedBeforeModal = false;
 let updateHeroAudioUI = null;
 let startHeroVideoPlayback = null;
+let registrationBusy = false;
+let registrationAttempt = null;
+let modalOpener = null;
 
 document.addEventListener('DOMContentLoaded', () => {
   initPreloader();
   initHeroVideo();
-  initMobileMenu();
-  initNavScrollSpy();
   initModalHandlers();
   initModalAudioToggle();
 });
@@ -274,6 +275,7 @@ function openGameModal(gameKey) {
   const data = gameIntel[gameKey];
 
   if (!modal || !content || !data) return;
+  if (!modal.classList.contains('active')) modalOpener = document.activeElement;
 
   // Hero section continues looping uninterrupted; mute audio temporarily so modal audio is clear
   const heroVideo = document.getElementById('heroVideo');
@@ -358,6 +360,8 @@ function openGameModal(gameKey) {
 
   requestAnimationFrame(() => {
     modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+    modal.querySelector('.btn-close-modal')?.focus({ preventScroll: true });
   });
   document.body.style.overflow = 'hidden';
 }
@@ -366,7 +370,9 @@ function closeGameModal() {
   const modal = document.getElementById('gameModal');
   const modalVideo = document.getElementById('modalVideo');
   if (modal) {
+    if (modal.classList.contains('active')) modalOpener?.focus({ preventScroll: true });
     modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
   }
   if (modalVideo) {
@@ -425,6 +431,7 @@ function selectGameAndScroll(gameKey) {
   const select = document.getElementById('regGame');
   if (select) {
     select.value = gameKey;
+    select.focus({ preventScroll: true });
   }
   const regSection = document.getElementById('registration');
   if (regSection) {
@@ -445,6 +452,17 @@ function initModalHandlers() {
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       closeGameModal();
+    }
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.matches?.('.game-card')) {
+      e.preventDefault();
+      openGameModal(e.target.dataset.game);
+    }
+    if (e.key === 'Tab' && modal?.classList.contains('active')) {
+      const controls = Array.from(modal.querySelectorAll('button, a[href], input, select, textarea, [tabindex]:not([tabindex="-1"])')).filter(control => !control.disabled && control.getClientRects().length);
+      const first = controls[0];
+      const last = controls[controls.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last?.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first?.focus(); }
     }
   });
 }
@@ -469,32 +487,60 @@ function toggleFaq(button) {
    5. REGISTRATION FORM SUBMISSION
    ============================================================= */
 
-function handleFormSubmit(e) {
+async function handleFormSubmit(e) {
   e.preventDefault();
+  if (registrationBusy) return;
+  const form = document.getElementById('regForm');
   const submitBtn = document.getElementById('submitBtn');
   const feedback = document.getElementById('formFeedback');
-
-  if (!submitBtn || !feedback) return;
-
+  if (!form || !submitBtn || !feedback || !form.reportValidity()) return;
+  const value = id => document.getElementById(id).value.trim();
+  const details = { name: value('regName'), alias: value('regTag'), email: value('regEmail'), phone: value('regPhone'), game: value('regGame'), team: value('regTeam'), roster: value('regRoster') };
+  const signature = JSON.stringify({ ...details, email: details.email.toLowerCase() });
   const originalContent = submitBtn.innerHTML;
-  submitBtn.innerHTML = '<span>TRANSMITTING CREDENTIALS...</span>';
+  registrationBusy = true;
+  submitBtn.textContent = 'SAVING REGISTRATION...';
   submitBtn.disabled = true;
-
-  const token = 'LKO-' + Math.random().toString(36).substring(2, 7).toUpperCase();
-
-  setTimeout(() => {
+  feedback.className = 'form-feedback';
+  feedback.textContent = '';
+  try {
+    const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(signature));
+    const fingerprint = Array.from(new Uint8Array(digest), byte => byte.toString(16).padStart(2, '0')).join('');
+    const storageKey = `esports:pending:${fingerprint}`;
+    if (!registrationAttempt || registrationAttempt.signature !== signature) {
+      let key;
+      try { key = sessionStorage.getItem(storageKey); } catch { /* Storage can be unavailable in private browsers. */ }
+      if (!/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(key || '')) key = crypto.randomUUID();
+      registrationAttempt = { signature, key, storageKey };
+    }
+    // Store only a random request key indexed by a digest, never form details.
+    try { sessionStorage.setItem(storageKey, registrationAttempt.key); } catch { /* Same-page retry still works. */ }
+    const response = await fetch('/api/tournaments/registrations', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...details, key: registrationAttempt.key }),
+      signal: AbortSignal.timeout(20000)
+    });
+    const result = await response.json();
+    if (!response.ok || !/^LKO-[A-F0-9]{16}$/.test(result.reference)) {
+      throw new Error(result.error || 'Your registration could not be saved. Please try again.');
+    }
     feedback.className = 'form-feedback success';
-    feedback.innerHTML = `✓ REGISTRATION CONFIRMED! Your tournament token is <b>#${token}</b>. Check your inbox for room keys and Discord link.`;
-
-    submitBtn.innerHTML = '<span>✓ REGISTERED</span>';
-
-    setTimeout(() => {
-      const form = document.getElementById('regForm');
-      if (form) form.reset();
-      submitBtn.innerHTML = originalContent;
-      submitBtn.disabled = false;
-    }, 4000);
-  }, 800);
+    feedback.setAttribute('role', 'status');
+    feedback.textContent = `Registration received. Your reference is ${result.reference}. Keep it for organiser queries. Your tournament place is subject to confirmation.`;
+    form.reset();
+    try { sessionStorage.removeItem(registrationAttempt.storageKey); } catch { /* No registration details are stored here. */ }
+    registrationAttempt = null;
+  } catch (error) {
+    feedback.className = 'form-feedback error';
+    feedback.setAttribute('role', 'alert');
+    feedback.textContent = error.name === 'TimeoutError' || error.name === 'AbortError' || error instanceof TypeError
+      ? 'We could not confirm your registration. Your details are still here. Please try again.'
+      : error.message;
+  } finally {
+    registrationBusy = false;
+    submitBtn.innerHTML = originalContent;
+    submitBtn.disabled = false;
+  }
 }
 
 // Global scope bindings for inline HTML handlers

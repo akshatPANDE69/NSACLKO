@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
+import { event } from "@/lib/event";
 import { Linkedin, Github, Twitter, Mail } from "lucide-react";
 
 export interface TeamMember {
@@ -19,6 +19,8 @@ export interface TeamMember {
     email?: string;
   };
 }
+
+const teamEmail = `mailto:${event.email}`;
 
 /* -------------------------------------------------------------------------- */
 /*                               Team Data                                   */
@@ -39,7 +41,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     socials: {
       linkedin:
         "https://www.linkedin.com/company/nasa-space-apps-challenge-lucknow",
-      email: "mailto:spaceappschallenge.lko@gmail.com",
+      email: teamEmail,
     },
   },
   {
@@ -51,7 +53,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     bio: "Leading core platform design, digital brand aesthetics, and creative technology for Space Apps Lucknow.",
     specialties: ["UI/UX Design", "Creative Tech", "Brand Strategy"],
     socials: {
-      email: "mailto:spaceappschallenge.lko@gmail.com",
+      email: teamEmail,
     },
   },
   {
@@ -63,7 +65,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     bio: "Architecting backend systems, technical setup, and participant developer support for the Lucknow hackathon.",
     specialties: ["Systems Architecture", "Cloud Engineering", "DevOps"],
     socials: {
-      email: "mailto:spaceappschallenge.lko@gmail.com",
+      email: teamEmail,
     },
   },
   {
@@ -75,7 +77,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     bio: "Directing operational workflows, logistical synchronization, and participant care at SRGI Lucknow.",
     specialties: ["Operations", "Logistics", "Event Execution"],
     socials: {
-      email: "mailto:spaceappschallenge.lko@gmail.com",
+      email: teamEmail,
     },
   },
   {
@@ -87,7 +89,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     bio: "Supporting event planning, venue coordination, and participant onboarding.",
     specialties: ["Community Outreach", "Event Coordination"],
     socials: {
-      email: "mailto:spaceappschallenge.lko@gmail.com",
+      email: teamEmail,
     },
   },
   {
@@ -99,7 +101,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     bio: "Driving attendee engagement, campus ambassador relations, and on‑ground logistics.",
     specialties: ["Campus Outreach", "Logistics"],
     socials: {
-      email: "mailto:spaceappschallenge.lko@gmail.com",
+      email: teamEmail,
     },
   },
   {
@@ -111,7 +113,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     bio: "Coordinating technical workshops, participant hardware setups, and team collaboration.",
     specialties: ["Technical Support", "Hardware Setup"],
     socials: {
-      email: "mailto:spaceappschallenge.lko@gmail.com",
+      email: teamEmail,
     },
   },
   {
@@ -123,7 +125,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     bio: "Managing communications, content dissemination, and participant assistance.",
     specialties: ["Content Strategy", "Communications"],
     socials: {
-      email: "mailto:spaceappschallenge.lko@gmail.com",
+      email: teamEmail,
     },
   },
   {
@@ -135,7 +137,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     bio: "Assisting with youth outreach, school engagement, and registration desks.",
     specialties: ["Youth Outreach", "Registration Operations"],
     socials: {
-      email: "mailto:spaceappschallenge.lko@gmail.com",
+      email: teamEmail,
     },
   },
   {
@@ -147,7 +149,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     bio: "Coordinating social media coverage, live event updates, and volunteer synchronization.",
     specialties: ["Social Media", "Volunteer Coordination"],
     socials: {
-      email: "mailto:spaceappschallenge.lko@gmail.com",
+      email: teamEmail,
     },
   },
   {
@@ -159,7 +161,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     bio: "Facilitating participant judging queues, logistics flow, and event hospitality.",
     specialties: ["Event Flow", "Hospitality"],
     socials: {
-      email: "mailto:spaceappschallenge.lko@gmail.com",
+      email: teamEmail,
     },
   },
   {
@@ -171,7 +173,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     bio: "Supporting participant engagement, outreach activities, and on-ground event coordination.",
     specialties: ["Outreach", "Participant Engagement"],
     socials: {
-      email: "mailto:spaceappschallenge.lko@gmail.com",
+      email: teamEmail,
     },
   },
 ];
@@ -182,7 +184,6 @@ export const TEAM_MEMBERS: TeamMember[] = [
 export function TeamMemberImage({
   member,
   size = 64,
-  eager = false,
 }: {
   member?: TeamMember;
   size?: number;
@@ -190,18 +191,12 @@ export function TeamMemberImage({
 }) {
   if (!member) return null;
 
-  // Assuming images are stored under /public/team/{id}.jpg
-  const src = `/team/${member.id}.jpg`;
+  const parts = member.name.trim().split(/\s+/);
+  const initials = `${parts[0]?.[0] ?? ""}${parts.length > 1 ? parts[parts.length - 1][0] : ""}`;
 
   return (
-    <Image
-      src={src}
-      alt={member.name}
-      width={size}
-      height={size}
-      priority={eager}
-      className="rounded-full object-cover"
-    />
+    <span role="img" aria-label={member.name} className="team-avatar rounded-full"
+      style={{ width: size, height: size, fontSize: Math.round(size * .34) }}>{initials}</span>
   );
 }
 
