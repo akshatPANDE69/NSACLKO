@@ -6,11 +6,11 @@
   position: relative;
   padding-top: 80px;
   color: var(--contact-ink);
-  background: rgb(0 0 0 / 78%);
+  background: transparent;
   font-family: Arial, Helvetica, sans-serif;
 }
-/* Override the legacy transparent-page rule only for this contact surface. */
-#main-content > .contact-editorial.contact-page { background-color: rgb(0 0 0 / 78%); }
+/* Reveal the existing shared star scene behind the contact content. */
+#main-content > .contact-editorial.contact-page { background-color: transparent; }
 .contact-editorial.contact-page > .contact-layout {
   display: grid;
   grid-template-columns: minmax(0, .88fr) minmax(0, 1.12fr);
