@@ -12,85 +12,11 @@ const gameModalPanels = new Map();
 let modalOpener = null;
 
 document.addEventListener('DOMContentLoaded', () => {
-  initPreloader();
   initHeroVideo();
   initModalHandlers();
   initModalAudioToggle();
 });
 
-/* =============================================================
-   0. MISSION CONTROL PRELOADER & ASSET BUFFERING
-   ============================================================= */
-
-function initPreloader() {
-  const preloader = document.getElementById('preloader');
-
-  if (!preloader) return;
-
-  // Only run the preloader animation once per session
-  if (sessionStorage.getItem('gaming_preloader_seen')) {
-    preloader.style.display = 'none';
-    if (typeof startHeroVideoPlayback === 'function') {
-      startHeroVideoPlayback();
-    }
-    return;
-  }
-
-  sessionStorage.setItem('gaming_preloader_seen', 'true');
-
-  const manifest = [
-    { id: 'logo', url: 'assets/space_apps_logo.png' },
-    { id: 'img_fifa', url: 'assets/card_fifa.jpg' },
-    { id: 'img_tekken', url: 'assets/card_tekken.jpg' },
-    { id: 'img_mk', url: 'assets/card_mk.jpg' },
-    { id: 'img_bgmi', url: 'assets/card_bgmi.jpg' },
-    { id: 'img_cod', url: 'assets/card_cod.jpg' },
-    { id: 'img_freefire', url: 'assets/card_freefire.jpg' }
-  ];
-
-  let loadedCount = 0;
-  const total = manifest.length;
-  let isDone = false;
-  const startTime = Date.now();
-  const minDisplayTime = 1600;
-
-  function completePreloader() {
-    if (isDone) return;
-    isDone = true;
-
-    const elapsed = Date.now() - startTime;
-    const remainingWait = Math.max(0, minDisplayTime - elapsed);
-
-    setTimeout(() => {
-      preloader.classList.add('fade-out');
-      setTimeout(() => {
-        preloader.style.display = 'none';
-      }, 700);
-
-      // Trigger hero video playback now that arena is revealed
-      if (typeof startHeroVideoPlayback === 'function') {
-        startHeroVideoPlayback();
-      }
-    }, remainingWait);
-  }
-
-  // Safety fallback timeout (4s max)
-  setTimeout(() => {
-    if (!isDone) completePreloader();
-  }, 4000);
-
-  // Preload UI images concurrently without blocking network for video streaming
-  manifest.forEach((item) => {
-    const img = new Image();
-    img.onload = img.onerror = () => {
-      loadedCount++;
-      if (loadedCount >= total && !isDone) {
-        completePreloader();
-      }
-    };
-    img.src = item.url;
-  });
-}
 
 /* =============================================================
    1. MOBILE MENU TOGGLE
@@ -680,11 +606,8 @@ function initHeroVideo() {
     }
   };
 
-  // If preloader is absent or already dismissed, start playback directly
-  const preloaderEl = document.getElementById('preloader');
-  if (!preloaderEl || preloaderEl.style.display === 'none') {
-    startHeroVideoPlayback();
-  }
+  // Start playback immediately
+  startHeroVideoPlayback();
 
   // Audio button toggle: only switch off when user manually chooses
   audioBtn.addEventListener('click', (e) => {

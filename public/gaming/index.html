@@ -18,17 +18,6 @@
 </head>
 <body>
 
-  <!-- MISSION CONTROL PRELOADER SCREEN -->
-  <script>if (sessionStorage.getItem('gaming_preloader_seen')) { document.write('<style>#preloader { display: none !important; }</style>'); }</script>
-  <div id="preloader" class="preloader-overlay" aria-label="Loading site assets">
-    <div class="preloader-center">
-      <div class="preloader-brand">
-        <img src="assets/space_apps_logo.png" alt="NASA Space Apps Challenge" class="preloader-logo">
-        <span class="preloader-city"><span class="city-white">LUCK</span><span class="city-red">NOW</span></span>
-      </div>
-    </div>
-  </div>
-
   <div class="site-wrapper">
 
     <a href="/" target="_top" class="back-home-link"><span aria-hidden="true">&larr;</span> Back to home</a>
@@ -40,6 +29,7 @@
           id="heroVideo" 
           class="hero-video-player" 
           autoplay 
+          muted 
           loop 
           playsinline 
           webkit-playsinline
