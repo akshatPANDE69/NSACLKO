@@ -35,6 +35,13 @@ const origin = "https://nsaclko.vercel.app";
 const submit = (data=valid, ip="198.51.100.10", headers={}) => POST(new Request(origin+"/api/tournaments/registrations", {method:"POST",headers:{Origin:origin,Host:"nsaclko.vercel.app","Content-Type":"application/json","x-forwarded-for":ip,...headers},body:JSON.stringify(data)}));
 try {
   assert.equal((await submit(valid,undefined,{Origin:"https://other.example"})).status,403);
+  delete process.env.ESPORTS_REGISTRATIONS_OPEN;
+  const comingSoon = await submit();
+  assert.equal(comingSoon.status, 503, "Esports registrations must be closed by default");
+  assert.match((await comingSoon.json()).error, /registrations are coming soon/i);
+  assert.equal((await db.query("select count(*)::int as total from public.tournament_registrations")).rows[0].total, 0, "Closed registration must not save any personal details");
+  // Preserve coverage of the existing save flow for when registrations reopen.
+  process.env.ESPORTS_REGISTRATIONS_OPEN = "true";
   assert.equal((await submit({...valid,name:"x".repeat(14000)})).status,413);
   for (const field of [{email:"invalid"},{game:"unknown"},{phone:"x"},{name:" "},{alias:" "},{roster:"x".repeat(2001)}]) assert.equal((await submit({...valid,...field})).status,400);
   const first = await submit();
@@ -60,7 +67,7 @@ try {
     await assert.rejects(db.query("select public.register_esports($1::uuid,'{}'::jsonb,'digest','ip')",[randomUUID()]),/permission denied/);
     await db.exec("reset role");
   }
-  console.log("PASS tournament registration: real PostgreSQL saves, private records, validation, same-origin, body bounds, idempotent retries, conflict, rate limits and safe outages");
+  console.log("PASS tournament registration: paused by default with zero saved entries; existing save, privacy, validation and retry flow verified when explicitly reopened");
 } finally {
   server.closeAllConnections();
   server.close();

@@ -25,6 +25,9 @@ export async function POST(request: Request) {
       (request.headers.has("sec-fetch-site") && request.headers.get("sec-fetch-site") !== "same-origin")) {
       throw new GameError("Please register from this website.", 403);
     }
+    if (process.env.ESPORTS_REGISTRATIONS_OPEN !== "true") {
+      throw new GameError("Esports registrations are coming soon. Please check back for updates.", 503);
+    }
     const result = registration.safeParse(await readGameBody(request, 12_000));
     if (!result.success) throw new GameError("Please check your name, gamer tag, email, phone and selected game.", 400);
     const url = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;

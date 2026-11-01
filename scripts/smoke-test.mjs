@@ -117,7 +117,8 @@ try {
   const invalidTournament = await fetch(origin + "/api/tournaments/registrations", {
     method: "POST", headers: { Origin: origin, "Content-Type": "application/json" }, body: "{}",
   });
-  assert.equal(invalidTournament.status, 400);
+  assert.equal(invalidTournament.status, 503);
+  assert.match((await invalidTournament.json()).error, /registrations are coming soon/i);
   const crossSiteTournament = await fetch(origin + "/api/tournaments/registrations", {
     method: "POST", headers: { Origin: "https://other.example", "Content-Type": "application/json" }, body: "{}",
   });
@@ -125,6 +126,7 @@ try {
   const gamingDocument = await fetch(origin + "/gaming/index.html");
   assert.equal(gamingDocument.status, 200);
   const esportsHtml = await gamingDocument.text();
+  assert.match(esportsHtml, /data-registrations="coming-soon"/);
   assert.doesNotMatch(esportsHtml, /id="registration"|href="#registration"/);
   const esportsScript = await fetch(origin + "/gaming/app.js");
   assert.equal(esportsScript.status, 200);

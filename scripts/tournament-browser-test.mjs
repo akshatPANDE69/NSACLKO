@@ -51,10 +51,10 @@ function makeForm(game = "fifa") {
   return { elements, values, form: elements.regForm };
 }
 
-function loadPage() {
+function loadPage(registrationsOpen = true) {
   const { elements } = makeForm();
   const page = vm.createContext({
-    document: { addEventListener() {}, getElementById: id => elements[id] },
+    document: { documentElement: { dataset: { registrations: registrationsOpen ? "open" : "coming-soon" } }, addEventListener() {}, getElementById: id => elements[id] },
     window: { addEventListener() {} },
     crypto: webcrypto, TextEncoder, AbortSignal, TypeError, sessionStorage,
     fetch: async (url, options) => {
@@ -165,5 +165,15 @@ for (const game of ["fifa", "tekken", "mk", "bgmi", "cod", "freefire"]) {
 }
 const html = await readFile(new URL("../public/gaming/index.html", import.meta.url), "utf8");
 assert.doesNotMatch(html, /id="registration"|href="#registration"/, "The general terminal and its dead links must be removed");
+assert.match(html, /data-registrations="coming-soon"/);
+const closedPage = loadPage(false);
+for (const game of ["fifa", "tekken", "mk", "bgmi", "cod", "freefire"]) {
+  const markup = closedPage.markup(game);
+  assert.match(markup, /Registrations coming soon/);
+  assert.doesNotMatch(markup, /<form|<input|<textarea|type="submit"/);
+}
+const requestsBeforeClosedSubmit = requests.length;
+await closedPage.submit();
+assert.equal(requests.length, requestsBeforeClosedSubmit, "The paused client must never submit an entry");
 
-console.log("PASS browser registration: per-game forms, independent pending requests, lost-response reload retries, private storage and retained error inputs");
+console.log("PASS browser registration: all six coming-soon notices prevent submissions; existing per-game forms and retry behavior preserved for reopening");

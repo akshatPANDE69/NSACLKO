@@ -9,6 +9,7 @@ let updateHeroAudioUI = null;
 let heroInView = true;
 const registrationStates = new WeakMap();
 const gameModalPanels = new Map();
+const esportsRegistrationsOpen = document.documentElement?.dataset.registrations === 'open';
 let modalOpener = null;
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -195,6 +196,15 @@ const gameIntel = {
 function gameRegistrationMarkup(gameKey) {
   if (!Object.hasOwn(gameIntel, gameKey)) return '';
   const data = gameIntel[gameKey];
+  if (!esportsRegistrationsOpen) return `
+    <section class="modal-registration" aria-labelledby="${gameKey}-terminal-title">
+      <div class="terminal-heading">
+        <span class="terminal-kicker">${data.title}</span>
+        <h4 id="${gameKey}-terminal-title">Registrations coming soon</h4>
+        <p>Entries are not open yet. Join our WhatsApp community for registration updates.</p>
+      </div>
+      <a class="btn-submit" href="https://chat.whatsapp.com/BEEGqEyXkg82LwfPSSjdpk" target="_blank" rel="noopener noreferrer">JOIN WHATSAPP COMMUNITY <span aria-hidden="true">↗</span></a>
+    </section>`;
   const squadSize = { bgmi: 4, cod: 5, freefire: 4 }[gameKey];
   const field = (name, label, type, attributes) => `
     <div class="input-field">
@@ -451,6 +461,7 @@ function toggleFaq(button) {
 
 async function handleFormSubmit(e) {
   e.preventDefault();
+  if (!esportsRegistrationsOpen) return;
   const form = e.currentTarget;
   if (!form) return;
   const state = registrationStates.get(form) || { busy: false, attempt: null };

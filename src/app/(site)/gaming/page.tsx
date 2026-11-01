@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Gaming Subevent | NASA Space Apps Challenge Lucknow",
   description:
-    "NASA Space Apps Challenge Lucknow Esports Subevent — compete in BGMI, COD, FIFA, Tekken, Mortal Kombat & Free Fire. Register now.",
+    "NASA Space Apps Challenge Lucknow Esports Subevent. Explore BGMI, COD, FIFA, Tekken, Mortal Kombat and Free Fire. Registrations coming soon.",
 };
 
 export default function GamingPage() {
