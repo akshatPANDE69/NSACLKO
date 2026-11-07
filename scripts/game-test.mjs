@@ -219,6 +219,21 @@ try {
   assert.deepEqual(Object.keys(board.entries[0]).sort(), ["isYou","name","rank","score"]);
   assert.ok(!JSON.stringify(board).includes("@example.test"));
   assert.ok(!JSON.stringify(board).includes(alice.id));
+  process.env.SUPABASE_URL = `http://127.0.0.1:${fixture.address().port}`;
+  process.env.SUPABASE_SECRET_KEY = "test-server-secret";
+  const { GET: publicLeaderboard } = await import("../src/app/api/game/leaderboard/public/route.ts");
+  const publicResponse = await publicLeaderboard(new Request("https://example.test/api/game/leaderboard/public", {
+    headers: { Cookie: `${sessionCookie}=${token}` },
+  }));
+  assert.equal(publicResponse.status, 200);
+  assert.match(publicResponse.headers.get("vercel-cdn-cache-control"), /\bs-maxage=30\b/);
+  assert.equal(publicResponse.headers.get("set-cookie"), null);
+  assert.deepEqual(await publicResponse.json(), { available: true, ...await store.leaderboard() });
+  assert.equal((await store.leaderboard()).personal, null);
+  const { GET: personalLeaderboard } = await import("../src/app/api/game/leaderboard/route.ts");
+  const personalResponse = await personalLeaderboard(new Request("https://example.test/api/game/leaderboard"));
+  assert.equal(personalResponse.headers.get("cache-control"), "no-store");
+  assert.equal(personalResponse.headers.get("vercel-cdn-cache-control"), null);
   assert.equal((await db.query("select email from public.game_players where player_id=$1", [alice.id])).rows[0].email, alice.email);
   const zeroRun = await play(zero, 0);
   await store.submit(zero, zeroRun.run.id, zeroRun.replay);

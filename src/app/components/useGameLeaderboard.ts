@@ -10,11 +10,12 @@ export type RankedRun = { id: string; seed: number; playerId: string };
 class RequestError extends Error { constructor(message: string, public status: number) { super(message); } }
 
 async function gameRequest(path: string, body?: unknown) {
+  const publicBoard = path === "leaderboard/public";
   const response = await fetch(`/api/game/${path}`, {
     method: body === undefined ? "GET" : "POST",
-    credentials: "same-origin",
+    credentials: publicBoard ? "omit" : "same-origin",
     ...(body === undefined ? {} : { headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
-    signal: AbortSignal.timeout(15_000), cache: "no-store",
+    signal: AbortSignal.timeout(15_000), cache: publicBoard ? "default" : "no-store",
   });
   const result = await response.json();
   if (!response.ok) throw new RequestError(result.error || "Please try again in a moment.", response.status);
@@ -91,14 +92,14 @@ export function useGameLeaderboard() {
     const request = ++requestNumber.current;
     setRefreshing(true);
     try {
-      const result: Board = await gameRequest("leaderboard");
+      const result: Board = await gameRequest(user ? "leaderboard" : "leaderboard/public");
       if (request === requestNumber.current) { setBoard(result); setError(""); }
     } catch (error) {
       if (request === requestNumber.current) setError(error instanceof Error ? error.message : "The leaderboard could not load.");
     } finally {
       if (request === requestNumber.current) setRefreshing(false);
     }
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     if (!authReady) return;
