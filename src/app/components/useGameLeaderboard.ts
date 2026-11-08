@@ -2,11 +2,11 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Replay } from "@/lib/game/engine";
+import type { RankedRun } from "@/lib/game/pending-flight";
 
 export type LeaderboardEntry = { rank: number; name: string; score: number; isYou: boolean };
 type Board = { available: boolean; entries: LeaderboardEntry[]; personal: { rank: number; score: number } | null };
 type Player = { id: string; name: string };
-export type RankedRun = { id: string; seed: number; playerId: string };
 class RequestError extends Error { constructor(message: string, public status: number) { super(message); } }
 
 async function gameRequest(path: string, body?: unknown) {
@@ -17,8 +17,8 @@ async function gameRequest(path: string, body?: unknown) {
     ...(body === undefined ? {} : { headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
     signal: AbortSignal.timeout(15_000), cache: publicBoard ? "default" : "no-store",
   });
-  const result = await response.json();
-  if (!response.ok) throw new RequestError(result.error || "Please try again in a moment.", response.status);
+  const result = await response.json().catch(() => null);
+  if (!response.ok || !result) throw new RequestError(result?.error || "Please try again in a moment.", response.ok ? 502 : response.status);
   return result;
 }
 
@@ -145,12 +145,25 @@ export function useGameLeaderboard() {
 
   const submit = async (run: RankedRun, replay: Replay) => {
     if (user?.id !== run.playerId) throw new Error("Sign in with the account that started this flight to save it.");
+    const send = () => gameRequest("scores", { runId: run.id, replay });
     try {
-      const result = await gameRequest("scores", { runId: run.id, replay });
-      await refresh();
+      let result;
+      try { result = await send(); }
+      catch (error) {
+        const canRetry = error instanceof RequestError ? error.status >= 500
+          : error instanceof TypeError || (error instanceof DOMException && error.name === "TimeoutError");
+        if (!canRetry) throw error;
+        // The server returns the same verified result if the first request was already saved.
+        result = await send();
+      }
+      if (result.saved !== true || !Number.isSafeInteger(result.score)) throw new Error("The score could not be confirmed. Please retry saving it.");
+      void refresh();
       return result.score as number;
     } catch (error) {
-      if (error instanceof RequestError && error.status === 401) await reloadAuth();
+      if (error instanceof RequestError && error.status === 401) {
+        await reloadAuth();
+        throw new Error("Your Google sign in expired. Sign in again, then retry saving this flight.");
+      }
       throw error;
     }
   };

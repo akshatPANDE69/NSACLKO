@@ -21,7 +21,7 @@ const sections = [
   },
   {
     title: "Your browser",
-    text: "A Google signed identity token is stored in an HttpOnly session cookie for at most one hour. Signing out removes that session cookie. Your practice personal best is stored separately in this browser and can be removed by clearing the site's browser storage. You can practise without signing in.",
+    text: "A Google signed identity token is stored in an HttpOnly session cookie for at most one hour. Signing out removes that session cookie. Your personal best is stored in this browser. A completed ranked replay stays in the current tab's storage until the save is confirmed, you discard it, or the tab is closed. You can practise without signing in.",
   },
   {
     title: "Services used by the game",

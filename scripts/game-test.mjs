@@ -252,6 +252,34 @@ try {
   const expired = await play(expiredPlayer, 1);
   await db.query("update public.game_runs set created_at=clock_timestamp()-interval '26 minutes' where id=$1", [expired.run.id]);
   await assert.rejects(store.submit(expiredPlayer, expired.run.id, expired.replay), (error) => error.status === 422);
+
+  // A long flight survives a page reload and can be retried after a lost response.
+  const { readPendingFlight, storePendingFlight } = await import("../src/lib/game/pending-flight.ts");
+  const recoveringPlayer = { id: "e".repeat(64), name: "Recovering Player", email: "recover@example.test" };
+  const { data: savedRun, error: startError } = await database.rpc("start_game_run", {
+    p_user: recoveringPlayer.id, p_seed: seed, p_name: recoveringPlayer.name, p_email: recoveringPlayer.email,
+  });
+  assert.equal(startError, null);
+  const longReplay = completeFlight(seed, 60);
+  const pendingFlight = { run: { ...savedRun, playerId: recoveringPlayer.id }, replay: longReplay };
+  const tabStorage = new Map();
+  globalThis.window = { sessionStorage: {
+    getItem: (key) => tabStorage.get(key) ?? null,
+    setItem: (key, value) => tabStorage.set(key, value),
+    removeItem: (key) => tabStorage.delete(key),
+  } };
+  try {
+    storePendingFlight(pendingFlight);
+    const restored = readPendingFlight();
+    assert.deepEqual(restored, pendingFlight);
+    await ageRun(restored.run, restored.replay);
+    assert.equal(await store.submit(recoveringPlayer, restored.run.id, restored.replay), 60);
+    assert.equal(await store.submit(recoveringPlayer, restored.run.id, restored.replay), 60);
+    assert.equal((await store.leaderboard(recoveringPlayer.id)).personal.score, 60);
+    storePendingFlight(null);
+    assert.equal(readPendingFlight(), null);
+  } finally { delete globalThis.window; }
+  console.log("PASS 60-point replay recovery: reload, verified save and idempotent retry");
   console.log("PASS Supabase storage and PostgreSQL: private emails, RLS, SDK requests, atomic saves, ownership, best scores, ties, replay audit, expiry and rate limits");
 } finally {
   await new Promise((resolve) => fixture.close(resolve));

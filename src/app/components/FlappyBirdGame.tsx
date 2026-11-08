@@ -2,15 +2,15 @@
 
 import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 
-import { GAME, createFlight, stepFlight, type Pipe, type Replay } from "@/lib/game/engine";
-import { useGameLeaderboard, type RankedRun } from "./useGameLeaderboard";
+import { GAME, createFlight, stepFlight, type Pipe } from "@/lib/game/engine";
+import { useGameLeaderboard } from "./useGameLeaderboard";
+import { readPendingFlight, storePendingFlight, type PendingFlight, type RankedRun } from "@/lib/game/pending-flight";
 import GameLeaderboard from "./GameLeaderboard";
 
 const { width: CANVAS_WIDTH, height: CANVAS_HEIGHT, birdX: BIRD_X, birdRadius: BIRD_RADIUS,
   pipeWidth: PIPE_WIDTH, pipeGap: PIPE_GAP, floorHeight: FLOOR_HEIGHT } = GAME;
 const STORAGE_KEY = "nsac-flappy-bird-high-score";
 type Phase = "ready" | "starting" | "playing" | "gameover";
-type Submission = { run: RankedRun; replay: Replay };
 
 function drawScene(
   context: CanvasRenderingContext2D,
@@ -132,11 +132,17 @@ export default function FlappyBirdGame() {
   const [mode, setMode] = useState<"practice" | "ranked">("practice");
   const [rankedFlight, setRankedFlight] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [pending, setPending] = useState<Submission | null>(null);
+  const [pending, setPending] = useState<PendingFlight | null>(null);
   const [flightMessage, setFlightMessage] = useState("");
   const [saveFailed, setSaveFailed] = useState(false);
 
   useEffect(() => {
+    const restored = readPendingFlight();
+    if (restored) {
+      setPending(restored);
+      setSaveFailed(true);
+      setFlightMessage("A ranked flight is waiting to be saved.");
+    }
     try {
       const stored = Number(window.localStorage.getItem(STORAGE_KEY) ?? 0);
       if (Number.isSafeInteger(stored) && stored >= 0) { bestRef.current = stored; setBest(stored); }
@@ -144,6 +150,7 @@ export default function FlappyBirdGame() {
   }, []);
 
   useEffect(() => {
+    if (phase === "starting" || phase === "playing") return;
     if (leaderboard.user && leaderboard.board?.available && autoRankedUser.current !== leaderboard.user.id) {
       autoRankedUser.current = leaderboard.user.id;
       setMode("ranked");
@@ -151,16 +158,17 @@ export default function FlappyBirdGame() {
       autoRankedUser.current = "";
       setMode("practice");
     }
-  }, [leaderboard.user, leaderboard.board?.available]);
+  }, [leaderboard.user, leaderboard.board?.available, phase]);
 
-  const saveFlight = async (submission: Submission) => {
+  const saveFlight = async (submission: PendingFlight) => {
     setSaving(true);
     setSaveFailed(false);
     setFlightMessage("Checking and saving your flight…");
     try {
       const verifiedScore = await leaderboard.submit(submission.run, submission.replay);
+      storePendingFlight(null);
       setPending(null);
-      setFlightMessage(verifiedScore > 0 ? `Flight verified. ${verifiedScore} points saved to the leaderboard.` : "Flight verified. Score at least one point to join the leaderboard.");
+      setFlightMessage(verifiedScore > 0 ? `Flight verified. You scored ${verifiedScore} points. Your best ranked score counts on the leaderboard.` : "Flight verified. Score at least one point to join the leaderboard.");
     } catch (error) {
       setSaveFailed(true);
       setFlightMessage(error instanceof Error ? error.message : "Your score could not be saved. Please try again.");
@@ -182,6 +190,7 @@ export default function FlappyBirdGame() {
     if (runRef.current) {
       const submission = { run: runRef.current, replay: { ticks: flight.tick, flaps: [...flapTicks.current] } };
       runRef.current = null;
+      storePendingFlight(submission);
       setPending(submission);
       void saveFlight(submission);
     }
@@ -263,6 +272,9 @@ export default function FlappyBirdGame() {
     flapOrStart();
   };
   const busy = phase === "playing" || phase === "starting" || saving;
+  const canRetry = pending && leaderboard.user?.id === pending.run.playerId;
+  const modeMessage = phase === "playing" ? (rankedFlight ? "Ranked flight in progress" : "Practice flight in progress")
+    : mode === "ranked" ? "Your best flight counts" : leaderboard.user ? "Switch to ranked to compete" : "Sign in to compete";
 
   return (
     <section className="flappy-game" aria-labelledby="flappy-game-title">
@@ -279,7 +291,7 @@ export default function FlappyBirdGame() {
           </div>
           <div className="flappy-mode" aria-label="Choose game mode">
             <div><button type="button" aria-pressed={mode === "practice"} disabled={busy || Boolean(pending)} onClick={() => setMode("practice")}>Practice</button><button type="button" aria-pressed={mode === "ranked"} disabled={busy || Boolean(pending) || !leaderboard.user || !leaderboard.board?.available} onClick={() => setMode("ranked")}>Ranked flight</button></div>
-            <span>{mode === "ranked" ? "Your best flight counts" : leaderboard.user ? "Switch to ranked to compete" : "Sign in to compete"}</span>
+            <span>{modeMessage}</span>
           </div>
           <div ref={playAreaRef} className="flappy-play-area" onKeyDown={handleKeyDown} onPointerDown={handlePointerDown} role="group" tabIndex={0} aria-label="Flappy Bird game. Click or press Space or Arrow Up to fly.">
             <canvas ref={canvasRef} width={CANVAS_WIDTH} height={CANVAS_HEIGHT} aria-hidden="true" />
@@ -293,7 +305,13 @@ export default function FlappyBirdGame() {
             {phase !== "playing" && !pending && <button type="button" className="flappy-start-button" disabled={busy} onClick={() => void startGame()}>{phase === "starting" ? "Preparing…" : phase === "ready" ? "Start game" : "Play again"}</button>}
           </div>
           {flightMessage && <p className={`flappy-flight-message${saveFailed ? " flappy-save-error" : ""}`} role="status">{flightMessage}</p>}
-          {saveFailed && pending && <div className="flappy-retry"><button type="button" className="flappy-start-button" disabled={saving} onClick={() => void saveFlight(pending)}>Retry saving score</button><button type="button" className="flappy-text-button" disabled={saving} onClick={() => { setPending(null); setFlightMessage(""); setSaveFailed(false); }}>Discard unsaved flight</button></div>}
+          {saveFailed && pending && <>
+            {!canRetry && leaderboard.authReady && <p className="flappy-highscore-note">Sign in with the Google account that started this flight to retry saving it.</p>}
+            <div className="flappy-retry">
+              <button type="button" className="flappy-start-button" disabled={saving || !canRetry} onClick={() => void saveFlight(pending)}>Retry saving score</button>
+              <button type="button" className="flappy-text-button" disabled={saving} onClick={() => { storePendingFlight(null); setPending(null); setFlightMessage(""); setSaveFailed(false); }}>Discard unsaved flight</button>
+            </div>
+          </>}
           <p className="flappy-highscore-note">Personal best is saved in this browser. Only flights started in ranked mode join the leaderboard.</p>
         </div>
         <GameLeaderboard leaderboard={leaderboard} flightActive={busy} />
