@@ -153,18 +153,6 @@ export const TEAM_MEMBERS: TeamMember[] = [
     },
   },
   {
-    id: 11,
-    name: "Aditya Vikram",
-    role: "Organizing Committee",
-    department: "Organizing Committee",
-    badge: "OC",
-    bio: "Facilitating participant judging queues, logistics flow, and event hospitality.",
-    specialties: ["Event Flow", "Hospitality"],
-    socials: {
-      email: teamEmail,
-    },
-  },
-  {
     id: 12,
     name: "Naman Chandwani",
     role: "Organizing Committee",
@@ -172,6 +160,18 @@ export const TEAM_MEMBERS: TeamMember[] = [
     badge: "OC",
     bio: "Supporting participant engagement, outreach activities, and on-ground event coordination.",
     specialties: ["Outreach", "Participant Engagement"],
+    socials: {
+      email: teamEmail,
+    },
+  },
+  {
+    id: 11,
+    name: "Aditya Vikram",
+    role: "Organizing Committee",
+    department: "Organizing Committee",
+    badge: "OC",
+    bio: "Facilitating participant judging queues, logistics flow, and event hospitality.",
+    specialties: ["Event Flow", "Hospitality"],
     socials: {
       email: teamEmail,
     },
