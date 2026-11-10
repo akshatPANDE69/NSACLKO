@@ -51,10 +51,10 @@ function makeForm(game = "fifa") {
   return { elements, values, form: elements.regForm };
 }
 
-function loadPage(registrationsOpen = true) {
+function loadPage(registrationMode = "open") {
   const { elements } = makeForm();
   const page = vm.createContext({
-    document: { documentElement: { dataset: { registrations: registrationsOpen ? "open" : "coming-soon" } }, addEventListener() {}, getElementById: id => elements[id] },
+    document: { documentElement: { dataset: { registrations: registrationMode } }, addEventListener() {}, getElementById: id => elements[id] },
     window: { addEventListener() {} },
     crypto: webcrypto, TextEncoder, AbortSignal, TypeError, sessionStorage,
     fetch: async (url, options) => {
@@ -165,8 +165,7 @@ for (const game of ["fifa", "tekken", "mk", "bgmi", "cod", "freefire"]) {
 }
 const html = await readFile(new URL("../public/gaming/index.html", import.meta.url), "utf8");
 assert.doesNotMatch(html, /id="registration"|href="#registration"/, "The general terminal and its dead links must be removed");
-assert.match(html, /data-registrations="coming-soon"/);
-const closedPage = loadPage(false);
+const closedPage = loadPage("coming-soon");
 for (const game of ["fifa", "tekken", "mk", "bgmi", "cod", "freefire"]) {
   const markup = closedPage.markup(game);
   assert.match(markup, /Registrations coming soon/);
@@ -176,4 +175,29 @@ const requestsBeforeClosedSubmit = requests.length;
 await closedPage.submit();
 assert.equal(requests.length, requestsBeforeClosedSubmit, "The paused client must never submit an entry");
 
-console.log("PASS browser registration: all six coming-soon notices prevent submissions; existing per-game forms and retry behavior preserved for reopening");
+const externalForms = {
+  fifa: "1FAIpQLSfYjQwBUAW7O_98iayUjGy4ej7aCnYKUVx4IhQYMES9AsyTNg",
+  tekken: "1FAIpQLSeOAQsNdJ7e7Hfk5Dy_jwtLE1PU9uO-QS493kfCT1fU_JlHIA",
+  bgmi: "1FAIpQLSceWQx5gamsP2q13mqnYeXGxBR1m-PSvhoJ8TNPMJUyrouKog",
+  cod: "1FAIpQLSds2jF4lquElghsiaZ0Gb_6RPJC2WiHeRmkfyW04A44oUi_jA",
+};
+const liveMode = html.match(/data-registrations="([^"]+)"/)?.[1];
+const livePage = loadPage(liveMode);
+const cardKeys = [...html.matchAll(/<article class="game-card"[^>]+data-game="([^"]+)"/g)]
+  .map(([, game]) => game);
+assert.deepEqual(cardKeys, ["fifa", "tekken", "mk", "bgmi", "cod", "freefire"]);
+for (const game of cardKeys) {
+  const markup = livePage.markup(game);
+  if (Object.hasOwn(externalForms, game)) {
+    const url = `https://docs.google.com/forms/d/e/${externalForms[game]}/viewform`;
+    assert.ok(markup.includes(`href="${url}"`), `${game} must link to its own Google Form`);
+  } else {
+    assert.match(markup, /Registrations coming soon/);
+    assert.doesNotMatch(markup, /docs\.google\.com\/forms/);
+  }
+  assert.doesNotMatch(markup, /<form|<input|<textarea|type="submit"/);
+}
+await livePage.submit();
+assert.equal(requests.length, requestsBeforeClosedSubmit, "The live Google Forms mode must never submit to the old API");
+
+console.log("PASS browser registration: four Google Forms linked from existing game cards, two coming-soon notices, and legacy retry behavior preserved");

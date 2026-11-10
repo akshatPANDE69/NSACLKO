@@ -9,7 +9,8 @@ let updateHeroAudioUI = null;
 let heroInView = true;
 const registrationStates = new WeakMap();
 const gameModalPanels = new Map();
-const esportsRegistrationsOpen = document.documentElement?.dataset.registrations === 'open';
+const esportsRegistrationMode = document.documentElement?.dataset.registrations;
+const esportsRegistrationsOpen = esportsRegistrationMode === 'open';
 let modalOpener = null;
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -90,6 +91,7 @@ function initNavScrollSpy() {
 const gameIntel = {
   fifa: {
     title: 'FIFA / EA FC 25',
+    registrationUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSfYjQwBUAW7O_98iayUjGy4ej7aCnYKUVx4IhQYMES9AsyTNg/viewform',
     subtitle: 'CONSOLE 1V1 • PLAYSTATION 5 PODS',
     video: 'game%20card/fifa.mp4',
     poster: 'assets/card_fifa.jpg',
@@ -107,6 +109,7 @@ const gameIntel = {
   },
   tekken: {
     title: 'TEKKEN 8',
+    registrationUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSeOAQsNdJ7e7Hfk5Dy_jwtLE1PU9uO-QS493kfCT1fU_JlHIA/viewform',
     subtitle: 'CONSOLE 1V1 • IRON FIST ARENA',
     video: 'game%20card/tekken.mp4',
     poster: 'assets/card_tekken.jpg',
@@ -140,31 +143,33 @@ const gameIntel = {
     ]
   },
   bgmi: {
-    title: 'BGMI CLASH SQUAD',
-    subtitle: 'MOBILE 4V4 • MULTIPLAYER BATTLEGROUND',
+    title: 'BGMI CLASSIC SQUAD SHOWDOWN',
+    registrationUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSceWQx5gamsP2q13mqnYeXGxBR1m-PSvhoJ8TNPMJUyrouKog/viewform',
+    subtitle: 'CLASSIC MODE • SQUADS OF FOUR',
     video: 'game%20card/bgmi.mp4',
     poster: 'assets/card_bgmi.jpg',
     specs: [
-      { label: 'ROUNDS TO WIN', val: 'First to 7 Rounds' },
-      { label: 'MAP POOL', val: 'Warehouse / Hangar' },
-      { label: 'HARDWARE', val: 'Smartphones Only' }
+      { label: 'MATCH 1', val: '11 November · Top 15 advance' },
+      { label: 'MATCH 2', val: '12 November · Top 6 advance' },
+      { label: 'FINAL', val: '14 November · SRGI, Lucknow' }
     ],
     rules: [
-      'Custom room credentials dispatched directly to squad captains via official Discord.',
-      'BYOD handheld smartphones only. Strictly no iPads, tablets, triggers, or PC emulators.',
-      'Standard TDM competitive loadouts. Flare gun or terrain glitch exploitation results in immediate DQ.',
-      'Winning squad leader must submit end-game screenshot to the tournament desk.'
+      'All rounds begin at 10:00 PM IST. Lock your four-player roster before Match 1.',
+      'Placement and finishes earn points. Scores carry over across matches.',
+      'The squad with the highest total after the final wins.',
+      'Join the participant WhatsApp group through the form for updates, room details and leaderboards.'
     ]
   },
   cod: {
-    title: 'CALL OF DUTY MULTIPLAYER',
+    title: 'CALL OF DUTY MOBILE',
+    registrationUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSds2jF4lquElghsiaZ0Gb_6RPJC2WiHeRmkfyW04A44oUi_jA/viewform',
     subtitle: 'MOBILE 5V5 • TACTICAL OPERATOR COMBAT',
     video: 'game%20card/cod.mp4',
     poster: 'assets/card_cod.jpg',
     specs: [
-      { label: 'GAME MODES', val: 'Search & Destroy / HP' },
-      { label: 'ROUNDS TO WIN', val: 'First to 7 (S&D)' },
-      { label: 'MAP POOL', val: 'Summit, Standoff, Firing Range' }
+      { label: 'ONLINE KNOCKOUTS', val: '12 and 13 November' },
+      { label: 'SEMIFINALS', val: 'Best of 3' },
+      { label: 'SEMIFINAL & FINAL MODES', val: 'Hardpoint, Search & Destroy, Frontline' }
     ],
     rules: [
       'Competitive ban list strictly enforced (restricted scorestreaks & operator skills per CDL ruleset).',
@@ -196,6 +201,15 @@ const gameIntel = {
 function gameRegistrationMarkup(gameKey) {
   if (!Object.hasOwn(gameIntel, gameKey)) return '';
   const data = gameIntel[gameKey];
+  if (esportsRegistrationMode === 'external' && data.registrationUrl) return `
+    <section class="modal-registration" aria-labelledby="${gameKey}-terminal-title">
+      <div class="terminal-heading">
+        <span class="terminal-kicker">${data.title}</span>
+        <h4 id="${gameKey}-terminal-title">Tournament registration</h4>
+        <p>Complete your entry through the official Google Form.</p>
+      </div>
+      <a class="btn-submit" href="${data.registrationUrl}" target="_blank" rel="noopener noreferrer">OPEN REGISTRATION FORM <span aria-hidden="true">↗</span></a>
+    </section>`;
   if (!esportsRegistrationsOpen) return `
     <section class="modal-registration" aria-labelledby="${gameKey}-terminal-title">
       <div class="terminal-heading">

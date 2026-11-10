@@ -126,7 +126,7 @@ try {
   const gamingDocument = await fetch(origin + "/gaming/index.html");
   assert.equal(gamingDocument.status, 200);
   const esportsHtml = await gamingDocument.text();
-  assert.match(esportsHtml, /data-registrations="coming-soon"/);
+  assert.match(esportsHtml, /data-registrations="external"/);
   assert.doesNotMatch(esportsHtml, /id="registration"|href="#registration"/);
   const esportsScript = await fetch(origin + "/gaming/app.js");
   assert.equal(esportsScript.status, 200);
