@@ -37,7 +37,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ## 2026 event maintenance
 
-Shared event details and official destinations live in `src/lib/event.ts`. This edition takes place on 14 and 15 November at SRGI, Sitapur Road, Bakshi Ka Talab, Lucknow.
+Shared event details and official destinations live in `src/lib/event.ts`. This edition takes place on 14 and 15 November at Central Law College, Sector F, Sushant Golf City, Lucknow.
 
 Validate changes with `npm run build`, `npm run typecheck` and `npm test`. The HTTP regression checks start and stop a production server on a temporary port.
 

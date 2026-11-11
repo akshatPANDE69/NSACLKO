@@ -14,7 +14,7 @@ import "@/app/styles/fixes.css";
 
 export const metadata: Metadata = {
   title: "NASA Space Apps Challenge 2026 | Lucknow",
-  description: `Join NASA Space Apps Challenge in Lucknow on ${event.dates} at SRGI. All streams and experience levels are welcome.`,
+  description: `Join NASA Space Apps Challenge in Lucknow on ${event.dates} at ${event.venue}. All streams and experience levels are welcome.`,
   icons: { icon: "/globe.svg" },
 };
 

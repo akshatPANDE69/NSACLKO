@@ -6,7 +6,7 @@ import "@/app/styles/about.css";
 
 export const metadata: Metadata = {
   title: "About Space Apps | NASA Space Apps Lucknow 2026",
-  description: `Discover NASA Space Apps Challenge in Lucknow. Join us on ${event.dates} at SRGI. All backgrounds and experience levels are welcome.`,
+  description: `Discover NASA Space Apps Challenge in Lucknow. Join us on ${event.dates} at ${event.venue}. All backgrounds and experience levels are welcome.`,
 };
 
 const steps = [
@@ -35,14 +35,14 @@ export default function About() {
           </div>
           <div className="about-intro-copy">
             <p className="about-lead">NASA&apos;s global hackathon.<br />A local place to take part.</p>
-            <p>NASA International Space Apps Challenge brings people together to explore questions about Earth and space using open data from NASA and its space agency partners. In Lucknow, we&apos;re coming together at SRGI to be part of it.</p>
+            <p>NASA International Space Apps Challenge brings people together to explore questions about Earth and space using open data from NASA and its space agency partners. In Lucknow, we&apos;re coming together at {event.venue} to be part of it.</p>
             <a className="about-text-link" href="https://www.spaceappschallenge.org/about/" target="_blank" rel="noopener noreferrer">About the global programme <ArrowUpRight size={16} aria-hidden="true" /></a>
           </div>
         </header>
 
         <dl className="about-facts" aria-label="Lucknow event details">
           <div><dt>When</dt><dd>{event.dates}<span>Two days to explore and create</span></dd></div>
-          <div><dt>Where</dt><dd>SRGI, Lucknow<span>{event.address}</span></dd></div>
+          <div><dt>Where</dt><dd>{event.venue}<span>{event.address}</span></dd></div>
           <div><dt>Your team</dt><dd>Up to {event.teamLimit} people<span>Different skills are welcome</span></dd></div>
         </dl>
 

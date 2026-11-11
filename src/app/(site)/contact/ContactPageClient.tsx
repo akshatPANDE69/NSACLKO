@@ -7,7 +7,7 @@ import { event } from "@/lib/event";
 import { contactTopics, createContactDraft, validateContact, type ContactErrors, type ContactFields, type ContactTopic } from "@/lib/contact";
 
 const initialFields: ContactFields = { name: "", email: "", message: "" };
-const mapUrl = "https://www.google.com/maps/search/?api=1&query=SR+Group+of+Institutions+Bakshi+Ka+Talab+Lucknow";
+const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${event.venue}, ${event.address}`)}`;
 
 export default function ContactPageClient() {
   const [fields, setFields] = useState(initialFields);
@@ -74,8 +74,8 @@ export default function ContactPageClient() {
 
       <aside className="contact-venue" aria-labelledby="contact-venue-title">
         <p className="contact-label">Event venue</p>
-        <h2 id="contact-venue-title">SRGI, Lucknow</h2>
-        <p>{event.venue}<br />{event.address}</p>
+        <h2 id="contact-venue-title">{event.venue}</h2>
+        <p>{event.address}</p>
         <div><a href={mapUrl} target="_blank" rel="noopener noreferrer">Directions <ArrowUpRight size={15} aria-hidden="true" /></a><span>{event.dates}</span></div>
       </aside>
     </section>

@@ -74,7 +74,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     role: "Core Lead",
     department: "Core Team",
     badge: "Core Lead",
-    bio: "Directing operational workflows, logistical synchronization, and participant care at SRGI Lucknow.",
+    bio: "Coordinating event operations, logistics, and participant support in Lucknow.",
     specialties: ["Operations", "Logistics", "Event Execution"],
     socials: {
       email: teamEmail,

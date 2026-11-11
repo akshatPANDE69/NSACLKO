@@ -151,7 +151,7 @@ const gameIntel = {
     specs: [
       { label: 'MATCH 1', val: '11 November · Top 15 advance' },
       { label: 'MATCH 2', val: '12 November · Top 6 advance' },
-      { label: 'FINAL', val: '14 November · SRGI, Lucknow' }
+      { label: 'FINAL', val: '14 November · Central Law College' }
     ],
     rules: [
       'All rounds begin at 10:00 PM IST. Lock your four-player roster before Match 1.',

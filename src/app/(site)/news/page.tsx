@@ -18,9 +18,9 @@ const updates = [
     Icon: CalendarDays,
   },
   {
-    label: "Venue",
-    title: "Meet us at SR Group of Institutions",
-    description: `The Lucknow event will take place at ${event.venue}, ${event.address}.`,
+    label: "Venue change",
+    title: `The venue has moved to ${event.venue}`,
+    description: `The Lucknow event will take place on ${event.dates} at ${event.venue}, ${event.address}.`,
     detail: event.venue,
     Icon: MapPin,
   },
