@@ -5,12 +5,14 @@ import NavBar from "@/app/components/navbar";
 import Footer from "@/app/components/footer";
 import { Providers } from "@/app/components/Providers";
 import SiteBackground from "@/app/components/SiteBackground";
+import CountdownWidget from "@/app/components/CountdownWidget";
 
 import "@/app/styles/base.css";
 import "@/app/styles/index.css";
 import "@/app/styles/timeline.css";
 import "@/app/styles/contact.css";
 import "@/app/styles/fixes.css";
+import "@/app/styles/countdown-widget.css";
 
 export const metadata: Metadata = {
   title: "NASA Space Apps Challenge 2026 | Lucknow",
@@ -32,6 +34,7 @@ export default function RootLayout({
         <NavBar />
         <main id="main-content" tabIndex={-1}><Providers>{children}</Providers></main>
         <Footer />
+        <CountdownWidget />
       </body>
     </html>
   );

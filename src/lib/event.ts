@@ -8,6 +8,7 @@ export const event = {
   dates: "14 and 15 November 2026",
   startDate: "2026-11-14",
   endDate: "2026-11-15",
+  countdownEndsAt: "2026-11-15T14:00:00+05:30",
   venue: "Central Law College",
   address: "Lucknow",
   fullAddress: "Sector F, Sushant Golf City, near Cancer Hospital, Ahmamau, Lucknow, Uttar Pradesh 226030",

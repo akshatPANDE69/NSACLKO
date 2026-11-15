@@ -94,12 +94,12 @@ export default function Home() {
               solutions for challenges we face on Earth and in space.
             </p>
             <p className="event-summary">{event.dates} · {event.venue}, Lucknow</p>
-            <div className="hero-cta-buttons stagger-item" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 24 }}>
+            <div className="hero-cta-buttons stagger-item" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 24, cursor: 'pointer' }}>
               <Button asChild className="hero-btn primary">
-                <Link href={event.registrationUrl}>Register Now</Link>
+                <Link href="/news">Live News</Link>
               </Button>
               <Button asChild className="hero-btn primary">
-                <Link href="#about">Learn More</Link>
+                <Link href="/challenges">Challenges</Link>
               </Button>
             </div>
             <div className="hero-community">
