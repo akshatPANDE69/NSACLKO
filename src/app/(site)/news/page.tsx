@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowUpRight, CalendarDays, MapPin, Users } from "lucide-react";
+import { ArrowUpRight, CalendarDays, MapPin, Users,RefreshCcw } from "lucide-react";
 import { event } from "@/lib/event";
 import "@/app/styles/news.css";
 
@@ -10,6 +10,13 @@ export const metadata: Metadata = {
 };
 
 const updates = [
+   {
+    label: "Updates",
+    title: "Day One of NSAC Lucknow 2026",
+    description: `Opened with Mrs.Saumya Pandey, ACP Lucknow, followed by gaming, chess, workshops, and creative  activities. Movie nights, jamming sessions and murder mysteries celebrated innovation and friendship`,
+    detail: `Central Law College`,
+    Icon: RefreshCcw,
+  },
   {
     label: "Event dates",
     title: "Two days to build something that matters",
@@ -23,13 +30,6 @@ const updates = [
     description: `The Lucknow event will take place on ${event.dates} at ${event.venue}, ${event.address}.`,
     detail: event.venue,
     Icon: MapPin,
-  },
-  {
-    label: "Teams",
-    title: "Find your people and make a team",
-    description: `Create a team of up to ${event.teamLimit} participants. You do not need previous hackathon experience to take part.`,
-    detail: `Up to ${event.teamLimit} people per team`,
-    Icon: Users,
   },
 ];
 
