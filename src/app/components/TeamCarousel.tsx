@@ -212,6 +212,18 @@ export const TEAM_MEMBERS: TeamMember[] = [
       email: teamEmail,
     },
   },
+    {
+    id: 17,
+    name: "Jinnay Bhanushali",
+    role: "Organizing Committee",
+    department: "Organizing Committee",
+    badge: "OC",
+    bio: "Managing communications, Assisting with youth outreach and volunteer synchronization",
+    specialties: ["Communications", "Volunteer Coordination"],
+    socials: {
+      email: teamEmail,
+    },
+  },
 ];
 
 /* -------------------------------------------------------------------------- */
