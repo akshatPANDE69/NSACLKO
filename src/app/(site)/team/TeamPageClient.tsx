@@ -13,7 +13,8 @@ const departments = ["All", ...new Set(TEAM_MEMBERS.map((member) => member.depar
 export default function TeamPageClient() {
   const [department, setDepartment] = useState("All");
   const members = department === "All" ? TEAM_MEMBERS : TEAM_MEMBERS.filter((member) => member.department === department);
-
+// POC / HOPD
+//outreach head - volunteer head - Compliance and Reddresal 
   return (
     <div className="team-page">
       <ChallengeBackground />

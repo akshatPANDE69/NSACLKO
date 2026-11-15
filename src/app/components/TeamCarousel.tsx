@@ -47,7 +47,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
   {
     id: 2,
     name: "Ayan Pande",
-    role: "Core Lead",
+    role: "Point of Contact & HOPD",
     department: "Core Team",
     badge: "Core Lead",
     bio: "Leading core platform design, digital brand aesthetics, and creative technology for Space Apps Lucknow.",
@@ -59,7 +59,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
   {
     id: 3,
     name: "Anadi Mishra",
-    role: "Core Lead",
+    role: "Operational Head",
     department: "Core Team",
     badge: "Core Lead",
     bio: "Architecting backend systems, technical setup, and participant developer support for the Lucknow hackathon.",
@@ -71,11 +71,23 @@ export const TEAM_MEMBERS: TeamMember[] = [
   {
     id: 4,
     name: "Akash Singh",
-    role: "Core Lead",
+    role: "Head of Organizational Work Flow",
     department: "Core Team",
     badge: "Core Lead",
     bio: "Coordinating event operations, logistics, and participant support in Lucknow.",
     specialties: ["Operations", "Logistics", "Event Execution"],
+    socials: {
+      email: teamEmail,
+    },
+  },
+  {
+    id: 7,
+    name: "Bharat Tewari",
+    role: "Compliance and Redressal",
+    department: "Core Team",
+    badge: "Core Lead",
+    bio: "Coordinating technical workshops, participant hardware setups, and team collaboration.",
+    specialties: ["Technical Support", "Hardware Setup"],
     socials: {
       email: teamEmail,
     },
@@ -100,18 +112,6 @@ export const TEAM_MEMBERS: TeamMember[] = [
     badge: "OC",
     bio: "Driving attendee engagement, campus ambassador relations, and on‑ground logistics.",
     specialties: ["Campus Outreach", "Logistics"],
-    socials: {
-      email: teamEmail,
-    },
-  },
-  {
-    id: 7,
-    name: "Bharat Tiwari",
-    role: "Organizing Committee",
-    department: "Organizing Committee",
-    badge: "OC",
-    bio: "Coordinating technical workshops, participant hardware setups, and team collaboration.",
-    specialties: ["Technical Support", "Hardware Setup"],
     socials: {
       email: teamEmail,
     },
@@ -159,7 +159,19 @@ export const TEAM_MEMBERS: TeamMember[] = [
     department: "Organizing Committee",
     badge: "OC",
     bio: "Supporting participant engagement, outreach activities, and on-ground event coordination.",
-    specialties: ["Outreach", "Participant Engagement"],
+    specialties: ["Web Development", "Participant Engagement"],
+    socials: {
+      email: teamEmail,
+    },
+  },
+  {
+    id: 15,
+    name: "Shaurya Singh",
+    role: "Technical Head and Web Management",
+    department: "Organizing Committee",
+    badge: "OC",
+    bio: "Managing the event website, technical infrastructure, and online participant support.",
+    specialties: ["Web Development", "Technical Support"],
     socials: {
       email: teamEmail,
     },
@@ -172,6 +184,30 @@ export const TEAM_MEMBERS: TeamMember[] = [
     badge: "OC",
     bio: "Facilitating participant judging queues, logistics flow, and event hospitality.",
     specialties: ["Event Flow", "Hospitality"],
+    socials: {
+      email: teamEmail,
+    },
+  },
+  {
+    id: 13,
+    name: "Gargi Dixit",
+    role: "Event Management and Coordination",
+    department: "Organizing Committee",
+    badge: "OC",
+    bio: "Managing Event Schedules and Arrangements",
+    specialties: ["Event Management", "Coordination"],
+    socials: {
+      email: teamEmail,
+    },
+  },
+  {
+    id: 14,
+    name: "Gauri Tripathi",
+    role: "Social Media and Outreach",
+    department: "Organizing Committee",
+    badge: "OC",
+    bio: "Scale and Designing, Promotional Creatives and Team work",
+    specialties: ["Outreach", "Social Media"],
     socials: {
       email: teamEmail,
     },
